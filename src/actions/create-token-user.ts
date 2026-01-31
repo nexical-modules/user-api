@@ -1,10 +1,10 @@
-import type { ServiceResponse } from "@/types/service";
-import type { CreateTokenDTO, CreateTokenResponseDTO } from "../sdk/types";
-import { PersonalAccessTokenService } from "../services/personal-access-token-service";
-import { randomBytes, createHash } from "node:crypto";
-import type { APIContext } from "astro";
+import type { ServiceResponse } from '@/types/service';
+import type { CreateTokenDTO, CreateTokenResponseDTO } from '../sdk/types';
+import { PersonalAccessTokenService } from '../services/personal-access-token-service';
+import { randomBytes, createHash } from 'node:crypto';
+import type { APIContext } from 'astro';
 
-const TOKEN_PREFIX = "ne_user_";
+const TOKEN_PREFIX = 'ne_user_';
 
 export class CreateTokenUserAction {
   public static async run(
@@ -13,22 +13,22 @@ export class CreateTokenUserAction {
   ): Promise<ServiceResponse<CreateTokenResponseDTO>> {
     let userId = input.userId;
     // Logic update: session middleware might not set actorType on locals root, but actor object is present.
-    const locals = context.locals as any;
+    const locals = context.locals;
     if (!userId && locals.actor && locals.actor.id) {
       userId = locals.actor.id;
     }
 
     if (!userId) {
-      return { success: false, error: "user.service.error.missing_user_id" };
+      return { success: false, error: 'user.service.error.missing_user_id' };
     }
 
     const currentUserId = userId;
-    const name = input.name || "Unnamed Token";
+    const name = input.name || 'Unnamed Token';
 
     try {
-      const randomHex = randomBytes(32).toString("hex");
+      const randomHex = randomBytes(32).toString('hex');
       const rawKey = `${TOKEN_PREFIX}${randomHex}`;
-      const hashedKey = createHash("sha256").update(rawKey).digest("hex");
+      const hashedKey = createHash('sha256').update(rawKey).digest('hex');
 
       const result = await PersonalAccessTokenService.create({
         user: { connect: { id: currentUserId } },
@@ -40,7 +40,7 @@ export class CreateTokenUserAction {
       if (!result.success || !result.data) {
         return {
           success: false,
-          error: result.error || "user.service.error.create_token_failed",
+          error: result.error || 'user.service.error.create_token_failed',
         };
       }
 
@@ -54,10 +54,10 @@ export class CreateTokenUserAction {
         },
       };
     } catch (error) {
-      console.error("Create Token Error", error);
+      console.error('Create Token Error', error);
       return {
         success: false,
-        error: "user.service.error.create_token_failed",
+        error: 'user.service.error.create_token_failed',
       };
     }
   }

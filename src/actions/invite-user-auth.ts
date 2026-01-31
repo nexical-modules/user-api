@@ -1,11 +1,10 @@
-import type { ServiceResponse } from "@/types/service";
-import type { InviteUserDTO, Invitation } from "../sdk/types";
-import { db } from "@/lib/core/db";
-import { HookSystem } from "@/lib/modules/hooks";
-import { SiteRole } from "@modules/user-api/src/sdk";
+import type { ServiceResponse } from '@/types/service';
+import type { InviteUserDTO, Invitation } from '../sdk/types';
+import { db } from '@/lib/core/db';
+import { HookSystem } from '@/lib/modules/hooks';
+import { SiteRole } from '@modules/user-api/src/sdk';
 
-import { getTranslation } from "@/lib/core/i18n";
-import type { APIContext } from "astro";
+import type { APIContext } from 'astro';
 
 export class InviteUserAuthAction {
   public static async run(
@@ -20,17 +19,17 @@ export class InviteUserAuthAction {
       where: { email: normalizedEmail },
     });
     if (existingUser) {
-      return { success: false, error: "user.service.error.user_exists" };
+      return { success: false, error: 'user.service.error.user_exists' };
     }
 
     const token = crypto.randomUUID();
     const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
     try {
-      const invitation = await db.invitation.upsert({
+      const invitation = (await db.invitation.upsert({
         where: { email },
         update: { token, role, expires },
-        create: { email, token, role, expires } as any,
+        create: { email, token, role, expires },
         // We return the created invitation to match ServiceResponse<Invitation>
         select: {
           id: true,
@@ -39,21 +38,21 @@ export class InviteUserAuthAction {
           token: true,
           expires: true,
           createdAt: true,
-        } as any, // Cast because Select subset isn't strictly Invitation type, but sufficient for now or we fetch fresh.
-      });
+        },
+      })) as unknown as Invitation;
 
       // Dispatch event to trigger email
-      await HookSystem.dispatch("invitation.created", {
+      await HookSystem.dispatch('invitation.created', {
         id: invitation.id,
         email: invitation.email,
         token: invitation.token,
         role: invitation.role,
       });
 
-      return { success: true, data: invitation as unknown as Invitation };
+      return { success: true, data: invitation };
     } catch (error: unknown) {
-      console.error("Invite Error:", error);
-      return { success: false, error: "user.service.error.invite_failed" };
+      console.error('Invite Error:', error);
+      return { success: false, error: 'user.service.error.invite_failed' };
     }
   }
 }

@@ -1,10 +1,10 @@
 // GENERATED CODE - DO NOT MODIFY
-import { defineApi } from "@/lib/api/api-docs";
-import { ApiGuard } from "@/lib/api/api-guard";
-import { z } from "zod";
-import { UserService } from "@modules/user-api/src/services/user-service";
-import { SiteRole, UserStatus } from "@modules/user-api/src/sdk";
-import { HookSystem } from "@/lib/modules/hooks";
+import { defineApi } from '@/lib/api/api-docs';
+import { ApiGuard } from '@/lib/api/api-guard';
+import { z } from 'zod';
+import { UserService } from '@modules/user-api/src/services/user-service';
+import { SiteRole, UserStatus } from '@modules/user-api/src/sdk';
+import { HookSystem } from '@/lib/modules/hooks';
 // GENERATED CODE - DO NOT MODIFY
 export const GET = defineApi(
   async (context) => {
@@ -12,7 +12,7 @@ export const GET = defineApi(
     if (!id) return new Response(null, { status: 404 });
 
     // Pre-check
-    await ApiGuard.protect(context, "admin", { ...context.params });
+    await ApiGuard.protect(context, 'admin', { ...context.params });
 
     const select = {
       id: true,
@@ -34,49 +34,39 @@ export const GET = defineApi(
     }
 
     // Post-check (Data ownership)
-    await ApiGuard.protect(
-      context,
-      "admin",
-      { ...context.params },
-      result.data,
-    );
+    await ApiGuard.protect(context, 'admin', { ...context.params }, result.data);
 
     // Analytics Hook
-    const actor = (context as any).user;
-    await HookSystem.dispatch("user.viewed", {
-      id,
-      actorId: actor?.id || "anonymous",
-    });
+    const actor = context.locals.actor;
+    await HookSystem.dispatch('user.viewed', { id, actorId: actor?.id || 'anonymous' });
 
     return { success: true, data: result.data };
   },
   {
-    summary: "Get User",
-    tags: ["User"],
-    parameters: [
-      { name: "id", in: "path", required: true, schema: { type: "string" } },
-    ],
+    summary: 'Get User',
+    tags: ['User'],
+    parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
     responses: {
       200: {
-        description: "OK",
+        description: 'OK',
         content: {
-          "application/json": {
+          'application/json': {
             schema: {
-              type: "object",
+              type: 'object',
               properties: {
-                id: { type: "string" },
-                username: { type: "string" },
-                email: { type: "string" },
-                passwordUpdatedAt: { type: "string", format: "date-time" },
-                emailVerified: { type: "string", format: "date-time" },
-                name: { type: "string" },
-                image: { type: "string" },
-                role: { type: "string" },
-                status: { type: "string" },
-                createdAt: { type: "string", format: "date-time" },
-                updatedAt: { type: "string", format: "date-time" },
+                id: { type: 'string' },
+                username: { type: 'string' },
+                email: { type: 'string' },
+                passwordUpdatedAt: { type: 'string', format: 'date-time' },
+                emailVerified: { type: 'string', format: 'date-time' },
+                name: { type: 'string' },
+                image: { type: 'string' },
+                role: { type: 'string' },
+                status: { type: 'string' },
+                createdAt: { type: 'string', format: 'date-time' },
+                updatedAt: { type: 'string', format: 'date-time' },
               },
-              required: ["updatedAt"],
+              required: ['updatedAt'],
             },
           },
         },
@@ -92,7 +82,7 @@ export const PUT = defineApi(
     const body = await context.request.json();
 
     // Pre-check
-    await ApiGuard.protect(context, "admin", { ...context.params, ...body });
+    await ApiGuard.protect(context, 'admin', { ...context.params, ...body });
 
     // Fetch for Post-check ownership
     const existing = await UserService.get(id);
@@ -101,12 +91,7 @@ export const PUT = defineApi(
     }
 
     // Post-check
-    await ApiGuard.protect(
-      context,
-      "admin",
-      { ...context.params, ...body },
-      existing.data,
-    );
+    await ApiGuard.protect(context, 'admin', { ...context.params, ...body }, existing.data);
 
     // Zod Validation
     const schema = z
@@ -135,41 +120,37 @@ export const PUT = defineApi(
       createdAt: true,
       updatedAt: true,
     };
-    const actor = context.locals?.actor || (context as any).user;
+    const actor = context.locals.actor;
 
     const result = await UserService.update(id, validated, select, actor);
 
     if (!result.success) {
-      return new Response(JSON.stringify({ error: result.error }), {
-        status: 400,
-      });
+      return new Response(JSON.stringify({ error: result.error }), { status: 400 });
     }
 
     return { success: true, data: result.data };
   },
   {
-    summary: "Update User",
-    tags: ["User"],
-    parameters: [
-      { name: "id", in: "path", required: true, schema: { type: "string" } },
-    ],
+    summary: 'Update User',
+    tags: ['User'],
+    parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
     requestBody: {
       content: {
-        "application/json": {
+        'application/json': {
           schema: {
-            type: "object",
+            type: 'object',
             properties: {
-              id: { type: "string" },
-              username: { type: "string" },
-              email: { type: "string" },
-              passwordUpdatedAt: { type: "string", format: "date-time" },
-              emailVerified: { type: "string", format: "date-time" },
-              name: { type: "string" },
-              image: { type: "string" },
-              role: { type: "string" },
-              status: { type: "string" },
-              createdAt: { type: "string", format: "date-time" },
-              updatedAt: { type: "string", format: "date-time" },
+              id: { type: 'string' },
+              username: { type: 'string' },
+              email: { type: 'string' },
+              passwordUpdatedAt: { type: 'string', format: 'date-time' },
+              emailVerified: { type: 'string', format: 'date-time' },
+              name: { type: 'string' },
+              image: { type: 'string' },
+              role: { type: 'string' },
+              status: { type: 'string' },
+              createdAt: { type: 'string', format: 'date-time' },
+              updatedAt: { type: 'string', format: 'date-time' },
             },
           },
         },
@@ -177,25 +158,25 @@ export const PUT = defineApi(
     },
     responses: {
       200: {
-        description: "OK",
+        description: 'OK',
         content: {
-          "application/json": {
+          'application/json': {
             schema: {
-              type: "object",
+              type: 'object',
               properties: {
-                id: { type: "string" },
-                username: { type: "string" },
-                email: { type: "string" },
-                passwordUpdatedAt: { type: "string", format: "date-time" },
-                emailVerified: { type: "string", format: "date-time" },
-                name: { type: "string" },
-                image: { type: "string" },
-                role: { type: "string" },
-                status: { type: "string" },
-                createdAt: { type: "string", format: "date-time" },
-                updatedAt: { type: "string", format: "date-time" },
+                id: { type: 'string' },
+                username: { type: 'string' },
+                email: { type: 'string' },
+                passwordUpdatedAt: { type: 'string', format: 'date-time' },
+                emailVerified: { type: 'string', format: 'date-time' },
+                name: { type: 'string' },
+                image: { type: 'string' },
+                role: { type: 'string' },
+                status: { type: 'string' },
+                createdAt: { type: 'string', format: 'date-time' },
+                updatedAt: { type: 'string', format: 'date-time' },
               },
-              required: ["updatedAt"],
+              required: ['updatedAt'],
             },
           },
         },
@@ -209,7 +190,7 @@ export const DELETE = defineApi(
     if (!id) return new Response(null, { status: 404 });
 
     // Pre-check
-    await ApiGuard.protect(context, "admin", { ...context.params });
+    await ApiGuard.protect(context, 'admin', { ...context.params });
 
     // Fetch for Post-check ownership
     const existing = await UserService.get(id);
@@ -218,38 +199,29 @@ export const DELETE = defineApi(
     }
 
     // Post-check
-    await ApiGuard.protect(
-      context,
-      "admin",
-      { ...context.params },
-      existing.data,
-    );
+    await ApiGuard.protect(context, 'admin', { ...context.params }, existing.data);
 
     const result = await UserService.delete(id);
 
     if (!result.success) {
-      return new Response(JSON.stringify({ error: result.error }), {
-        status: 400,
-      });
+      return new Response(JSON.stringify({ error: result.error }), { status: 400 });
     }
 
     return { success: true };
   },
   {
-    summary: "Delete User",
-    tags: ["User"],
-    parameters: [
-      { name: "id", in: "path", required: true, schema: { type: "string" } },
-    ],
+    summary: 'Delete User',
+    tags: ['User'],
+    parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
     responses: {
       200: {
-        description: "OK",
+        description: 'OK',
         content: {
-          "application/json": {
+          'application/json': {
             schema: {
-              type: "object",
+              type: 'object',
               properties: {
-                success: { type: "boolean" },
+                success: { type: 'boolean' },
               },
             },
           },

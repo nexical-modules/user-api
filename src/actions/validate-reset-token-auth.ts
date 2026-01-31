@@ -1,10 +1,7 @@
-import { db } from "@/lib/core/db";
-import type { ServiceResponse } from "@/types/service";
-import type {
-  ValidateResetTokenDTO,
-  ValidateResetTokenResponseDTO,
-} from "../sdk/types";
-import type { APIContext } from "astro";
+import { db } from '@/lib/core/db';
+import type { ServiceResponse } from '@/types/service';
+import type { ValidateResetTokenDTO, ValidateResetTokenResponseDTO } from '../sdk/types';
+import type { APIContext } from 'astro';
 
 export const validateResetToken = async (
   input: ValidateResetTokenDTO,
@@ -22,7 +19,7 @@ export const validateResetToken = async (
       valid: true,
       email: resetToken.email,
     };
-  } catch (e) {
+  } catch {
     return { valid: false };
   }
 };
@@ -32,6 +29,7 @@ export class ValidateResetTokenAuthAction {
     input: ValidateResetTokenDTO,
     context: APIContext,
   ): Promise<ServiceResponse<ValidateResetTokenResponseDTO>> {
-    return { success: true, data: {} as any };
+    const data = await validateResetToken(input);
+    return { success: true, data };
   }
 }

@@ -1,9 +1,9 @@
 // GENERATED CODE - DO NOT MODIFY
-import { defineApi } from "@/lib/api/api-docs";
-import { ApiGuard } from "@/lib/api/api-guard";
-import { HookSystem } from "@/lib/modules/hooks";
-import { DeleteTokenUserAction } from "@modules/user-api/src/actions/delete-token-user";
-import type { DeleteTokenDTO } from "@modules/user-api/src/sdk";
+import { defineApi } from '@/lib/api/api-docs';
+import { ApiGuard } from '@/lib/api/api-guard';
+import { HookSystem } from '@/lib/modules/hooks';
+import { DeleteTokenUserAction } from '@modules/user-api/src/actions/delete-token-user';
+import type { DeleteTokenDTO } from '@modules/user-api/src/sdk';
 export const DELETE = defineApi(
   async (context) => {
     // 1. Body Parsing (Input)
@@ -11,18 +11,15 @@ export const DELETE = defineApi(
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
 
     // 2. Hook: Filter Input
-    const input: DeleteTokenDTO = await HookSystem.filter(
-      "user.deleteToken.input",
-      body,
-    );
+    const input: DeleteTokenDTO = await HookSystem.filter('user.deleteToken.input', body);
 
     // 3. Security Check
     // Pass merged input
     const combinedInput = { ...context.params, ...query, ...input };
-    await ApiGuard.protect(context, "member", combinedInput);
+    await ApiGuard.protect(context, 'member', combinedInput);
 
     // Inject userId from context for protected routes
-    const user = (context as any).user;
+    const user = context.locals.actor;
     if (user && user.id) {
       Object.assign(combinedInput, { userId: user.id });
     }
@@ -31,43 +28,38 @@ export const DELETE = defineApi(
     const result = await DeleteTokenUserAction.run(combinedInput, context);
 
     // 5. Hook: Filter Output
-    const filteredResult = await HookSystem.filter(
-      "user.deleteToken.output",
-      result,
-    );
+    const filteredResult = await HookSystem.filter('user.deleteToken.output', result);
 
     // 6. Response
     if (!filteredResult.success) {
-      return new Response(JSON.stringify({ error: filteredResult.error }), {
-        status: 400,
-      });
+      return new Response(JSON.stringify({ error: filteredResult.error }), { status: 400 });
     }
 
     return { success: true, data: filteredResult.data };
   },
   {
-    summary: "Delete personal access token",
-    tags: ["User"],
+    summary: 'Delete personal access token',
+    tags: ['User'],
     requestBody: {
       content: {
-        "application/json": {
+        'application/json': {
           schema: {
-            type: "object",
+            type: 'object',
             properties: {
-              id: { type: "string" },
-              userId: { type: "string" },
+              id: { type: 'string' },
+              userId: { type: 'string' },
             },
-            required: ["id"],
+            required: ['id'],
           },
         },
       },
     },
     responses: {
       200: {
-        description: "OK",
+        description: 'OK',
         content: {
-          "application/json": {
-            schema: { type: "object" },
+          'application/json': {
+            schema: { type: 'object' },
           },
         },
       },
