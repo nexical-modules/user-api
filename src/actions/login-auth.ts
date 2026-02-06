@@ -1,8 +1,8 @@
+// GENERATED CODE - DO NOT MODIFY
 import type { ServiceResponse } from '@/types/service';
 import type { LoginDTO, User } from '../sdk/types';
-import { db } from '@/lib/core/db';
-import bcrypt from 'bcryptjs';
 import type { APIContext } from 'astro';
+import { db } from '@/lib/core/db';
 
 export class LoginAuthAction {
   public static async run(input: LoginDTO, context: APIContext): Promise<ServiceResponse<User>> {
