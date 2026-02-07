@@ -445,6 +445,35 @@ models:
         type: String
         isRequired: true
 
+  Session:
+    api: false
+    fields:
+      id:
+        type: String
+        attributes:
+          - "@id"
+          - "@default(cuid())"
+      sessionToken:
+        type: String
+        attributes:
+          - "@unique"
+      userId:
+        type: String
+      expires:
+        type: DateTime
+      user:
+        type: User
+        attributes:
+          - "@relation(fields: [userId], references: [id], onDelete: Cascade)"
+      createdAt:
+        type: DateTime
+        attributes:
+          - "@default(now())"
+      updatedAt:
+        type: DateTime
+        attributes:
+          - "@updatedAt"
+
   ResetPasswordResponseDTO:
     db: false
     api: false
