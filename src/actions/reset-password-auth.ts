@@ -1,14 +1,15 @@
 // GENERATED CODE - DO NOT MODIFY
 import type { ServiceResponse } from '@/types/service';
-import type { ResetPasswordDTO, ResetPasswordResponseDTO } from '../sdk/types';
+import { UserModuleTypes } from '@/lib/api';
+import { HookSystem } from '@/lib/modules/hooks';
 import type { APIContext } from 'astro';
 import { db } from '@/lib/core/db';
 
 export class ResetPasswordAuthAction {
   public static async run(
-    input: ResetPasswordDTO,
+    input: UserModuleTypes.ResetPasswordDTO,
     context: APIContext,
-  ): Promise<ServiceResponse<ResetPasswordResponseDTO>> {
+  ): Promise<ServiceResponse<UserModuleTypes.ResetPasswordResponseDTO>> {
     const token = String(input.token);
     const newPassword = String(input.password);
 

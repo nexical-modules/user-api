@@ -1,14 +1,15 @@
 // GENERATED CODE - DO NOT MODIFY
 import type { ServiceResponse } from '@/types/service';
-import type { PersonalAccessToken, ListTokensDTO } from '../sdk/types';
+import { UserModuleTypes } from '@/lib/api';
+import { PersonalAccessTokenService } from '../services/personal-access-token-service';
 import type { APIContext } from 'astro';
 
 export class ListTokensUserAction {
   public static async run(
-    input: ListTokensDTO,
+    input: UserModuleTypes.ListTokensDTO,
     context: APIContext,
-  ): Promise<ServiceResponse<PersonalAccessToken[]>> {
-    const { userId, skip, take } = input;
+  ): Promise<ServiceResponse<UserModuleTypes.PersonalAccessToken[]>> {
+    const { userId, skip, take } = input as any;
 
     return PersonalAccessTokenService.list({
       where: { userId },

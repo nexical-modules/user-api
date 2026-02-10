@@ -1,14 +1,15 @@
 // GENERATED CODE - DO NOT MODIFY
 import type { ServiceResponse } from '@/types/service';
-import type { VerifyEmailDTO, VerifyEmailResponseDTO } from '../sdk/types';
+import { UserModuleTypes } from '@/lib/api';
+import { HookSystem } from '@/lib/modules/hooks';
 import type { APIContext } from 'astro';
 import { db } from '@/lib/core/db';
 
 export class VerifyEmailAuthAction {
   public static async run(
-    input: VerifyEmailDTO,
+    input: UserModuleTypes.VerifyEmailDTO,
     context: APIContext,
-  ): Promise<ServiceResponse<VerifyEmailResponseDTO>> {
+  ): Promise<ServiceResponse<UserModuleTypes.VerifyEmailResponseDTO>> {
     const tokenStr = String(input.token);
 
     try {

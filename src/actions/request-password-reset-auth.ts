@@ -1,12 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY
 import type { ServiceResponse } from '@/types/service';
-import type { RequestPasswordResetDTO } from '../sdk/types';
+import { UserModuleTypes } from '@/lib/api';
+import { HookSystem } from '@/lib/modules/hooks';
 import type { APIContext } from 'astro';
 import { db } from '@/lib/core/db';
 
 export class RequestPasswordResetAuthAction {
   public static async run(
-    input: RequestPasswordResetDTO,
+    input: UserModuleTypes.RequestPasswordResetDTO,
     context: APIContext,
   ): Promise<ServiceResponse<void>> {
     const normalizedEmail = String(input.email).toLowerCase();

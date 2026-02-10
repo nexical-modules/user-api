@@ -1,9 +1,7 @@
 import { db } from '@/lib/core/db';
 import type { ServiceResponse } from '@/types/service';
-import type { CreateUserDTO, User, Invitation } from '../sdk/types';
-import { UserMode, SiteRole } from '../sdk/types';
 import { HookSystem } from '@/lib/modules/hooks';
-import { UserStatus } from '@modules/user-api/src/sdk';
+import { UserModuleTypes } from '@/lib/api';
 import { userConfig } from '../config';
 import { Logger } from '@/lib/core/logger';
 
@@ -17,7 +15,7 @@ export class AuthService {
     const name = input.name ? String(input.name) : undefined;
 
     // Check Modes
-    if (userConfig.userMode === UserMode.SINGLE) {
+    if (userConfig.userMode === UserModuleTypes.UserMode.SINGLE) {
       return { success: false, error: 'user.service.error.registration_restricted' };
     }
 
@@ -26,9 +24,9 @@ export class AuthService {
       return { success: false, error: 'user.service.error.passwords_mismatch' };
     }
 
-    let role: SiteRole = SiteRole.EMPLOYEE;
+    let role: UserModuleTypes.SiteRole = UserModuleTypes.SiteRole.EMPLOYEE;
     let emailVerified: Date | null = null;
-    let invitation: Invitation | null = null;
+    let invitation: UserModuleTypes.Invitation | null = null;
     let invitationId: string | null = null;
 
     // Check for Invitation Token
@@ -48,10 +46,10 @@ export class AuthService {
         return { success: false, error: 'user.service.error.invitation_email_mismatch' };
       }
 
-      role = invitation.role;
+      role = invitation.role as unknown as UserModuleTypes.SiteRole;
       emailVerified = new Date();
       invitationId = invitation.id;
-    } else if (userConfig.userMode === UserMode.ADMIN) {
+    } else if (userConfig.userMode === UserModuleTypes.UserMode.ADMIN) {
       return { success: false, error: 'user.service.error.registration_restricted' };
     }
 
@@ -81,7 +79,7 @@ export class AuthService {
             name: name ? name.replace(/<script\b[^>]*>([\s\S]*?)<\/script>/gim, '') : name,
             password: processedData.password,
             role: role,
-            status: UserStatus.ACTIVE,
+            status: UserModuleTypes.UserStatus.ACTIVE,
             emailVerified: emailVerified,
           },
         });
@@ -98,7 +96,7 @@ export class AuthService {
 
       return {
         success: true,
-        data: createdUser as unknown as User,
+        data: createdUser as unknown as UserModuleTypes.User,
       };
     } catch (error: unknown) {
       Logger.error('Register Error:', error);

@@ -1,11 +1,11 @@
 import { HookSystem } from '@/lib/modules/hooks';
 import bcrypt from 'bcryptjs';
-import type { CreateUserDTO, UpdateUserDTO } from '../sdk/types';
+import { UserModuleTypes } from '@/lib/api';
 
 export class PasswordHooks {
   static init() {
     // Handle Password Hashing on Create
-    HookSystem.filter('user.beforeCreate', async (data: CreateUserDTO) => {
+    HookSystem.filter('user.beforeCreate', async (data: UserModuleTypes.CreateUserDTO) => {
       if (data.password) {
         const salt = await bcrypt.genSalt(10);
         data.password = await bcrypt.hash(data.password, salt);
@@ -14,11 +14,11 @@ export class PasswordHooks {
     });
 
     // Handle Password Hashing on Update
-    HookSystem.filter('user.beforeUpdate', async (data: UpdateUserDTO) => {
+    HookSystem.filter('user.beforeUpdate', async (data: UserModuleTypes.UpdateUserDTO) => {
       if (data.password) {
         const salt = await bcrypt.genSalt(10);
         data.password = await bcrypt.hash(data.password, salt);
-        (data as UpdateUserDTO & { passwordUpdatedAt?: Date }).passwordUpdatedAt = new Date();
+        (data as UserModuleTypes.UpdateUserDTO & { passwordUpdatedAt?: Date }).passwordUpdatedAt = new Date();
       }
       return data;
     });

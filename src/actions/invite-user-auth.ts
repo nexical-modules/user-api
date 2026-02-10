@@ -1,16 +1,17 @@
 // GENERATED CODE - DO NOT MODIFY
 import type { ServiceResponse } from '@/types/service';
-import type { InviteUserDTO, Invitation } from '../sdk/types';
+import { UserModuleTypes } from '@/lib/api';
+import { HookSystem } from '@/lib/modules/hooks';
 import type { APIContext } from 'astro';
 import { db } from '@/lib/core/db';
 
 export class InviteUserAuthAction {
   public static async run(
-    input: InviteUserDTO,
+    input: UserModuleTypes.InviteUserDTO,
     context: APIContext,
-  ): Promise<ServiceResponse<Invitation>> {
+  ): Promise<ServiceResponse<UserModuleTypes.Invitation>> {
     const email = String(input.email);
-    const role = (input.role as SiteRole) || SiteRole.EMPLOYEE;
+    const role = (input.role as UserModuleTypes.SiteRole) || UserModuleTypes.SiteRole.EMPLOYEE;
 
     const normalizedEmail = email.toLowerCase();
     const existingUser = await db.user.findUnique({
@@ -28,16 +29,7 @@ export class InviteUserAuthAction {
         where: { email },
         update: { token, role, expires },
         create: { email, token, role, expires },
-        // We return the created invitation to match ServiceResponse<Invitation>
-        select: {
-          id: true,
-          email: true,
-          role: true,
-          token: true,
-          expires: true,
-          createdAt: true,
-        },
-      })) as unknown as Invitation;
+      })) as unknown as UserModuleTypes.Invitation;
 
       // Dispatch event to trigger email
       await HookSystem.dispatch('invitation.created', {
