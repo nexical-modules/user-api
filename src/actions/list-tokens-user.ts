@@ -9,7 +9,7 @@ export class ListTokensUserAction {
     input: UserModuleTypes.ListTokensDTO,
     context: APIContext,
   ): Promise<ServiceResponse<UserModuleTypes.PersonalAccessToken[]>> {
-    const { userId, skip, take } = input as any;
+    const { userId, skip, take } = input;
 
     return PersonalAccessTokenService.list({
       where: { userId },

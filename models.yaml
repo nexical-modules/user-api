@@ -414,7 +414,16 @@ models:
   ListTokensDTO:
     db: false
     api: false
-    fields: {}
+    fields:
+      userId:
+        type: String
+        isRequired: false
+      skip:
+        type: Int
+        isRequired: false
+      take:
+        type: Int
+        isRequired: false
 
   DeleteTokenDTO:
     db: false
@@ -455,12 +464,12 @@ models:
       id:
         type: String
         attributes:
-          - "@id"
-          - "@default(cuid())"
+          - '@id'
+          - '@default(cuid())'
       sessionToken:
         type: String
         attributes:
-          - "@unique"
+          - '@unique'
       userId:
         type: String
       expires:
@@ -468,15 +477,15 @@ models:
       user:
         type: User
         attributes:
-          - "@relation(fields: [userId], references: [id], onDelete: Cascade)"
+          - '@relation(fields: [userId], references: [id], onDelete: Cascade)'
       createdAt:
         type: DateTime
         attributes:
-          - "@default(now())"
+          - '@default(now())'
       updatedAt:
         type: DateTime
         attributes:
-          - "@updatedAt"
+          - '@updatedAt'
 
   ResetPasswordResponseDTO:
     db: false

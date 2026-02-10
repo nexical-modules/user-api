@@ -6,7 +6,10 @@ import type { APIContext } from 'astro';
 import { db } from '@/lib/core/db';
 
 export class LoginAuthAction {
-  public static async run(input: UserModuleTypes.LoginDTO, context: APIContext): Promise<ServiceResponse<UserModuleTypes.User>> {
+  public static async run(
+    input: UserModuleTypes.LoginDTO,
+    context: APIContext,
+  ): Promise<ServiceResponse<UserModuleTypes.User>> {
     const { email, password } = input;
 
     if (!email || !password) {

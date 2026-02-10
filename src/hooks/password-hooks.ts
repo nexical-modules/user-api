@@ -18,7 +18,8 @@ export class PasswordHooks {
       if (data.password) {
         const salt = await bcrypt.genSalt(10);
         data.password = await bcrypt.hash(data.password, salt);
-        (data as UserModuleTypes.UpdateUserDTO & { passwordUpdatedAt?: Date }).passwordUpdatedAt = new Date();
+        (data as UserModuleTypes.UpdateUserDTO & { passwordUpdatedAt?: Date }).passwordUpdatedAt =
+          new Date();
       }
       return data;
     });

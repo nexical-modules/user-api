@@ -1,6 +1,5 @@
 import auth from 'auth-astro';
 
-
 export default {
   type: 'feature',
   order: 50,
@@ -11,4 +10,3 @@ export default {
     },
   },
 };
-
