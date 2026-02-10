@@ -1,14 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY
 import type { ServiceResponse } from '@/types/service';
-import { UserModuleTypes } from '@/lib/api';
-import { AuthService } from '../services/auth-service';
 import type { APIContext } from 'astro';
+import type { CreateUserDTO, User } from '../sdk/types';
 
 export class RegisterAuthAction {
   public static async run(
-    input: UserModuleTypes.CreateUserDTO,
+    input: CreateUserDTO,
     context: APIContext,
-  ): Promise<ServiceResponse<UserModuleTypes.User>> {
+  ): Promise<ServiceResponse<User>> {
     return AuthService.register(input);
   }
 }

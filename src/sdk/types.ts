@@ -68,8 +68,11 @@ export interface DeleteMeDTO {
   userId?: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface ListTokensDTO {}
+export interface ListTokensDTO {
+  userId?: string;
+  skip?: number;
+  take?: number;
+}
 
 export interface DeleteTokenDTO {
   id: string;
@@ -115,4 +118,5 @@ export type {
   VerificationToken,
   PasswordResetToken,
   Invitation,
+  Session,
 } from '@prisma/client';

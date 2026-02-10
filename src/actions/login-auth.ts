@@ -1,15 +1,11 @@
 // GENERATED CODE - DO NOT MODIFY
 import type { ServiceResponse } from '@/types/service';
-import { UserModuleTypes } from '@/lib/api';
-import bcrypt from 'bcryptjs';
 import type { APIContext } from 'astro';
 import { db } from '@/lib/core/db';
+import type { LoginDTO, User } from '../sdk/types';
 
 export class LoginAuthAction {
-  public static async run(
-    input: UserModuleTypes.LoginDTO,
-    context: APIContext,
-  ): Promise<ServiceResponse<UserModuleTypes.User>> {
+  public static async run(input: LoginDTO, context: APIContext): Promise<ServiceResponse<User>> {
     const { email, password } = input;
 
     if (!email || !password) {

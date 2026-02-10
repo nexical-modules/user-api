@@ -1,15 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY
 import type { ServiceResponse } from '@/types/service';
-import { UserModuleTypes } from '@/lib/api';
-import { HookSystem } from '@/lib/modules/hooks';
 import type { APIContext } from 'astro';
 import { db } from '@/lib/core/db';
+import type { InviteUserDTO, Invitation } from '../sdk/types';
 
 export class InviteUserAuthAction {
   public static async run(
-    input: UserModuleTypes.InviteUserDTO,
+    input: InviteUserDTO,
     context: APIContext,
-  ): Promise<ServiceResponse<UserModuleTypes.Invitation>> {
+  ): Promise<ServiceResponse<Invitation>> {
     const email = String(input.email);
     const role = (input.role as UserModuleTypes.SiteRole) || UserModuleTypes.SiteRole.EMPLOYEE;
 

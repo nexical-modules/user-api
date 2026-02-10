@@ -9,7 +9,7 @@ import type { UpdateUserDTO, DeleteMeDTO } from '@modules/user-api/src/sdk';
 
 // GENERATED CODE - DO NOT MODIFY
 export const GET = defineApi(
-  async (context) => {
+  async (context, actor) => {
     // 1. Body Parsing (Input)
     const body = {} as none;
 
@@ -23,9 +23,8 @@ export const GET = defineApi(
     await ApiGuard.protect(context, 'member', combinedInput);
 
     // Inject userId from context for protected routes
-    const user = context.locals.actor;
-    if (user && user.id) {
-      Object.assign(combinedInput, { userId: user.id });
+    if (actor && actor.id) {
+      Object.assign(combinedInput, { userId: actor.id });
     }
 
     // 4. Action Execution
@@ -74,7 +73,7 @@ export const GET = defineApi(
   },
 );
 export const PUT = defineApi(
-  async (context) => {
+  async (context, actor) => {
     // 1. Body Parsing (Input)
     const body = (await context.request.json()) as UpdateUserDTO;
 
@@ -88,9 +87,8 @@ export const PUT = defineApi(
     await ApiGuard.protect(context, 'member', combinedInput);
 
     // Inject userId from context for protected routes
-    const user = context.locals.actor;
-    if (user && user.id) {
-      Object.assign(combinedInput, { userId: user.id });
+    if (actor && actor.id) {
+      Object.assign(combinedInput, { userId: actor.id });
     }
 
     // 4. Action Execution
@@ -158,7 +156,7 @@ export const PUT = defineApi(
   },
 );
 export const DELETE = defineApi(
-  async (context) => {
+  async (context, actor) => {
     // 1. Body Parsing (Input)
     const body = (await context.request.json()) as DeleteMeDTO;
 
@@ -172,9 +170,8 @@ export const DELETE = defineApi(
     await ApiGuard.protect(context, 'member', combinedInput);
 
     // Inject userId from context for protected routes
-    const user = context.locals.actor;
-    if (user && user.id) {
-      Object.assign(combinedInput, { userId: user.id });
+    if (actor && actor.id) {
+      Object.assign(combinedInput, { userId: actor.id });
     }
 
     // 4. Action Execution

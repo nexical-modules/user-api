@@ -68,6 +68,15 @@ export const factories = {
       expires: new Date(),
     };
   },
+  session: (index: number) => {
+    return {
+      sessionToken: `sessionToken_${index}_${crypto.randomUUID().split('-')[0]}`,
+      user: {
+        create: Factory.getBuilder('user')(index),
+      },
+      expires: new Date(),
+    };
+  },
 };
 
 export function hashPassword(password: string): string {

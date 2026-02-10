@@ -6,7 +6,7 @@ import { InviteUserAuthAction } from '@modules/user-api/src/actions/invite-user-
 import type { InviteUserDTO } from '@modules/user-api/src/sdk';
 
 export const POST = defineApi(
-  async (context) => {
+  async (context, actor) => {
     // 1. Body Parsing (Input)
     const body = (await context.request.json()) as InviteUserDTO;
 
@@ -20,9 +20,8 @@ export const POST = defineApi(
     await ApiGuard.protect(context, 'admin', combinedInput);
 
     // Inject userId from context for protected routes
-    const user = context.locals.actor;
-    if (user && user.id) {
-      Object.assign(combinedInput, { userId: user.id });
+    if (actor && actor.id) {
+      Object.assign(combinedInput, { userId: actor.id });
     }
 
     // 4. Action Execution
