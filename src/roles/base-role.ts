@@ -1,5 +1,4 @@
 // GENERATED CODE - DO NOT MODIFY
-
 export abstract class BaseRole {
   abstract readonly name: string;
 

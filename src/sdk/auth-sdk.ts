@@ -1,4 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
+// GENERATED CODE - DO NOT MODIFY
 import { BaseResource } from '@nexical/sdk-core';
 import type {
   CreateUserDTO,
@@ -16,7 +16,6 @@ import type {
   ValidateResetTokenResponseDTO,
 } from './types.js';
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /** SDK client for Auth. */
 export class AuthSDK extends BaseResource {
   public async register(

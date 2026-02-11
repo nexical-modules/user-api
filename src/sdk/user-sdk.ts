@@ -1,4 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
+// GENERATED CODE - DO NOT MODIFY
 import { BaseResource } from '@nexical/sdk-core';
 import type {
   User,
@@ -8,7 +8,6 @@ import type {
   CreateTokenResponseDTO,
 } from './types.js';
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 /** SDK client for User. */
 export class UserSDK extends BaseResource {
   public async list(params?: {

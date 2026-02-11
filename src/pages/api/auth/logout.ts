@@ -5,7 +5,6 @@ import { HookSystem } from '@/lib/modules/hooks';
 import { LogoutAuthAction } from '@modules/user-api/src/actions/logout-auth';
 import type { LogoutDTO } from '@modules/user-api/src/sdk';
 
-// GENERATED CODE - DO NOT MODIFY
 export const POST = defineApi(
   async (context, actor) => {
     // 1. Body Parsing (Input)

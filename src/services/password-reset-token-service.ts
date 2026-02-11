@@ -6,7 +6,6 @@ import { HookSystem } from '@/lib/modules/hooks';
 import type { PasswordResetToken, Prisma } from '@prisma/client';
 import type { ApiActor } from '@/lib/api/api-docs';
 
-// GENERATED CODE - DO NOT MODIFY
 /** Service class for PasswordResetToken-related business logic. */
 export class PasswordResetTokenService {
   public static async list(

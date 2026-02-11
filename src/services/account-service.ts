@@ -6,7 +6,6 @@ import { HookSystem } from '@/lib/modules/hooks';
 import type { Account, Prisma } from '@prisma/client';
 import type { ApiActor } from '@/lib/api/api-docs';
 
-// GENERATED CODE - DO NOT MODIFY
 /** Service class for Account-related business logic. */
 export class AccountService {
   public static async list(

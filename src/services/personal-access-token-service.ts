@@ -8,7 +8,6 @@ import { HookSystem } from '@/lib/modules/hooks';
 import type { PersonalAccessToken, Prisma } from '@prisma/client';
 import type { ApiActor } from '@/lib/api/api-docs';
 
-// GENERATED CODE - DO NOT MODIFY
 /** Service class for PersonalAccessToken-related business logic. */
 export class PersonalAccessTokenService {
   public static async list(

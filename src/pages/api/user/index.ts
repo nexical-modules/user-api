@@ -7,7 +7,6 @@ import { UserService } from '@modules/user-api/src/services/user-service';
 import { HookSystem } from '@/lib/modules/hooks';
 import { SiteRole, UserStatus } from '@modules/user-api/src/sdk';
 
-// GENERATED CODE - DO NOT MODIFY
 export const GET = defineApi(
   async (context, actor) => {
     const filterOptions = {

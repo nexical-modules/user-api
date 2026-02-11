@@ -7,7 +7,6 @@ import { UpdateMeUserAction } from '@modules/user-api/src/actions/update-me-user
 import { DeleteMeUserAction } from '@modules/user-api/src/actions/delete-me-user';
 import type { UpdateUserDTO, DeleteMeDTO } from '@modules/user-api/src/sdk';
 
-// GENERATED CODE - DO NOT MODIFY
 export const GET = defineApi(
   async (context, actor) => {
     // 1. Body Parsing (Input)

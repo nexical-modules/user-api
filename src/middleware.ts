@@ -3,7 +3,6 @@ import { db } from '@/lib/core/db';
 import crypto from 'node:crypto';
 import type { APIContext, MiddlewareNext } from 'astro';
 
-// GENERATED CODE - DO NOT MODIFY
 export async function onRequest(context: APIContext, next: MiddlewareNext) {
   const publicRoutes = [
     '/register',

@@ -6,7 +6,6 @@ import { HookSystem } from '@/lib/modules/hooks';
 import type { User, Prisma } from '@prisma/client';
 import type { ApiActor } from '@/lib/api/api-docs';
 
-// GENERATED CODE - DO NOT MODIFY
 /** Service class for User-related business logic. */
 export class UserService {
   public static async list(

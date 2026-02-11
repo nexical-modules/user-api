@@ -1,7 +1,6 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
+// GENERATED CODE - DO NOT MODIFY
 import type { PersonalAccessToken } from '@prisma/client';
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
 export interface CreateUserDTO {
   email: string;
   password: string;
