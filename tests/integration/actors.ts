@@ -5,9 +5,9 @@ import crypto from 'node:crypto';
 export const actors = {
   user: async (client: ApiClient, params: Record<string, unknown> = {}) => {
     let actor;
-    if (typeof params.id === 'string') {
+    if (params.id) {
       actor = await Factory.prisma.user.findUnique({ where: { id: params.id } });
-    } else if (typeof params.email === 'string') {
+    } else if (params.email) {
       actor = await Factory.prisma.user.findFirst({ where: { email: params.email } });
     }
 

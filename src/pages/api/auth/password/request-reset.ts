@@ -3,17 +3,17 @@ import { defineApi } from '@/lib/api/api-docs';
 import { ApiGuard } from '@/lib/api/api-guard';
 import { HookSystem } from '@/lib/modules/hooks';
 import { RequestPasswordResetAuthAction } from '@modules/user-api/src/actions/request-password-reset-auth';
-import type { RequestPasswordResetDTO } from '@modules/user-api/src/sdk';
+import type { UserApiModuleTypes } from '@/lib/api';
 
 export const POST = defineApi(
   async (context, actor) => {
     // 1. Body Parsing (Input)
-    const body = (await context.request.json()) as RequestPasswordResetDTO;
+    const body = (await context.request.json()) as UserApiModuleTypes.RequestPasswordResetDTO;
 
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
 
     // 2. Hook: Filter Input
-    const input: RequestPasswordResetDTO = await HookSystem.filter(
+    const input: UserApiModuleTypes.RequestPasswordResetDTO = await HookSystem.filter(
       'auth.requestPasswordReset.input',
       body,
     );

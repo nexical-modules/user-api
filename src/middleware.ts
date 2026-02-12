@@ -4,7 +4,7 @@ import crypto from 'node:crypto';
 import type { APIContext, MiddlewareNext } from 'astro';
 
 export async function onRequest(context: APIContext, next: MiddlewareNext) {
-  const publicRoutes = [
+  const publicRoutes: string[] = [
     '/register',
     '/login',
     '/verify-email',
@@ -24,7 +24,7 @@ export async function onRequest(context: APIContext, next: MiddlewareNext) {
     const entity = tokenEntity?.user;
 
     if (entity) {
-      context.locals.actor = { ...entity, type: 'user', role: entity.role };
+      context.locals.actor = { ...entity, type: 'user', role: 'USER' };
       context.locals.actorType = 'user';
       return next();
     }

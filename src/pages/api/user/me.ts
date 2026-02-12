@@ -5,17 +5,17 @@ import { HookSystem } from '@/lib/modules/hooks';
 import { GetMeUserAction } from '@modules/user-api/src/actions/get-me-user';
 import { UpdateMeUserAction } from '@modules/user-api/src/actions/update-me-user';
 import { DeleteMeUserAction } from '@modules/user-api/src/actions/delete-me-user';
-import type { UpdateUserDTO, DeleteMeDTO } from '@modules/user-api/src/sdk';
+import type { UserApiModuleTypes } from '@/lib/api';
 
 export const GET = defineApi(
   async (context, actor) => {
     // 1. Body Parsing (Input)
-    const body = {} as none;
+    const body = {} as UserApiModuleTypes.none;
 
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
 
     // 2. Hook: Filter Input
-    const input: none = await HookSystem.filter('user.getMe.input', body);
+    const input: UserApiModuleTypes.none = await HookSystem.filter('user.getMe.input', body);
 
     // 3. Security Check
     const combinedInput = { ...context.params, ...query, ...input };
@@ -74,12 +74,15 @@ export const GET = defineApi(
 export const PUT = defineApi(
   async (context, actor) => {
     // 1. Body Parsing (Input)
-    const body = (await context.request.json()) as UpdateUserDTO;
+    const body = (await context.request.json()) as UserApiModuleTypes.UpdateUserDTO;
 
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
 
     // 2. Hook: Filter Input
-    const input: UpdateUserDTO = await HookSystem.filter('user.updateMe.input', body);
+    const input: UserApiModuleTypes.UpdateUserDTO = await HookSystem.filter(
+      'user.updateMe.input',
+      body,
+    );
 
     // 3. Security Check
     const combinedInput = { ...context.params, ...query, ...input };
@@ -157,12 +160,15 @@ export const PUT = defineApi(
 export const DELETE = defineApi(
   async (context, actor) => {
     // 1. Body Parsing (Input)
-    const body = (await context.request.json()) as DeleteMeDTO;
+    const body = (await context.request.json()) as UserApiModuleTypes.DeleteMeDTO;
 
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
 
     // 2. Hook: Filter Input
-    const input: DeleteMeDTO = await HookSystem.filter('user.deleteMe.input', body);
+    const input: UserApiModuleTypes.DeleteMeDTO = await HookSystem.filter(
+      'user.deleteMe.input',
+      body,
+    );
 
     // 3. Security Check
     const combinedInput = { ...context.params, ...query, ...input };

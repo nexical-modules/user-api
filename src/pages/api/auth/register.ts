@@ -3,17 +3,20 @@ import { defineApi } from '@/lib/api/api-docs';
 import { ApiGuard } from '@/lib/api/api-guard';
 import { HookSystem } from '@/lib/modules/hooks';
 import { RegisterAuthAction } from '@modules/user-api/src/actions/register-auth';
-import type { CreateUserDTO } from '@modules/user-api/src/sdk';
+import type { UserApiModuleTypes } from '@/lib/api';
 
 export const POST = defineApi(
   async (context, actor) => {
     // 1. Body Parsing (Input)
-    const body = (await context.request.json()) as CreateUserDTO;
+    const body = (await context.request.json()) as UserApiModuleTypes.CreateUserDTO;
 
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
 
     // 2. Hook: Filter Input
-    const input: CreateUserDTO = await HookSystem.filter('auth.register.input', body);
+    const input: UserApiModuleTypes.CreateUserDTO = await HookSystem.filter(
+      'auth.register.input',
+      body,
+    );
 
     // 3. Security Check
     const combinedInput = { ...context.params, ...query, ...input };

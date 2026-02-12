@@ -2,7 +2,7 @@
 export abstract class BaseRole {
   abstract readonly name: string;
 
-  public static async check(context: unknown, permission: string): Promise<boolean> {
+  public async check(context: unknown, permission: string): Promise<boolean> {
     return true;
   }
 
