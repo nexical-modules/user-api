@@ -2,10 +2,6 @@
 export abstract class BaseRole {
   abstract readonly name: string;
 
-  public async check(context: unknown, permission: string): Promise<boolean> {
-    return true;
-  }
-
   public async check(
     context: AstroGlobal | APIContext,
     input: Record<string, unknown>,
