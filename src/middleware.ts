@@ -29,6 +29,15 @@ export async function onRequest(context: APIContext, next: MiddlewareNext) {
       return next();
     }
   }
+  const session = (context.locals as any).session;
+  if (session) {
+    const user = await session.get('user');
+    if (user) {
+      // Compatibility with Actor system
+      context.locals.actor = user;
+      context.locals.actorType = 'user';
+    }
+  }
   if (context.locals.actor && context.locals.actorType === 'user') {
     const actorCheck = await db.user.findUnique({
       where: { id: context.locals.actor.id },

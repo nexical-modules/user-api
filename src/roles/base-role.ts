@@ -2,11 +2,7 @@
 export abstract class BaseRole {
   abstract readonly name: string;
 
-  public async check(
-    context: AstroGlobal | APIContext,
-    input: Record<string, unknown>,
-    data?: unknown,
-  ): Promise<void> {
+  public static async check(context: unknown, permission: string): Promise<boolean> {
     const locals = (context as { locals?: Record<string, unknown> }).locals;
     const actor = locals?.actor || locals?.user;
 
@@ -18,5 +14,6 @@ export abstract class BaseRole {
     if (String(actor.role).toUpperCase() !== this.name.toUpperCase()) {
       throw new Error(`Forbidden: required role ${this.name}`);
     }
+    return true;
   }
 }
