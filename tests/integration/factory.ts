@@ -10,8 +10,6 @@ export const factories = {
       email: `${index}_${crypto.randomUUID()}@example.com`.toLowerCase(),
       passwordUpdatedAt: new Date(),
       emailVerified: new Date(),
-      name: `name_${index}`,
-      image: `image_${index}`,
       role: 'EMPLOYEE',
       status: 'ACTIVE',
       password: hashPassword('Password123!'),
