@@ -2,8 +2,8 @@ import { defineConfig } from 'auth-astro';
 import GitHub from '@auth/core/providers/github';
 import Credentials from '@auth/core/providers/credentials';
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import { db } from '../../../../src/lib/core/db';
-import { config } from '../../../../src/lib/core/config';
+import { db } from '@/lib/core/db';
+import { config } from '@/lib/core/config';
 import bcrypt from 'bcryptjs';
 
 export const authConfig = defineConfig({
