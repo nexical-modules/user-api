@@ -1,4 +1,4 @@
-import { z } from 'astro:schema';
+import { z } from 'zod';
 import { createConfig } from '@/lib/core/config';
 import { UserModuleTypes } from '@/lib/api';
 
