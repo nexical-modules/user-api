@@ -50,7 +50,10 @@ export const authConfig = defineConfig({
     sessionToken: {
       name: `authjs.session-token`,
       options: {
-        domain: `.${config.PUBLIC_PRIMARY_DOMAIN}`,
+        domain:
+          config.PUBLIC_PRIMARY_DOMAIN === 'localhost'
+            ? 'localhost'
+            : `.${config.PUBLIC_PRIMARY_DOMAIN}`,
         path: '/',
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
@@ -59,6 +62,18 @@ export const authConfig = defineConfig({
     },
   },
   callbacks: {
+    redirect: async ({ url, baseUrl }) => {
+      if (url.startsWith('/')) return `${baseUrl}${url}`;
+      if (new URL(url).origin === baseUrl) return url;
+      if (
+        (process.env.NODE_ENV !== 'production' && url.startsWith('http://localhost:')) ||
+        (process.env.ALLOWED_HOSTS &&
+          process.env.ALLOWED_HOSTS.split(',').some((host) => url.includes(host)))
+      ) {
+        return url;
+      }
+      return baseUrl;
+    },
     session: ({ session, user }) => {
       if (session.user) {
         session.user.id = user.id;
