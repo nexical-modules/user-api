@@ -3,6 +3,7 @@ import type { ServiceResponse } from '@/types/service';
 import type { APIContext } from 'astro';
 import { db } from '@/lib/core/db';
 import type { LoginDTO, User } from '../sdk/types';
+import bcrypt from 'bcryptjs';
 
 export class LoginAuthAction {
   public static async run(input: LoginDTO, context: APIContext): Promise<ServiceResponse<User>> {

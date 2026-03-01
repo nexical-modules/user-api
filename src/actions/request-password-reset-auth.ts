@@ -3,6 +3,7 @@ import type { ServiceResponse } from '@/types/service';
 import type { APIContext } from 'astro';
 import { db } from '@/lib/core/db';
 import type { RequestPasswordResetDTO } from '../sdk/types';
+import { HookSystem } from '@/lib/modules/hooks';
 
 export class RequestPasswordResetAuthAction {
   public static async run(
