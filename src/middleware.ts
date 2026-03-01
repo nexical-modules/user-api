@@ -24,13 +24,7 @@ export async function onRequest(context: APIContext, next: MiddlewareNext) {
     const entity = tokenEntity?.user;
 
     if (entity) {
-      context.locals.actor = {
-        id: entity.id,
-        email: entity.email,
-        username: entity.username,
-        role: entity.role,
-        type: 'user',
-      };
+      context.locals.actor = { ...entity, type: 'user', role: 'USER' };
       context.locals.actorType = 'user';
       return next();
     }
