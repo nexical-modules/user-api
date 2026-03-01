@@ -4,8 +4,9 @@ import { UserModuleTypes } from '@/lib/api';
 
 export class PasswordHooks {
   static init() {
+    console.info('[PasswordHooks] Initializing...');
     // Handle Password Hashing on Create
-    HookSystem.filter('user.beforeCreate', async (data: UserModuleTypes.CreateUserDTO) => {
+    HookSystem.on('user.beforeCreate', async (data: UserModuleTypes.CreateUserDTO) => {
       if (data.password) {
         const salt = await bcrypt.genSalt(10);
         data.password = await bcrypt.hash(data.password, salt);
@@ -14,7 +15,7 @@ export class PasswordHooks {
     });
 
     // Handle Password Hashing on Update
-    HookSystem.filter('user.beforeUpdate', async (data: UserModuleTypes.UpdateUserDTO) => {
+    HookSystem.on('user.beforeUpdate', async (data: UserModuleTypes.UpdateUserDTO) => {
       if (data.password) {
         const salt = await bcrypt.genSalt(10);
         data.password = await bcrypt.hash(data.password, salt);
