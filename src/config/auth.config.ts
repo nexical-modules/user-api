@@ -9,7 +9,7 @@ import bcrypt from 'bcryptjs';
 export const authConfig = defineConfig({
   adapter: PrismaAdapter(db),
   session: {
-    strategy: 'database',
+    strategy: 'jwt',
   },
   providers: [
     GitHub({
@@ -22,13 +22,18 @@ export const authConfig = defineConfig({
         password: { label: 'Password', type: 'password' },
       },
       authorize: async (credentials) => {
-        const email = credentials.email as string;
+        const identifier = credentials.email as string;
         const password = credentials.password as string;
 
-        if (!email || !password) return null;
+        if (!identifier || !password) return null;
 
         const user = await db.user.findFirst({
-          where: { email: { equals: email, mode: 'insensitive' } },
+          where: {
+            OR: [
+              { email: { equals: identifier, mode: 'insensitive' } },
+              { username: { equals: identifier, mode: 'insensitive' } },
+            ],
+          },
         });
 
         if (!user || !user.password) return null;
@@ -52,7 +57,7 @@ export const authConfig = defineConfig({
       options: {
         domain:
           config.PUBLIC_PRIMARY_DOMAIN === 'localhost'
-            ? 'localhost'
+            ? undefined
             : `.${config.PUBLIC_PRIMARY_DOMAIN}`,
         path: '/',
         httpOnly: true,
@@ -74,9 +79,15 @@ export const authConfig = defineConfig({
       }
       return baseUrl;
     },
-    session: ({ session, user }) => {
-      if (session.user) {
-        session.user.id = user.id;
+    jwt: ({ token, user }) => {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    session: ({ session, token }) => {
+      if (session.user && token) {
+        session.user.id = token.id as string;
       }
       return session;
     },
