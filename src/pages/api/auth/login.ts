@@ -1,107 +1,85 @@
 // GENERATED CODE - DO NOT MODIFY
-import type { APIRoute } from 'astro';
 import { HookSystem } from '@/lib/modules/hooks';
 import { ApiGuard } from '@/lib/api/api-guard';
-import type { UserModuleTypes } from '@/lib/api';
-import bcrypt from 'bcryptjs';
-import { db } from '@/lib/core/db';
+import type { UserApiModuleTypes } from '@/lib/api';
+import { defineApi } from '@/lib/api/api-docs';
+import { LoginAuthAction } from '@modules/user-api/src/actions/login-auth';
 
-export const POST: APIRoute = async (context) => {
-  const body = (await context.request.json()) as UserModuleTypes.LoginDTO;
-  const query = Object.fromEntries(new URL(context.request.url).searchParams);
+export const POST: APIRoute = defineApi(
+  async (context, actor) => {
+    // 1. Body Parsing (Input)
+    const body = (await context.request.json()) as UserApiModuleTypes.LoginDTO;
 
-  // 1. Filter input
-  const input: UserModuleTypes.LoginDTO = await HookSystem.filter('auth.login.input', body);
-  const combinedInput = { ...context.params, ...query, ...input };
+    const query = Object.fromEntries(new URL(context.request.url).searchParams);
 
-  // 2. Security check (only anonymous users can login)
-  await ApiGuard.protect(context, 'anonymous', combinedInput);
+    // 2. Hook: Filter Input
+    const input: UserApiModuleTypes.LoginDTO = await HookSystem.filter('auth.login.input', body);
 
-  const { email, password } = input;
-  if (!email || !password) {
-    return new Response(JSON.stringify({ error: 'user.action.login.missing_credentials' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
+    // 3. Security Check
+    const combinedInput = { ...context.params, ...query, ...input };
+    await ApiGuard.protect(context, 'anonymous', combinedInput);
 
-  // 3. Validate credentials against DB
-  const normalizedEmail = email.toLowerCase();
-  const user = await db.user.findFirst({
-    where: {
-      OR: [
-        { email: { equals: normalizedEmail, mode: 'insensitive' } },
-        { username: { equals: normalizedEmail, mode: 'insensitive' } },
-      ],
-    },
-  });
-
-  if (!user || user.status === 'INACTIVE' || user.status === 'BANNED' || !user.password) {
-    return new Response(JSON.stringify({ error: 'user.action.login.invalid_credentials' }), {
-      status: 401,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-
-  const isValid = await bcrypt.compare(password, user.password);
-  if (!isValid) {
-    return new Response(JSON.stringify({ error: 'user.action.login.invalid_credentials' }), {
-      status: 401,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-
-  // 4. Call Auth.js standard sign-in endpoint via HTTP to create the session cookie
-  const baseUrl = new URL(context.request.url);
-  const authBase = `${baseUrl.protocol}//${baseUrl.host}`;
-
-  // Step A: Get CSRF token
-  const csrfResp = await fetch(`${authBase}/api/auth/csrf`);
-  const csrfData = (await csrfResp.json()) as { csrfToken?: string };
-  const csrfToken = csrfData?.csrfToken || '';
-  const csrfCookies = csrfResp.headers.get('set-cookie') || '';
-  const csrfCookieNameValue = csrfCookies.split(';')[0] || '';
-
-  // Step B: Post credentials to Auth.js callback
-  const signInBody = new URLSearchParams({
-    email,
-    password,
-    csrfToken,
-    callbackUrl: '/',
-    json: 'true',
-  });
-
-  const signInResp = await fetch(`${authBase}/api/auth/callback/credentials`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      Cookie: csrfCookieNameValue,
-    },
-    body: signInBody.toString(),
-    redirect: 'manual',
-  });
-
-  const location = signInResp.headers.get('location') || '';
-  if (location.includes('error=')) {
-    const errorParam = new URL(location, authBase).searchParams.get('error');
-    return new Response(
-      JSON.stringify({ error: errorParam || 'user.action.login.invalid_credentials' }),
-      { status: 401, headers: { 'Content-Type': 'application/json' } },
-    );
-  }
-
-  // Success: pass through all Set-Cookie headers from Auth.js
-  const successHeaders = new Headers({ 'Content-Type': 'application/json' });
-  signInResp.headers.forEach((value, key) => {
-    if (key.toLowerCase() === 'set-cookie') {
-      successHeaders.append('set-cookie', value);
+    // Inject userId from context for protected routes
+    if (actor && actor.id) {
+      Object.assign(combinedInput, { userId: actor.id });
     }
-  });
 
-  await HookSystem.dispatch('auth.login.success', { email });
+    // 4. Action Execution
+    const result = await LoginAuthAction.run(combinedInput, context);
 
-  return new Response(JSON.stringify({ success: true }), {
-    status: 200,
-    headers: successHeaders,
-  });
-};
+    // 5. Hook: Filter Output
+    const filteredResult = await HookSystem.filter('auth.login.output', result);
+
+    // 6. Response
+    if (!filteredResult.success) {
+      return new Response(JSON.stringify({ error: filteredResult.error }), { status: 400 });
+    }
+
+    return { success: true, data: filteredResult.data };
+  },
+  {
+    summary: 'Login user',
+    tags: ['Auth'],
+    requestBody: {
+      content: {
+        'application/json': {
+          schema: {
+            type: 'object',
+            properties: {
+              email: { type: 'string' },
+              password: { type: 'string' },
+            },
+            required: ['email', 'password'],
+          },
+        },
+      },
+    },
+    responses: {
+      200: {
+        description: 'OK',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'object',
+              properties: {
+                id: { type: 'string' },
+                username: { type: 'string' },
+                email: { type: 'string' },
+                passwordUpdatedAt: { type: 'string', format: 'date-time' },
+                emailVerified: { type: 'string', format: 'date-time' },
+                name: { type: 'string' },
+                image: { type: 'string' },
+                role: { type: 'string' },
+                status: { type: 'string' },
+                createdAt: { type: 'string', format: 'date-time' },
+                updatedAt: { type: 'string', format: 'date-time' },
+              },
+              required: ['updatedAt'],
+            },
+          },
+        },
+      },
+    },
+    protected: false,
+  },
+);
