@@ -1,4 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY
+// GENERATED CODE - THE SIGNATURE IS MANAGED BY THE GENERATOR. YOU MAY MODIFY THE IMPLEMENTATION AND ADD CUSTOM IMPORTS.
 import type { ServiceResponse } from '@/types/service';
 import type { APIContext } from 'astro';
 import { db } from '@/lib/core/db';
@@ -11,7 +11,7 @@ export class InviteUserAuthAction {
     context: APIContext,
   ): Promise<ServiceResponse<Invitation>> {
     const email = String(input.email);
-    const role = (input.role as UserModuleTypes.SiteRole) || UserModuleTypes.SiteRole.EMPLOYEE;
+    const role = (input.role as UserModuleTypes.SiteRole) || UserModuleTypes.SiteRole.USER_EMPLOYEE;
 
     const normalizedEmail = email.toLowerCase();
     const existingUser = await db.user.findUnique({

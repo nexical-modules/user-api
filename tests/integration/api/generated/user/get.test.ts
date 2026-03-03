@@ -2,7 +2,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { ApiClient } from '@tests/integration/lib/client';
 import { TestServer } from '@tests/integration/lib/server';
-
 describe('User API - Get', () => {
   let client: ApiClient;
 
@@ -13,7 +12,7 @@ describe('User API - Get', () => {
   // GET /api/user/[id]
   describe('GET /api/user/[id]', () => {
     it('should retrieve a specific user', async () => {
-      const actor = await client.as('user', { role: 'ADMIN' });
+      const actor = await client.as('user', { role: 'USER_ADMIN' });
 
       const target = actor;
 
@@ -25,7 +24,7 @@ describe('User API - Get', () => {
 
     it('should return 404 for missing id', async () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const actor = await client.as('user', { role: 'ADMIN' });
+      const actor = await client.as('user', { role: 'USER_ADMIN' });
       const res = await client.get('/api/user/missing-id-123');
       expect(res.status).toBe(404);
     });

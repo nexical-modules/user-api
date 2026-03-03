@@ -13,8 +13,7 @@ export const actors = {
 
     if (!actor) {
       const factoryParams = { ...params };
-      if (params.strategy) delete factoryParams.strategy;
-      if (params.password) delete factoryParams.password;
+      if (factoryParams.strategy) delete factoryParams.strategy;
       actor = await Factory.create('user', factoryParams);
     }
 

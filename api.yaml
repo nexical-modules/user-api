@@ -21,7 +21,7 @@ Auth:
     summary: Logout user
     input: LogoutDTO
     output: none
-    role: member
+    role: USER_EMPLOYEE
 
   - path: /invite
     verb: POST
@@ -29,7 +29,7 @@ Auth:
     summary: Invite a user
     input: InviteUserDTO
     output: Invitation
-    role: admin
+    role: USER-ADMIN
 
   - path: /verify-email
     verb: POST
@@ -70,7 +70,7 @@ User:
     summary: Get current user profile
     input: none
     output: User
-    role: member
+    role: USER_EMPLOYEE
 
   - path: /me
     verb: PUT
@@ -78,7 +78,7 @@ User:
     summary: Update current user profile
     input: UpdateUserDTO
     output: User
-    role: member
+    role: USER_EMPLOYEE
 
   - path: /me
     verb: DELETE
@@ -86,7 +86,7 @@ User:
     summary: Delete current user account
     input: DeleteMeDTO
     output: none
-    role: member
+    role: USER_EMPLOYEE
 
   - path: /me/tokens
     verb: GET
@@ -94,7 +94,7 @@ User:
     summary: List personal access tokens
     input: ListTokensDTO
     output: PersonalAccessToken[]
-    role: member
+    role: USER_EMPLOYEE
 
   - path: /me/tokens
     verb: POST
@@ -102,7 +102,7 @@ User:
     summary: Create personal access token
     input: CreateTokenDTO
     output: CreateTokenResponseDTO
-    role: member
+    role: USER_EMPLOYEE
 
   - path: /me/tokens/[id]
     verb: DELETE
@@ -110,4 +110,4 @@ User:
     summary: Delete personal access token
     input: DeleteTokenDTO
     output: none
-    role: member
+    role: USER_EMPLOYEE

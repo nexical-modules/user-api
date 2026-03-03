@@ -93,9 +93,9 @@ export interface ResetPasswordResponseDTO {
 }
 
 export enum SiteRole {
-  ADMIN = 'ADMIN',
-  EMPLOYEE = 'EMPLOYEE',
-  CONTRACTOR = 'CONTRACTOR',
+  USER_ADMIN = 'USER_ADMIN',
+  USER_EMPLOYEE = 'USER_EMPLOYEE',
+  USER_CONTRACTOR = 'USER_CONTRACTOR',
 }
 
 export enum UserStatus {

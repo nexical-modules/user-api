@@ -1,15 +1,15 @@
 config:
   test:
     roles:
-      admin: { role: 'ADMIN' }
-      member: { role: 'EMPLOYEE' }
+      admin: { role: 'USER_ADMIN' }
+      member: { role: 'USER_EMPLOYEE' }
 
 enums:
   SiteRole:
     values:
-      - ADMIN
-      - EMPLOYEE
-      - CONTRACTOR
+      - USER_ADMIN
+      - USER_EMPLOYEE
+      - USER_CONTRACTOR
   UserStatus:
     values:
       - ACTIVE
@@ -25,11 +25,11 @@ models:
   User:
     default: true
     role:
-      create: admin
-      delete: admin
-      update: admin
-      list: admin
-      get: admin
+      create: USER_ADMIN
+      delete: USER_ADMIN
+      update: USER_ADMIN
+      list: USER_ADMIN
+      get: USER_ADMIN
     actor:
       name: user
       prefix: ne_pat_
@@ -78,7 +78,7 @@ models:
       role:
         type: SiteRole
         attributes:
-          - '@default(EMPLOYEE)'
+          - '@default(USER_EMPLOYEE)'
       status:
         type: UserStatus
         attributes:
@@ -251,7 +251,7 @@ models:
       role:
         type: SiteRole
         attributes:
-          - '@default(EMPLOYEE)'
+          - '@default(USER_EMPLOYEE)'
       expires:
         type: DateTime
       createdAt:

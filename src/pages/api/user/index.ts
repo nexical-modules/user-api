@@ -5,7 +5,7 @@ import { parseQuery } from '@/lib/api/api-query';
 import { z } from 'zod';
 import { UserService } from '@modules/user-api/src/services/user-service';
 import { HookSystem } from '@/lib/modules/hooks';
-import type { UserApiModuleTypes } from '@/lib/api';
+import { UserModuleTypes } from '@/lib/api';
 
 export const GET = defineApi(
   async (context, actor) => {
@@ -33,7 +33,13 @@ export const GET = defineApi(
 
     // Security Check
     // Pass query params as input to role check
-    await ApiGuard.protect(context, 'admin', { ...context.params, where, take, skip, orderBy });
+    await ApiGuard.protect(context, 'USER_ADMIN', {
+      ...context.params,
+      where,
+      take,
+      skip,
+      orderBy,
+    });
 
     const select = {
       id: true,
@@ -652,7 +658,7 @@ export const POST = defineApi(
     const body = await context.request.json();
 
     // Security Check
-    await ApiGuard.protect(context, 'admin', { ...context.params, ...body });
+    await ApiGuard.protect(context, 'USER_ADMIN', { ...context.params, ...body });
 
     // Zod Validation
     const schema = z.object({
@@ -662,8 +668,8 @@ export const POST = defineApi(
       emailVerified: z.string().datetime().optional(),
       name: z.string().optional(),
       image: z.string().optional(),
-      role: z.nativeEnum(UserApiModuleTypes.SiteRole).optional(),
-      status: z.nativeEnum(UserApiModuleTypes.UserStatus).optional(),
+      role: z.nativeEnum(UserModuleTypes.SiteRole).optional(),
+      status: z.nativeEnum(UserModuleTypes.UserStatus).optional(),
     });
 
     const validated = schema.parse(body);

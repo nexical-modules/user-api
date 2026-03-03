@@ -12,7 +12,7 @@ export const factories = {
       emailVerified: new Date(),
       name: `name_${index}`,
       image: `image_${index}`,
-      role: 'EMPLOYEE',
+      role: 'USER_EMPLOYEE',
       status: 'ACTIVE',
       password: hashPassword('Password123!'),
     };
@@ -64,7 +64,7 @@ export const factories = {
     return {
       email: `${index}_${crypto.randomUUID()}@example.com`.toLowerCase(),
       token: `token_${index}_${crypto.randomUUID().split('-')[0]}`,
-      role: 'EMPLOYEE',
+      role: 'USER_EMPLOYEE',
       expires: new Date(),
     };
   },

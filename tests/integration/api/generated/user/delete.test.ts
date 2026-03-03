@@ -3,7 +3,6 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { ApiClient } from '@tests/integration/lib/client';
 import { TestServer } from '@tests/integration/lib/server';
 import { Factory } from '@tests/integration/lib/factory';
-
 describe('User API - Delete', () => {
   let client: ApiClient;
 
@@ -14,7 +13,7 @@ describe('User API - Delete', () => {
   // DELETE /api/user/[id]
   describe('DELETE /api/user/[id]', () => {
     it('should delete user', async () => {
-      const actor = await client.as('user', { role: 'ADMIN' });
+      const actor = await client.as('user', { role: 'USER_ADMIN' });
 
       const target = actor;
 

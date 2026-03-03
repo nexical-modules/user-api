@@ -10,6 +10,11 @@ export * from './types.js';
 /** Main SDK for the user-api module. */
 export class UserModule extends BaseUserSDK {
   public auth: BaseAuthSDK;
+  public static readonly roles: Record<string, string> = {
+    USER_ADMIN: 'USER_ADMIN',
+    USER_EMPLOYEE: 'USER_EMPLOYEE',
+    USER_CONTRACTOR: 'USER_CONTRACTOR',
+  };
 
   constructor(client: ApiClient) {
     super(client);

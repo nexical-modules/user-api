@@ -6,7 +6,7 @@ const userSchema = z.object({
   PUBLIC_USER_MODE: z.nativeEnum(UserModuleTypes.UserMode).default(UserModuleTypes.UserMode.PUBLIC),
   ROOT_USER_EMAIL: z.string().email().optional(),
   ROOT_USER_PASSWORD: z.string().min(8).optional(),
-  ROOT_USER_NAME: z.string().min(1).default('admin'),
+  ROOT_USER_NAME: z.string().min(1).default('TEAM_ADMIN'),
 });
 
 const config = createConfig(userSchema);
@@ -16,7 +16,7 @@ export const userConfig = {
   rootUser: {
     email: config.ROOT_USER_EMAIL,
     password: config.ROOT_USER_PASSWORD,
-    name: config.ROOT_USER_NAME ?? 'admin',
+    name: config.ROOT_USER_NAME ?? 'TEAM_ADMIN',
   },
 };
 

@@ -33,7 +33,7 @@ export async function seed(prisma: PrismaClient) {
         name: 'Root Administrator',
         password: hashedPassword,
         emailVerified: new Date(),
-        role: 'ADMIN', // Explicitly set site role
+        role: 'USER-ADMIN', // Explicitly set site role
       },
     });
     console.info('Root user created successfully.');

@@ -24,12 +24,16 @@ export async function onRequest(context: APIContext, next: MiddlewareNext) {
     const entity = tokenEntity?.user;
 
     if (entity) {
-      context.locals.actor = { ...entity, type: 'user', role: 'USER' };
+      context.locals.actor = {
+        ...entity,
+        type: 'user',
+        role: ('role' in entity ? entity.role : 'USER') as any,
+      };
       context.locals.actorType = 'user';
       return next();
     }
   }
-  const session = (context.locals as any).session;
+  const session = (context.locals as { session?: any }).session;
   if (session) {
     const user = await session.get('user');
     if (user) {

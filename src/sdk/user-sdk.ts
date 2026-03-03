@@ -56,17 +56,17 @@ export class UserSDK extends BaseResource {
   }
 
   public async getMe(): Promise<{ success: boolean; data: User; error?: string }> {
-    return this._request('GET', `/user/me`);
+    return this._request('GET', `${endpoint ? '/' + endpoint : ''}/me`);
   }
 
   public async updateMe(
     data: UpdateUserDTO,
   ): Promise<{ success: boolean; data: User; error?: string }> {
-    return this._request('PUT', `/user/me`, data);
+    return this._request('PUT', `${endpoint ? '/' + endpoint : ''}/me`, data);
   }
 
   public async deleteMe(): Promise<{ success: boolean; data: void; error?: string }> {
-    return this._request('DELETE', `/user/me`);
+    return this._request('DELETE', `${endpoint ? '/' + endpoint : ''}/me`);
   }
 
   public async listTokens(): Promise<{
@@ -74,16 +74,16 @@ export class UserSDK extends BaseResource {
     data: PersonalAccessToken[];
     error?: string;
   }> {
-    return this._request('GET', `/user/me/tokens`);
+    return this._request('GET', `${endpoint ? '/' + endpoint : ''}/me/tokens`);
   }
 
   public async createToken(
     data: CreateTokenDTO,
   ): Promise<{ success: boolean; data: CreateTokenResponseDTO; error?: string }> {
-    return this._request('POST', `/user/me/tokens`, data);
+    return this._request('POST', `${endpoint ? '/' + endpoint : ''}/me/tokens`, data);
   }
 
   public async deleteToken(id: string): Promise<{ success: boolean; data: void; error?: string }> {
-    return this._request('DELETE', `/user/me/tokens/${id}`);
+    return this._request('DELETE', `${endpoint ? '/' + endpoint : ''}/me/tokens/${id}`);
   }
 }

@@ -24,7 +24,7 @@ export class AuthService {
       return { success: false, error: 'user.service.error.passwords_mismatch' };
     }
 
-    let role: UserModuleTypes.SiteRole = UserModuleTypes.SiteRole.EMPLOYEE;
+    let role: UserModuleTypes.SiteRole = UserModuleTypes.SiteRole.USER_EMPLOYEE;
     let emailVerified: Date | null = null;
     let invitation: UserModuleTypes.Invitation | null = null;
     let invitationId: string | null = null;

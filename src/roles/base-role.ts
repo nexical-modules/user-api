@@ -10,8 +10,9 @@ export abstract class BaseRole {
       throw new Error('Unauthorized: No actor found');
     }
 
-    // Case insensitive comparison for robustness
-    if (String(actor.role).toUpperCase() !== this.name.toUpperCase()) {
+    // Normalize role string to handle Prisma enum mapping of hyphens to underscores
+    const normalizeRole = (r: unknown) => String(r).toUpperCase().replace(/-/g, '_');
+    if (normalizeRole((actor as { role?: string }).role) !== normalizeRole(this.name)) {
       throw new Error(`Forbidden: required role ${this.name}`);
     }
     return true;

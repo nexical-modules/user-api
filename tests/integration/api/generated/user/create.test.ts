@@ -3,7 +3,6 @@ import { describe, it, expect, beforeEach } from 'vitest';
 import { ApiClient } from '@tests/integration/lib/client';
 import { TestServer } from '@tests/integration/lib/server';
 import { Factory } from '@tests/integration/lib/factory';
-
 describe('User API - Create', () => {
   let client: ApiClient;
 
@@ -13,9 +12,9 @@ describe('User API - Create', () => {
 
   // POST /api/user
   describe('POST /api/user', () => {
-    it('should allow admin to create user', async () => {
+    it('should allow USER_ADMIN to create user', async () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const actor = await client.as('user', { role: 'ADMIN' });
+      const actor = await client.as('user', { role: 'USER_ADMIN' });
 
       const payload = {
         passwordUpdatedAt: new Date().toISOString(),

@@ -20,7 +20,7 @@ export const DELETE = defineApi(
 
     // 3. Security Check
     const combinedInput = { ...context.params, ...query, ...input };
-    await ApiGuard.protect(context, 'member', combinedInput);
+    await ApiGuard.protect(context, 'USER_EMPLOYEE', combinedInput);
 
     // Inject userId from context for protected routes
     if (actor && actor.id) {

@@ -1,9 +1,9 @@
-// GENERATED CODE - DO NOT MODIFY
+// GENERATED CODE - THE SIGNATURE IS MANAGED BY THE GENERATOR. YOU MAY MODIFY THE IMPLEMENTATION AND ADD CUSTOM IMPORTS.
 import { BaseRole } from './base-role';
 
 /** */
-export class AdminRole extends BaseRole {
-  readonly name: string = 'ADMIN';
+export class UserAdminRole extends BaseRole {
+  readonly name: string = 'USER_ADMIN';
   readonly description: string = '';
   readonly inherits: string[] = [];
   readonly permissions: string[] = [

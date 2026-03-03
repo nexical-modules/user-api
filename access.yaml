@@ -1,6 +1,6 @@
 config:
   roles:
-    ADMIN:
+    USER_ADMIN:
       permissions:
         - user:list
         - user:create
@@ -8,11 +8,11 @@ config:
         - user:delete
         - user:invite
         - auth:sudo
-    EMPLOYEE:
+    USER_EMPLOYEE:
       permissions:
         - user:read_self
         - user:update_self
-    CONTRACTOR:
+    USER_CONTRACTOR:
       permissions:
         - user:read_self
   permissions:
