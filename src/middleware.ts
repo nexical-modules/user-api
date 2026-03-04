@@ -27,7 +27,7 @@ export async function onRequest(context: APIContext, next: MiddlewareNext) {
       context.locals.actor = {
         ...entity,
         type: 'user',
-        role: ('role' in entity ? entity.role : 'USER') as unknown,
+        role: entity && 'role' in entity ? (entity as { role: string }).role : 'USER',
       };
       context.locals.actorType = 'user';
       return next();
