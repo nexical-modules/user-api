@@ -3,17 +3,17 @@ import { defineApi } from '@/lib/api/api-docs';
 import { ApiGuard } from '@/lib/api/api-guard';
 import { HookSystem } from '@/lib/modules/hooks';
 import { VerifyEmailAuthAction } from '@modules/user-api/src/actions/verify-email-auth';
-import type { UserApiModuleTypes } from '@/lib/api';
+import type { UserModuleTypes } from '@/lib/api';
 
 export const POST = defineApi(
   async (context, actor) => {
     // 1. Body Parsing (Input)
-    const body = (await context.request.json()) as UserApiModuleTypes.VerifyEmailDTO;
+    const body = (await context.request.json()) as UserModuleTypes.VerifyEmailDTO;
 
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
 
     // 2. Hook: Filter Input
-    const input: UserApiModuleTypes.VerifyEmailDTO = await HookSystem.filter(
+    const input: UserModuleTypes.VerifyEmailDTO = await HookSystem.filter(
       'auth.verifyEmail.input',
       body,
     );

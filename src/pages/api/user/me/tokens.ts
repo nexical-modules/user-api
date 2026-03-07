@@ -4,17 +4,17 @@ import { ApiGuard } from '@/lib/api/api-guard';
 import { HookSystem } from '@/lib/modules/hooks';
 import { ListTokensUserAction } from '@modules/user-api/src/actions/list-tokens-user';
 import { CreateTokenUserAction } from '@modules/user-api/src/actions/create-token-user';
-import type { UserApiModuleTypes } from '@/lib/api';
+import type { UserModuleTypes } from '@/lib/api';
 
 export const GET = defineApi(
   async (context, actor) => {
     // 1. Body Parsing (Input)
-    const body = {} as UserApiModuleTypes.ListTokensDTO;
+    const body = {} as UserModuleTypes.ListTokensDTO;
 
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
 
     // 2. Hook: Filter Input
-    const input: UserApiModuleTypes.ListTokensDTO = await HookSystem.filter(
+    const input: UserModuleTypes.ListTokensDTO = await HookSystem.filter(
       'user.listTokens.input',
       body,
     );
@@ -77,12 +77,12 @@ export const GET = defineApi(
 export const POST = defineApi(
   async (context, actor) => {
     // 1. Body Parsing (Input)
-    const body = (await context.request.json()) as UserApiModuleTypes.CreateTokenDTO;
+    const body = (await context.request.json()) as UserModuleTypes.CreateTokenDTO;
 
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
 
     // 2. Hook: Filter Input
-    const input: UserApiModuleTypes.CreateTokenDTO = await HookSystem.filter(
+    const input: UserModuleTypes.CreateTokenDTO = await HookSystem.filter(
       'user.createToken.input',
       body,
     );

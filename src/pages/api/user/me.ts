@@ -5,7 +5,7 @@ import { HookSystem } from '@/lib/modules/hooks';
 import { GetMeUserAction } from '@modules/user-api/src/actions/get-me-user';
 import { UpdateMeUserAction } from '@modules/user-api/src/actions/update-me-user';
 import { DeleteMeUserAction } from '@modules/user-api/src/actions/delete-me-user';
-import type { UserApiModuleTypes } from '@/lib/api';
+import type { UserModuleTypes } from '@/lib/api';
 
 export const GET = defineApi(
   async (context, actor) => {
@@ -74,12 +74,12 @@ export const GET = defineApi(
 export const PUT = defineApi(
   async (context, actor) => {
     // 1. Body Parsing (Input)
-    const body = (await context.request.json()) as UserApiModuleTypes.UpdateUserDTO;
+    const body = (await context.request.json()) as UserModuleTypes.UpdateUserDTO;
 
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
 
     // 2. Hook: Filter Input
-    const input: UserApiModuleTypes.UpdateUserDTO = await HookSystem.filter(
+    const input: UserModuleTypes.UpdateUserDTO = await HookSystem.filter(
       'user.updateMe.input',
       body,
     );
@@ -160,15 +160,12 @@ export const PUT = defineApi(
 export const DELETE = defineApi(
   async (context, actor) => {
     // 1. Body Parsing (Input)
-    const body = (await context.request.json()) as UserApiModuleTypes.DeleteMeDTO;
+    const body = (await context.request.json()) as UserModuleTypes.DeleteMeDTO;
 
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
 
     // 2. Hook: Filter Input
-    const input: UserApiModuleTypes.DeleteMeDTO = await HookSystem.filter(
-      'user.deleteMe.input',
-      body,
-    );
+    const input: UserModuleTypes.DeleteMeDTO = await HookSystem.filter('user.deleteMe.input', body);
 
     // 3. Security Check
     const combinedInput = { ...context.params, ...query, ...input };

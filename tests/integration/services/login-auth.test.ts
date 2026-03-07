@@ -1,21 +1,55 @@
 // INITIAL GENERATED CODE - REVIEW AND MODIFY AS NEEDED FOR SERVICE INTEGRATION TESTS
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { describe, it, expect } from 'vitest';
-import { Factory } from '@tests/integration/lib/factory';
-import type { APIContext } from 'astro';
-import { LoginAuthAction } from '@/actions/login-auth';
-import type { LoginDTO } from '@/sdk/types';
+import { LoginAuthAction } from '../../../src/actions/login-auth';
+import { createMockContext } from '../../../../../tests/integration/helpers/context';
+import type { LoginDTO } from '../../../src/sdk';
+
 describe('LoginAuthAction - Service Integration', () => {
-  it('should execute successfully', async () => {
+  beforeAll(async () => {
+    await initUser();
+  });
+
+  it('should allow a user to login with valid credentials', async () => {
+    // 1. Setup: Create user with known password
+    const user = await Factory.create('user', { email: 'login@example.com' });
+    const ctx = await createMockContext();
+
+    const input = {
+      email: 'login@example.com',
+      password: 'Password123!',
+    };
+
+    const result = await LoginAuthAction.run(input, ctx);
+
+    expect(result.success).toBe(true);
+    expect(result.data?.id).toBe(user.id);
+  });
+
+  it('should fail with invalid password', async () => {
+    await Factory.create('user', { email: 'wrong-pass@example.com' });
+    const ctx = await createMockContext();
+
+    const input = {
+      email: 'wrong-pass@example.com',
+      password: 'WrongPassword',
+    };
+
+    const result = await LoginAuthAction.run(input, ctx);
+
+    expect(result.success).toBe(false);
+    expect(result.error).toBe('user.action.login.invalid_credentials');
+  });
+});
+describe('LoginAuthAction - Service Integration', () => {
+  it.skip('should execute successfully', async () => {
     // 1. Setup prerequisite state using DataFactory
     // const prerequisite = await Factory.create('someModel', { ... });
 
     // 2. Prepare Action Input
-    const input: LoginDTO = {} as LoginDTO; // TODO: Provide valid mock data
+    const input: LoginDTO = {} as unknown as LoginDTO; // TODO: Provide valid mock data
 
-    // 3. Invoke Action directly (bypassing API Client)
-    // Note: For service level tests, context is typically mocked or omitted if the action doesn't strictly depend on it.
-    const ctx = {} as APIContext;
+    // 3. Prepare Mock Context with Actor
+    const ctx = await createMockContext();
     const result = await LoginAuthAction.run(input, ctx);
 
     // 4. Verify Database state explicitly using Prisma

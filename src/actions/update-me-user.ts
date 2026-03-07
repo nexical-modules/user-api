@@ -2,6 +2,7 @@
 import type { ServiceResponse } from '@/types/service';
 import type { UpdateUserDTO, User } from '../sdk/types';
 import type { APIContext } from 'astro';
+import { UserService } from '../services/user-service';
 
 export class UpdateMeUserAction {
   public static async run(

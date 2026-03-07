@@ -11,9 +11,8 @@ export class InviteUserAuthAction {
     context: APIContext,
   ): Promise<ServiceResponse<Invitation>> {
     const email = String(input.email);
-    const role = (input.role as UserModuleTypes.SiteRole) || UserModuleTypes.SiteRole.USER_EMPLOYEE;
-
     const normalizedEmail = email.toLowerCase();
+    const role = (input.role as string) || 'USER_EMPLOYEE';
     const existingUser = await db.user.findUnique({
       where: { email: normalizedEmail },
     });
@@ -25,11 +24,14 @@ export class InviteUserAuthAction {
     const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
     try {
+       
       const invitation = (await db.invitation.upsert({
         where: { email },
-        update: { token, role, expires },
-        create: { email, token, role, expires },
-      })) as unknown as UserModuleTypes.Invitation;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        update: { token, role: role as any, expires },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        create: { email, token, role: role as any, expires },
+      })) as Invitation;
 
       // Dispatch event to trigger email
       await HookSystem.dispatch('invitation.created', {

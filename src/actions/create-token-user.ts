@@ -2,6 +2,8 @@
 import type { ServiceResponse } from '@/types/service';
 import type { CreateTokenDTO, CreateTokenResponseDTO } from '../sdk/types';
 import type { APIContext } from 'astro';
+import { PersonalAccessTokenService } from '../services/personal-access-token-service';
+import { randomBytes, createHash } from 'node:crypto';
 
 export class CreateTokenUserAction {
   public static async run(

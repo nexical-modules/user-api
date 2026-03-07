@@ -1,19 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY
 import { HookSystem } from '@/lib/modules/hooks';
 import { ApiGuard } from '@/lib/api/api-guard';
-import type { UserApiModuleTypes } from '@/lib/api';
+import type { UserModuleTypes } from '@/lib/api';
 import { defineApi } from '@/lib/api/api-docs';
 import { LoginAuthAction } from '@modules/user-api/src/actions/login-auth';
 
 export const POST: APIRoute = defineApi(
   async (context, actor) => {
     // 1. Body Parsing (Input)
-    const body = (await context.request.json()) as UserApiModuleTypes.LoginDTO;
+    const body = (await context.request.json()) as UserModuleTypes.LoginDTO;
 
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
 
     // 2. Hook: Filter Input
-    const input: UserApiModuleTypes.LoginDTO = await HookSystem.filter('auth.login.input', body);
+    const input: UserModuleTypes.LoginDTO = await HookSystem.filter('auth.login.input', body);
 
     // 3. Security Check
     const combinedInput = { ...context.params, ...query, ...input };

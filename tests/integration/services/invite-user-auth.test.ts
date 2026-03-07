@@ -1,21 +1,39 @@
 // INITIAL GENERATED CODE - REVIEW AND MODIFY AS NEEDED FOR SERVICE INTEGRATION TESTS
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { describe, it, expect } from 'vitest';
-import { Factory } from '@tests/integration/lib/factory';
-import type { APIContext } from 'astro';
-import { InviteUserAuthAction } from '@/actions/invite-user-auth';
-import type { InviteUserDTO } from '@/sdk/types';
+import { InviteUserAuthAction } from '../../../src/actions/invite-user-auth';
+import { createMockContext } from '../../../../../tests/integration/helpers/context';
+import type { InviteUserDTO } from '../../../src/sdk';
+
 describe('InviteUserAuthAction - Service Integration', () => {
-  it('should execute successfully', async () => {
+  beforeAll(async () => {
+    await initUser();
+  });
+
+  it('should create an invitation for a new email', async () => {
+    const ctx = await createMockContext('USER_ADMIN', 'user');
+    const input = { email: 'invite-me@example.com' };
+
+    const result = await InviteUserAuthAction.run(input, ctx);
+
+    expect(result.success).toBe(true);
+    expect(result.data?.email).toBe('invite-me@example.com');
+
+    const invitation = await Factory.prisma.invitation.findUnique({
+      where: { email: 'invite-me@example.com' },
+    });
+    expect(invitation).toBeDefined();
+  });
+});
+describe('InviteUserAuthAction - Service Integration', () => {
+  it.skip('should execute successfully', async () => {
     // 1. Setup prerequisite state using DataFactory
     // const prerequisite = await Factory.create('someModel', { ... });
 
     // 2. Prepare Action Input
-    const input: InviteUserDTO = {} as InviteUserDTO; // TODO: Provide valid mock data
+    const input: InviteUserDTO = {} as unknown as InviteUserDTO; // TODO: Provide valid mock data
 
-    // 3. Invoke Action directly (bypassing API Client)
-    // Note: For service level tests, context is typically mocked or omitted if the action doesn't strictly depend on it.
-    const ctx = {} as APIContext;
+    // 3. Prepare Mock Context with Actor
+    const ctx = await createMockContext();
     const result = await InviteUserAuthAction.run(input, ctx);
 
     // 4. Verify Database state explicitly using Prisma

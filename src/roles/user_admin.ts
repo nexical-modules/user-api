@@ -14,4 +14,5 @@ export class UserAdminRole extends BaseRole {
     'user:invite',
     'auth:sudo',
   ];
+  protected readonly compatibleRoles: string[] = [];
 }

@@ -2,6 +2,7 @@
 import type { ServiceResponse } from '@/types/service';
 import type { APIContext } from 'astro';
 import type { ListTokensDTO, PersonalAccessToken } from '../sdk/types';
+import { PersonalAccessTokenService } from '../services/personal-access-token-service';
 
 export class ListTokensUserAction {
   public static async run(

@@ -3,17 +3,17 @@ import { defineApi } from '@/lib/api/api-docs';
 import { ApiGuard } from '@/lib/api/api-guard';
 import { HookSystem } from '@/lib/modules/hooks';
 import { ValidateResetTokenAuthAction } from '@modules/user-api/src/actions/validate-reset-token-auth';
-import type { UserApiModuleTypes } from '@/lib/api';
+import type { UserModuleTypes } from '@/lib/api';
 
 export const POST = defineApi(
   async (context, actor) => {
     // 1. Body Parsing (Input)
-    const body = (await context.request.json()) as UserApiModuleTypes.ValidateResetTokenDTO;
+    const body = (await context.request.json()) as UserModuleTypes.ValidateResetTokenDTO;
 
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
 
     // 2. Hook: Filter Input
-    const input: UserApiModuleTypes.ValidateResetTokenDTO = await HookSystem.filter(
+    const input: UserModuleTypes.ValidateResetTokenDTO = await HookSystem.filter(
       'auth.validateResetToken.input',
       body,
     );

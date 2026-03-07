@@ -7,4 +7,5 @@ export class UserContractorRole extends BaseRole {
   readonly description: string = '';
   readonly inherits: string[] = [];
   readonly permissions: string[] = ['user:read_self'];
+  protected readonly compatibleRoles: string[] = [];
 }

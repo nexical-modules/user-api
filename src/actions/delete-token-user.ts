@@ -2,6 +2,7 @@
 import type { ServiceResponse } from '@/types/service';
 import type { DeleteTokenDTO } from '../sdk/types';
 import type { APIContext } from 'astro';
+import { PersonalAccessTokenService } from '../services/personal-access-token-service';
 
 export class DeleteTokenUserAction {
   public static async run(

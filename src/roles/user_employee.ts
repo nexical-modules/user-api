@@ -7,4 +7,5 @@ export class UserEmployeeRole extends BaseRole {
   readonly description: string = '';
   readonly inherits: string[] = [];
   readonly permissions: string[] = ['user:read_self', 'user:update_self'];
+  protected readonly compatibleRoles: string[] = [];
 }

@@ -90,6 +90,7 @@ export const PUT = defineApi(
     // Zod Validation
     const schema = z
       .object({
+        id: z.string().optional(),
         username: z.string().optional(),
         email: z.string().optional(),
         passwordUpdatedAt: z.string().datetime().optional(),

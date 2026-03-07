@@ -14,10 +14,11 @@ export const actors = {
     if (!actor) {
       const factoryParams = { ...params };
       if (factoryParams.strategy) delete factoryParams.strategy;
+      if (factoryParams.role) delete factoryParams.role;
       actor = await Factory.create('user', factoryParams);
     }
 
-    const rawKey = `ne_pat_${Date.now()}`;
+    const rawKey = `ne_pat_${crypto.randomUUID().replace(/-/g, '')}`;
     let dbKey = rawKey;
 
     dbKey = crypto.createHash('sha256').update(rawKey).digest('hex');
