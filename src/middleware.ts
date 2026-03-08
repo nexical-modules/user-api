@@ -21,6 +21,7 @@ export async function onRequest(context: APIContext, next: MiddlewareNext) {
       include: { user: true },
     });
     const entity = tokenEntity?.user;
+
     if (entity) {
       context.locals.actor = {
         ...entity,
@@ -45,6 +46,7 @@ export async function onRequest(context: APIContext, next: MiddlewareNext) {
       where: { id: context.locals.actor.id },
       select: { status: true },
     });
+
     if (!actorCheck || actorCheck.status !== 'ACTIVE') {
       context.locals.actor = undefined;
       return new Response(JSON.stringify({ error: 'Session revoked' }), {

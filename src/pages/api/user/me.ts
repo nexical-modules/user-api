@@ -10,29 +10,38 @@ export const GET = defineApi(
   async (context, actor) => {
     // 1. Body Parsing (Input)
     const body = {} as unknown;
+
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
+
     // 2. Hook: Filter Input
     const input: unknown = await HookSystem.filter('user.getMe.input', body);
+
     // 3. Security Check
     const combinedInput = { ...context.params, ...query, ...input };
     await ApiGuard.protect(context, 'USER_EMPLOYEE', combinedInput);
+
     // Inject userId from context for protected routes
     if (actor && actor.id) {
       Object.assign(combinedInput, { userId: actor.id });
     }
+
     // 4. Action Execution
     const result = await GetMeUserAction.run(combinedInput, context);
+
     // 5. Hook: Filter Output
     const filteredResult = await HookSystem.filter('user.getMe.output', result);
+
     // 6. Response
     if (!filteredResult.success) {
       return new Response(JSON.stringify({ error: filteredResult.error }), { status: 400 });
     }
+
     return { success: true, data: filteredResult.data };
   },
   {
     summary: 'Get current user profile',
     tags: ['User'],
+
     responses: {
       200: {
         description: 'OK',
@@ -65,27 +74,35 @@ export const PUT = defineApi(
   async (context, actor) => {
     // 1. Body Parsing (Input)
     const body = (await context.request.json()) as UserModuleTypes.UpdateUserDTO;
+
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
+
     // 2. Hook: Filter Input
     const input: UserModuleTypes.UpdateUserDTO = await HookSystem.filter(
       'user.updateMe.input',
       body,
     );
+
     // 3. Security Check
     const combinedInput = { ...context.params, ...query, ...input };
     await ApiGuard.protect(context, 'USER_EMPLOYEE', combinedInput);
+
     // Inject userId from context for protected routes
     if (actor && actor.id) {
       Object.assign(combinedInput, { userId: actor.id });
     }
+
     // 4. Action Execution
     const result = await UpdateMeUserAction.run(combinedInput, context);
+
     // 5. Hook: Filter Output
     const filteredResult = await HookSystem.filter('user.updateMe.output', result);
+
     // 6. Response
     if (!filteredResult.success) {
       return new Response(JSON.stringify({ error: filteredResult.error }), { status: 400 });
     }
+
     return { success: true, data: filteredResult.data };
   },
   {
@@ -143,24 +160,32 @@ export const DELETE = defineApi(
   async (context, actor) => {
     // 1. Body Parsing (Input)
     const body = (await context.request.json()) as UserModuleTypes.DeleteMeDTO;
+
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
+
     // 2. Hook: Filter Input
     const input: UserModuleTypes.DeleteMeDTO = await HookSystem.filter('user.deleteMe.input', body);
+
     // 3. Security Check
     const combinedInput = { ...context.params, ...query, ...input };
     await ApiGuard.protect(context, 'USER_EMPLOYEE', combinedInput);
+
     // Inject userId from context for protected routes
     if (actor && actor.id) {
       Object.assign(combinedInput, { userId: actor.id });
     }
+
     // 4. Action Execution
     const result = await DeleteMeUserAction.run(combinedInput, context);
+
     // 5. Hook: Filter Output
     const filteredResult = await HookSystem.filter('user.deleteMe.output', result);
+
     // 6. Response
     if (!filteredResult.success) {
       return new Response(JSON.stringify({ error: filteredResult.error }), { status: 400 });
     }
+
     return { success: true, data: filteredResult.data };
   },
   {

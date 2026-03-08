@@ -7,12 +7,14 @@ export async function init() {
     const mod = roleModules[path] as { [key: string]: unknown };
     const roleName = path.split('/').pop()?.replace('.ts', '');
     if (!roleName) continue;
+
     // Find the first exported class that looks like a RolePolicy (has check method)
     for (const key in mod) {
       const Exported = mod[key];
       if (typeof Exported === 'function' && Exported.prototype && Exported.prototype.check) {
         // Skip BaseRole - it's an abstract base, not a concrete policy
         if (key === 'BaseRole') continue;
+
         const instance = new (Exported as new () => RolePolicy & { name?: string })();
         const actualName = instance.name || roleName;
         roleRegistry.register(actualName, instance);
