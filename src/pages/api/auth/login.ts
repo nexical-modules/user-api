@@ -4,37 +4,28 @@ import { ApiGuard } from '@/lib/api/api-guard';
 import type { UserModuleTypes } from '@/lib/api';
 import { defineApi } from '@/lib/api/api-docs';
 import { LoginAuthAction } from '@modules/user-api/src/actions/login-auth';
-
 export const POST: APIRoute = defineApi(
   async (context, actor) => {
     // 1. Body Parsing (Input)
     const body = (await context.request.json()) as UserModuleTypes.LoginDTO;
-
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
-
     // 2. Hook: Filter Input
     const input: UserModuleTypes.LoginDTO = await HookSystem.filter('auth.login.input', body);
-
     // 3. Security Check
     const combinedInput = { ...context.params, ...query, ...input };
     await ApiGuard.protect(context, 'anonymous', combinedInput);
-
     // Inject userId from context for protected routes
     if (actor && actor.id) {
       Object.assign(combinedInput, { userId: actor.id });
     }
-
     // 4. Action Execution
     const result = await LoginAuthAction.run(combinedInput, context);
-
     // 5. Hook: Filter Output
     const filteredResult = await HookSystem.filter('auth.login.output', result);
-
     // 6. Response
     if (!filteredResult.success) {
       return new Response(JSON.stringify({ error: filteredResult.error }), { status: 400 });
     }
-
     return { success: true, data: filteredResult.data };
   },
   {

@@ -4,40 +4,31 @@ import { ApiGuard } from '@/lib/api/api-guard';
 import { HookSystem } from '@/lib/modules/hooks';
 import { DeleteTokenUserAction } from '@modules/user-api/src/actions/delete-token-user';
 import type { UserModuleTypes } from '@/lib/api';
-
 export const DELETE = defineApi(
   async (context, actor) => {
     // 1. Body Parsing (Input)
     const body = (await context.request.json()) as UserModuleTypes.DeleteTokenDTO;
-
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
-
     // 2. Hook: Filter Input
     const input: UserModuleTypes.DeleteTokenDTO = await HookSystem.filter(
       'user.deleteToken.input',
       body,
     );
-
     // 3. Security Check
     const combinedInput = { ...context.params, ...query, ...input };
     await ApiGuard.protect(context, 'USER_EMPLOYEE', combinedInput);
-
     // Inject userId from context for protected routes
     if (actor && actor.id) {
       Object.assign(combinedInput, { userId: actor.id });
     }
-
     // 4. Action Execution
     const result = await DeleteTokenUserAction.run(combinedInput, context);
-
     // 5. Hook: Filter Output
     const filteredResult = await HookSystem.filter('user.deleteToken.output', result);
-
     // 6. Response
     if (!filteredResult.success) {
       return new Response(JSON.stringify({ error: filteredResult.error }), { status: 400 });
     }
-
     return { success: true, data: filteredResult.data };
   },
   {

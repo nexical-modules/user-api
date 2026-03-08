@@ -1,6 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY
 import { Permissions } from '@/lib/security/permissions';
-
 export const PermissionRegistry = {
   'user:list': {
     description: 'View list of all users',
@@ -27,9 +26,7 @@ export const PermissionRegistry = {
     description: 'Access administrative shells and menus',
   },
 } as const;
-
 export type PermissionAction = keyof typeof PermissionRegistry;
-
 export const RolePermissions = {
   USER_ADMIN: [
     'user:list',
@@ -42,7 +39,6 @@ export const RolePermissions = {
   USER_EMPLOYEE: ['user:read_self', 'user:update_self'],
   USER_CONTRACTOR: ['user:read_self'],
 } as const;
-
 export class Permission {
   public static check(action: PermissionAction, role: string): boolean {
     return Permissions.check(action, role);

@@ -5,7 +5,6 @@ import type { ServiceResponse } from '@/types/service';
 import { HookSystem } from '@/lib/modules/hooks';
 import type { PasswordResetToken, Prisma } from '@prisma/client';
 import type { ApiActor } from '@/lib/api/api-docs';
-
 /** Service class for PasswordResetToken-related business logic. */
 export class PasswordResetTokenService {
   public static async list(
@@ -18,9 +17,7 @@ export class PasswordResetTokenService {
         db.passwordResetToken.findMany({ where, take, skip, orderBy, select }),
         db.passwordResetToken.count({ where }),
       ]);
-
       const filteredData = await HookSystem.filter('passwordResetToken.list', data);
-
       return { success: true, data: filteredData, total };
     } catch (error) {
       Logger.error('PasswordResetToken list Error', error);
@@ -30,7 +27,6 @@ export class PasswordResetTokenService {
       };
     }
   }
-
   public static async get(
     id: string,
     select?: Prisma.PasswordResetTokenSelect,
@@ -46,9 +42,7 @@ export class PasswordResetTokenService {
           success: false,
           error: 'passwordResetToken.service.error.not_found',
         };
-
       const filtered = await HookSystem.filter('passwordResetToken.read', data);
-
       return { success: true, data: filtered };
     } catch (error) {
       Logger.error('PasswordResetToken get Error', error);
@@ -58,7 +52,6 @@ export class PasswordResetTokenService {
       };
     }
   }
-
   public static async create(
     data: Prisma.PasswordResetTokenCreateInput,
     select?: Prisma.PasswordResetTokenSelect,
@@ -66,7 +59,6 @@ export class PasswordResetTokenService {
   ): Promise<ServiceResponse<PasswordResetToken>> {
     try {
       const input = await HookSystem.filter('passwordResetToken.beforeCreate', data);
-
       const newItem = await db.$transaction(async (tx) => {
         const created = await tx.passwordResetToken.create({
           data: input as Prisma.PasswordResetTokenCreateInput,
@@ -78,9 +70,7 @@ export class PasswordResetTokenService {
         });
         return created;
       });
-
       const filtered = await HookSystem.filter('passwordResetToken.read', newItem);
-
       return { success: true, data: filtered };
     } catch (error) {
       Logger.error('PasswordResetToken create Error', error);
@@ -90,7 +80,6 @@ export class PasswordResetTokenService {
       };
     }
   }
-
   public static async update(
     id: string,
     data: Prisma.PasswordResetTokenUpdateInput,
@@ -99,7 +88,6 @@ export class PasswordResetTokenService {
   ): Promise<ServiceResponse<PasswordResetToken>> {
     try {
       const input = await HookSystem.filter('passwordResetToken.beforeUpdate', data);
-
       const updatedItem = await db.$transaction(async (tx) => {
         const updated = await tx.passwordResetToken.update({
           where: { id },
@@ -112,9 +100,7 @@ export class PasswordResetTokenService {
         });
         return updated;
       });
-
       const filtered = await HookSystem.filter('passwordResetToken.read', updatedItem);
-
       return { success: true, data: filtered };
     } catch (error) {
       Logger.error('PasswordResetToken update Error', error);
@@ -124,7 +110,6 @@ export class PasswordResetTokenService {
       };
     }
   }
-
   public static async delete(id: string, actor?: ApiActor): Promise<ServiceResponse<void>> {
     try {
       await db.$transaction(async (tx) => {

@@ -5,18 +5,14 @@ import { TestServer } from '@tests/integration/lib/server';
 import { Factory } from '@tests/integration/lib/factory';
 describe('User API - Update', () => {
   let client: ApiClient;
-
   beforeEach(async () => {
     client = new ApiClient(TestServer.getUrl());
   });
-
   // PUT /api/user/[id]
   describe('PUT /api/user/[id]', () => {
     it('should update user', async () => {
       const actor = await client.as('user', { role: 'USER_ADMIN' });
-
       const target = actor;
-
       const updatePayload = {
         username: 'username_updated',
         email: 'email_updated',
@@ -25,11 +21,8 @@ describe('User API - Update', () => {
         name: 'name_updated',
         image: 'image_updated',
       };
-
       const res = await client.put(`/api/user/${target.id}`, updatePayload);
-
       expect(res.status).toBe(200);
-
       const updated = await Factory.prisma.user.findUnique({ where: { id: target.id } });
       expect(updated?.username).toBe(updatePayload.username);
       expect(updated?.email).toBe(updatePayload.email);
@@ -42,18 +35,14 @@ describe('User API - Update', () => {
 });
 describe('User API - Update', () => {
   let client: ApiClient;
-
   beforeEach(async () => {
     client = new ApiClient(TestServer.getUrl());
   });
-
   // PUT /api/user/[id]
   describe('PUT /api/user/[id]', () => {
     it('should update user', async () => {
       const actor = await client.as('user', { role: 'USER_ADMIN' });
-
       const target = actor;
-
       const updatePayload = {
         username: 'username_updated',
         email: 'email_updated',
@@ -62,11 +51,8 @@ describe('User API - Update', () => {
         name: 'name_updated',
         image: 'image_updated',
       };
-
       const res = await client.put(`/api/user/${target.id}`, updatePayload);
-
       expect(res.status).toBe(200);
-
       const updated = await Factory.prisma.user.findUnique({ where: { id: target.id } });
       expect(updated?.username).toBe(updatePayload.username);
       expect(updated?.email).toBe(updatePayload.email);
@@ -79,18 +65,14 @@ describe('User API - Update', () => {
 });
 describe('User API - Update', () => {
   let client: ApiClient;
-
   beforeEach(async () => {
     client = new ApiClient(TestServer.getUrl());
   });
-
   // PUT /api/user/[id]
   describe('PUT /api/user/[id]', () => {
     it('should update user', async () => {
       const actor = await client.as('user', { role: 'USER_ADMIN' });
-
       const target = actor;
-
       const updatePayload = {
         username: 'username_updated',
         email: 'email_updated',
@@ -99,11 +81,8 @@ describe('User API - Update', () => {
         name: 'name_updated',
         image: 'image_updated',
       };
-
       const res = await client.put(`/api/user/${target.id}`, updatePayload);
-
       expect(res.status).toBe(200);
-
       const updated = await Factory.prisma.user.findUnique({ where: { id: target.id } });
       expect(updated?.username).toBe(updatePayload.username);
       expect(updated?.email).toBe(updatePayload.email);
@@ -116,18 +95,14 @@ describe('User API - Update', () => {
 });
 describe('User API - Update', () => {
   let client: ApiClient;
-
   beforeEach(async () => {
     client = new ApiClient(TestServer.getUrl());
   });
-
   // PUT /api/user/[id]
   describe('PUT /api/user/[id]', () => {
     it('should update user', async () => {
       const actor = await client.as('user', { role: 'USER_ADMIN' });
-
       const target = actor;
-
       const updatePayload = {
         username: 'username_updated',
         email: 'email_updated',
@@ -136,11 +111,8 @@ describe('User API - Update', () => {
         name: 'name_updated',
         image: 'image_updated',
       };
-
       const res = await client.put(`/api/user/${target.id}`, updatePayload);
-
       expect(res.status).toBe(200);
-
       const updated = await Factory.prisma.user.findUnique({ where: { id: target.id } });
       expect(updated?.username).toBe(updatePayload.username);
       expect(updated?.email).toBe(updatePayload.email);
@@ -153,18 +125,14 @@ describe('User API - Update', () => {
 });
 describe('User API - Update', () => {
   let client: ApiClient;
-
   beforeEach(async () => {
     client = new ApiClient(TestServer.getUrl());
   });
-
   // PUT /api/user/[id]
   describe('PUT /api/user/[id]', () => {
     it('should update user', async () => {
       const actor = await client.as('user', { role: 'USER_ADMIN' });
-
       const target = actor;
-
       const updatePayload = {
         username: 'username_updated',
         email: 'email_updated',
@@ -173,11 +141,8 @@ describe('User API - Update', () => {
         name: 'name_updated',
         image: 'image_updated',
       };
-
       const res = await client.put(`/api/user/${target.id}`, updatePayload);
-
       expect(res.status).toBe(200);
-
       const updated = await Factory.prisma.user.findUnique({ where: { id: target.id } });
       expect(updated?.username).toBe(updatePayload.username);
       expect(updated?.email).toBe(updatePayload.email);
@@ -190,18 +155,14 @@ describe('User API - Update', () => {
 });
 describe('User API - Update', () => {
   let client: ApiClient;
-
   beforeEach(async () => {
     client = new ApiClient(TestServer.getUrl());
   });
-
   // PUT /api/user/[id]
   describe('PUT /api/user/[id]', () => {
     it('should update user', async () => {
       const actor = await client.as('user', { role: 'USER_ADMIN' });
-
       const target = actor;
-
       const updatePayload = {
         username: 'username_updated',
         email: 'email_updated',
@@ -210,11 +171,8 @@ describe('User API - Update', () => {
         name: 'name_updated',
         image: 'image_updated',
       };
-
       const res = await client.put(`/api/user/${target.id}`, updatePayload);
-
       expect(res.status).toBe(200);
-
       const updated = await Factory.prisma.user.findUnique({ where: { id: target.id } });
       expect(updated?.username).toBe(updatePayload.username);
       expect(updated?.email).toBe(updatePayload.email);
@@ -227,18 +185,14 @@ describe('User API - Update', () => {
 });
 describe('User API - Update', () => {
   let client: ApiClient;
-
   beforeEach(async () => {
     client = new ApiClient(TestServer.getUrl());
   });
-
   // PUT /api/user/[id]
   describe('PUT /api/user/[id]', () => {
     it('should update user', async () => {
       const actor = await client.as('user', { role: 'USER_ADMIN' });
-
       const target = actor;
-
       const updatePayload = {
         username: 'username_updated',
         email: 'email_updated',
@@ -247,11 +201,8 @@ describe('User API - Update', () => {
         name: 'name_updated',
         image: 'image_updated',
       };
-
       const res = await client.put(`/api/user/${target.id}`, updatePayload);
-
       expect(res.status).toBe(200);
-
       const updated = await Factory.prisma.user.findUnique({ where: { id: target.id } });
       expect(updated?.username).toBe(updatePayload.username);
       expect(updated?.email).toBe(updatePayload.email);
@@ -264,18 +215,14 @@ describe('User API - Update', () => {
 });
 describe('User API - Update', () => {
   let client: ApiClient;
-
   beforeEach(async () => {
     client = new ApiClient(TestServer.getUrl());
   });
-
   // PUT /api/user/[id]
   describe('PUT /api/user/[id]', () => {
     it('should update user', async () => {
       const actor = await client.as('user', { role: 'USER_ADMIN' });
-
       const target = actor;
-
       const updatePayload = {
         username: 'username_updated',
         email: 'email_updated',
@@ -284,11 +231,8 @@ describe('User API - Update', () => {
         name: 'name_updated',
         image: 'image_updated',
       };
-
       const res = await client.put(`/api/user/${target.id}`, updatePayload);
-
       expect(res.status).toBe(200);
-
       const updated = await Factory.prisma.user.findUnique({ where: { id: target.id } });
       expect(updated?.username).toBe(updatePayload.username);
       expect(updated?.email).toBe(updatePayload.email);

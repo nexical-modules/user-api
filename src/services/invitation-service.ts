@@ -5,7 +5,6 @@ import type { ServiceResponse } from '@/types/service';
 import { HookSystem } from '@/lib/modules/hooks';
 import type { Invitation, Prisma } from '@prisma/client';
 import type { ApiActor } from '@/lib/api/api-docs';
-
 /** Service class for Invitation-related business logic. */
 export class InvitationService {
   public static async list(
@@ -18,16 +17,13 @@ export class InvitationService {
         db.invitation.findMany({ where, take, skip, orderBy, select }),
         db.invitation.count({ where }),
       ]);
-
       const filteredData = await HookSystem.filter('invitation.list', data);
-
       return { success: true, data: filteredData, total };
     } catch (error) {
       Logger.error('Invitation list Error', error);
       return { success: false, error: 'invitation.service.error.list_failed' };
     }
   }
-
   public static async get(
     id: string,
     select?: Prisma.InvitationSelect,
@@ -36,16 +32,13 @@ export class InvitationService {
     try {
       const data = await db.invitation.findUnique({ where: { id }, select });
       if (!data) return { success: false, error: 'invitation.service.error.not_found' };
-
       const filtered = await HookSystem.filter('invitation.read', data);
-
       return { success: true, data: filtered };
     } catch (error) {
       Logger.error('Invitation get Error', error);
       return { success: false, error: 'invitation.service.error.get_failed' };
     }
   }
-
   public static async create(
     data: Prisma.InvitationCreateInput,
     select?: Prisma.InvitationSelect,
@@ -53,7 +46,6 @@ export class InvitationService {
   ): Promise<ServiceResponse<Invitation>> {
     try {
       const input = await HookSystem.filter('invitation.beforeCreate', data);
-
       const newItem = await db.$transaction(async (tx) => {
         const created = await tx.invitation.create({
           data: input as Prisma.InvitationCreateInput,
@@ -65,9 +57,7 @@ export class InvitationService {
         });
         return created;
       });
-
       const filtered = await HookSystem.filter('invitation.read', newItem);
-
       return { success: true, data: filtered };
     } catch (error) {
       Logger.error('Invitation create Error', error);
@@ -77,7 +67,6 @@ export class InvitationService {
       };
     }
   }
-
   public static async update(
     id: string,
     data: Prisma.InvitationUpdateInput,
@@ -86,7 +75,6 @@ export class InvitationService {
   ): Promise<ServiceResponse<Invitation>> {
     try {
       const input = await HookSystem.filter('invitation.beforeUpdate', data);
-
       const updatedItem = await db.$transaction(async (tx) => {
         const updated = await tx.invitation.update({
           where: { id },
@@ -99,9 +87,7 @@ export class InvitationService {
         });
         return updated;
       });
-
       const filtered = await HookSystem.filter('invitation.read', updatedItem);
-
       return { success: true, data: filtered };
     } catch (error) {
       Logger.error('Invitation update Error', error);
@@ -111,7 +97,6 @@ export class InvitationService {
       };
     }
   }
-
   public static async delete(id: string, actor?: ApiActor): Promise<ServiceResponse<void>> {
     try {
       await db.$transaction(async (tx) => {

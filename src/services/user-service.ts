@@ -5,7 +5,6 @@ import type { ServiceResponse } from '@/types/service';
 import { HookSystem } from '@/lib/modules/hooks';
 import type { User, Prisma } from '@prisma/client';
 import type { ApiActor } from '@/lib/api/api-docs';
-
 /** Service class for User-related business logic. */
 export class UserService {
   public static async list(
@@ -18,16 +17,13 @@ export class UserService {
         db.user.findMany({ where, take, skip, orderBy, select }),
         db.user.count({ where }),
       ]);
-
       const filteredData = await HookSystem.filter('user.list', data);
-
       return { success: true, data: filteredData, total };
     } catch (error) {
       Logger.error('User list Error', error);
       return { success: false, error: 'user.service.error.list_failed' };
     }
   }
-
   public static async get(
     id: string,
     select?: Prisma.UserSelect,
@@ -36,16 +32,13 @@ export class UserService {
     try {
       const data = await db.user.findUnique({ where: { id }, select });
       if (!data) return { success: false, error: 'user.service.error.not_found' };
-
       const filtered = await HookSystem.filter('user.read', data);
-
       return { success: true, data: filtered };
     } catch (error) {
       Logger.error('User get Error', error);
       return { success: false, error: 'user.service.error.get_failed' };
     }
   }
-
   public static async create(
     data: Prisma.UserCreateInput,
     select?: Prisma.UserSelect,
@@ -53,7 +46,6 @@ export class UserService {
   ): Promise<ServiceResponse<User>> {
     try {
       const input = await HookSystem.filter('user.beforeCreate', data);
-
       const newItem = await db.$transaction(async (tx) => {
         const created = await tx.user.create({ data: input as Prisma.UserCreateInput, select });
         await HookSystem.dispatch('user.created', {
@@ -62,16 +54,13 @@ export class UserService {
         });
         return created;
       });
-
       const filtered = await HookSystem.filter('user.read', newItem);
-
       return { success: true, data: filtered };
     } catch (error) {
       Logger.error('User create Error', error);
       return { success: false, error: 'user.service.error.create_failed' };
     }
   }
-
   public static async update(
     id: string,
     data: Prisma.UserUpdateInput,
@@ -80,7 +69,6 @@ export class UserService {
   ): Promise<ServiceResponse<User>> {
     try {
       const input = await HookSystem.filter('user.beforeUpdate', data);
-
       const updatedItem = await db.$transaction(async (tx) => {
         const updated = await tx.user.update({
           where: { id },
@@ -93,16 +81,13 @@ export class UserService {
         });
         return updated;
       });
-
       const filtered = await HookSystem.filter('user.read', updatedItem);
-
       return { success: true, data: filtered };
     } catch (error) {
       Logger.error('User update Error', error);
       return { success: false, error: 'user.service.error.update_failed' };
     }
   }
-
   public static async delete(id: string, actor?: ApiActor): Promise<ServiceResponse<void>> {
     try {
       await db.$transaction(async (tx) => {

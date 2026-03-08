@@ -4,14 +4,11 @@ import { ApiGuard } from '@/lib/api/api-guard';
 import { z } from 'zod';
 import { UserService } from '@modules/user-api/src/services/user-service';
 import { UserModuleTypes } from '@/lib/api';
-
 export const GET = defineApi(
   async (context, actor) => {
     const { id } = context.params;
-
     // Security Check
     await ApiGuard.protect(context, 'USER_ADMIN', { ...context.params });
-
     const select = {
       id: true,
       username: true,
@@ -25,9 +22,7 @@ export const GET = defineApi(
       createdAt: true,
       updatedAt: true,
     };
-
     const result = await UserService.get(id, select, actor);
-
     if (!result.success) {
       if (
         result.error?.code === 'NOT_FOUND' ||
@@ -37,14 +32,12 @@ export const GET = defineApi(
       }
       return new Response(JSON.stringify({ error: result.error }), { status: 500 });
     }
-
     if (!result.data) {
       return new Response(
         JSON.stringify({ error: { code: 'NOT_FOUND', message: 'User not found' } }),
         { status: 404 },
       );
     }
-
     return { success: true, data: result.data };
   },
   {
@@ -83,10 +76,8 @@ export const PUT = defineApi(
   async (context, actor) => {
     const { id } = context.params;
     const body = await context.request.json();
-
     // Security Check
     await ApiGuard.protect(context, 'USER_ADMIN', { ...context.params, ...body });
-
     // Zod Validation
     const schema = z
       .object({
@@ -101,7 +92,6 @@ export const PUT = defineApi(
         status: z.nativeEnum(UserModuleTypes.UserStatus).optional(),
       })
       .partial();
-
     const validated = schema.parse(body);
     const select = {
       id: true,
@@ -116,9 +106,7 @@ export const PUT = defineApi(
       createdAt: true,
       updatedAt: true,
     };
-
     const result = await UserService.update(id, validated, select, actor);
-
     if (!result.success) {
       if (
         result.error?.code === 'NOT_FOUND' ||
@@ -128,7 +116,6 @@ export const PUT = defineApi(
       }
       return new Response(JSON.stringify({ error: result.error }), { status: 400 });
     }
-
     return new Response(JSON.stringify({ success: true, data: result.data }), { status: 200 });
   },
   {
@@ -188,12 +175,9 @@ export const PUT = defineApi(
 export const DELETE = defineApi(
   async (context, actor) => {
     const { id } = context.params;
-
     // Security Check
     await ApiGuard.protect(context, 'USER_ADMIN', { ...context.params });
-
     const result = await UserService.delete(id, actor);
-
     if (!result.success) {
       if (
         result.error?.code === 'NOT_FOUND' ||
@@ -203,7 +187,6 @@ export const DELETE = defineApi(
       }
       return new Response(JSON.stringify({ error: result.error }), { status: 500 });
     }
-
     return { success: true };
   },
   {

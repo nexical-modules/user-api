@@ -7,7 +7,6 @@ import type { ServiceResponse } from '@/types/service';
 import { HookSystem } from '@/lib/modules/hooks';
 import type { PersonalAccessToken, Prisma } from '@prisma/client';
 import type { ApiActor } from '@/lib/api/api-docs';
-
 /** Service class for PersonalAccessToken-related business logic. */
 export class PersonalAccessTokenService {
   public static async list(
@@ -20,9 +19,7 @@ export class PersonalAccessTokenService {
         db.personalAccessToken.findMany({ where, take, skip, orderBy, select }),
         db.personalAccessToken.count({ where }),
       ]);
-
       const filteredData = await HookSystem.filter('personalAccessToken.list', data);
-
       return { success: true, data: filteredData, total };
     } catch (error) {
       Logger.error('PersonalAccessToken list Error', error);
@@ -32,7 +29,6 @@ export class PersonalAccessTokenService {
       };
     }
   }
-
   public static async get(
     id: string,
     select?: Prisma.PersonalAccessTokenSelect,
@@ -48,9 +44,7 @@ export class PersonalAccessTokenService {
           success: false,
           error: 'personalAccessToken.service.error.not_found',
         };
-
       const filtered = await HookSystem.filter('personalAccessToken.read', data);
-
       return { success: true, data: filtered };
     } catch (error) {
       Logger.error('PersonalAccessToken get Error', error);
@@ -60,7 +54,6 @@ export class PersonalAccessTokenService {
       };
     }
   }
-
   public static async create(
     data: Prisma.PersonalAccessTokenCreateInput,
     select?: Prisma.PersonalAccessTokenSelect,
@@ -68,7 +61,6 @@ export class PersonalAccessTokenService {
   ): Promise<ServiceResponse<PersonalAccessToken>> {
     try {
       const input = await HookSystem.filter('personalAccessToken.beforeCreate', data);
-
       const newItem = await db.$transaction(async (tx) => {
         const created = await tx.personalAccessToken.create({
           data: input as Prisma.PersonalAccessTokenCreateInput,
@@ -80,9 +72,7 @@ export class PersonalAccessTokenService {
         });
         return created;
       });
-
       const filtered = await HookSystem.filter('personalAccessToken.read', newItem);
-
       return { success: true, data: filtered };
     } catch (error) {
       Logger.error('PersonalAccessToken create Error', error);
@@ -92,7 +82,6 @@ export class PersonalAccessTokenService {
       };
     }
   }
-
   public static async update(
     id: string,
     data: Prisma.PersonalAccessTokenUpdateInput,
@@ -101,7 +90,6 @@ export class PersonalAccessTokenService {
   ): Promise<ServiceResponse<PersonalAccessToken>> {
     try {
       const input = await HookSystem.filter('personalAccessToken.beforeUpdate', data);
-
       const updatedItem = await db.$transaction(async (tx) => {
         const updated = await tx.personalAccessToken.update({
           where: { id },
@@ -114,9 +102,7 @@ export class PersonalAccessTokenService {
         });
         return updated;
       });
-
       const filtered = await HookSystem.filter('personalAccessToken.read', updatedItem);
-
       return { success: true, data: filtered };
     } catch (error) {
       Logger.error('PersonalAccessToken update Error', error);
@@ -126,7 +112,6 @@ export class PersonalAccessTokenService {
       };
     }
   }
-
   public static async delete(id: string, actor?: ApiActor): Promise<ServiceResponse<void>> {
     try {
       await db.$transaction(async (tx) => {

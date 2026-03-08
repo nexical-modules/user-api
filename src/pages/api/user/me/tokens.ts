@@ -5,46 +5,36 @@ import { HookSystem } from '@/lib/modules/hooks';
 import { ListTokensUserAction } from '@modules/user-api/src/actions/list-tokens-user';
 import { CreateTokenUserAction } from '@modules/user-api/src/actions/create-token-user';
 import type { UserModuleTypes } from '@/lib/api';
-
 export const GET = defineApi(
   async (context, actor) => {
     // 1. Body Parsing (Input)
     const body = {} as UserModuleTypes.ListTokensDTO;
-
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
-
     // 2. Hook: Filter Input
     const input: UserModuleTypes.ListTokensDTO = await HookSystem.filter(
       'user.listTokens.input',
       body,
     );
-
     // 3. Security Check
     const combinedInput = { ...context.params, ...query, ...input };
     await ApiGuard.protect(context, 'USER_EMPLOYEE', combinedInput);
-
     // Inject userId from context for protected routes
     if (actor && actor.id) {
       Object.assign(combinedInput, { userId: actor.id });
     }
-
     // 4. Action Execution
     const result = await ListTokensUserAction.run(combinedInput, context);
-
     // 5. Hook: Filter Output
     const filteredResult = await HookSystem.filter('user.listTokens.output', result);
-
     // 6. Response
     if (!filteredResult.success) {
       return new Response(JSON.stringify({ error: filteredResult.error }), { status: 400 });
     }
-
     return { success: true, data: filteredResult.data };
   },
   {
     summary: 'List personal access tokens',
     tags: ['User'],
-
     responses: {
       200: {
         description: 'OK',
@@ -78,35 +68,27 @@ export const POST = defineApi(
   async (context, actor) => {
     // 1. Body Parsing (Input)
     const body = (await context.request.json()) as UserModuleTypes.CreateTokenDTO;
-
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
-
     // 2. Hook: Filter Input
     const input: UserModuleTypes.CreateTokenDTO = await HookSystem.filter(
       'user.createToken.input',
       body,
     );
-
     // 3. Security Check
     const combinedInput = { ...context.params, ...query, ...input };
     await ApiGuard.protect(context, 'USER_EMPLOYEE', combinedInput);
-
     // Inject userId from context for protected routes
     if (actor && actor.id) {
       Object.assign(combinedInput, { userId: actor.id });
     }
-
     // 4. Action Execution
     const result = await CreateTokenUserAction.run(combinedInput, context);
-
     // 5. Hook: Filter Output
     const filteredResult = await HookSystem.filter('user.createToken.output', result);
-
     // 6. Response
     if (!filteredResult.success) {
       return new Response(JSON.stringify({ error: filteredResult.error }), { status: 400 });
     }
-
     return { success: true, data: filteredResult.data };
   },
   {

@@ -5,7 +5,6 @@ import type { ServiceResponse } from '@/types/service';
 import { HookSystem } from '@/lib/modules/hooks';
 import type { VerificationToken, Prisma } from '@prisma/client';
 import type { ApiActor } from '@/lib/api/api-docs';
-
 /** Service class for VerificationToken-related business logic. */
 export class VerificationTokenService {
   public static async list(
@@ -18,9 +17,7 @@ export class VerificationTokenService {
         db.verificationToken.findMany({ where, take, skip, orderBy, select }),
         db.verificationToken.count({ where }),
       ]);
-
       const filteredData = await HookSystem.filter('verificationToken.list', data);
-
       return { success: true, data: filteredData, total };
     } catch (error) {
       Logger.error('VerificationToken list Error', error);
@@ -30,7 +27,6 @@ export class VerificationTokenService {
       };
     }
   }
-
   public static async get(
     id: string,
     select?: Prisma.VerificationTokenSelect,
@@ -46,9 +42,7 @@ export class VerificationTokenService {
           success: false,
           error: 'verificationToken.service.error.not_found',
         };
-
       const filtered = await HookSystem.filter('verificationToken.read', data);
-
       return { success: true, data: filtered };
     } catch (error) {
       Logger.error('VerificationToken get Error', error);
@@ -58,7 +52,6 @@ export class VerificationTokenService {
       };
     }
   }
-
   public static async create(
     data: Prisma.VerificationTokenCreateInput,
     select?: Prisma.VerificationTokenSelect,
@@ -66,7 +59,6 @@ export class VerificationTokenService {
   ): Promise<ServiceResponse<VerificationToken>> {
     try {
       const input = await HookSystem.filter('verificationToken.beforeCreate', data);
-
       const newItem = await db.$transaction(async (tx) => {
         const created = await tx.verificationToken.create({
           data: input as Prisma.VerificationTokenCreateInput,
@@ -78,9 +70,7 @@ export class VerificationTokenService {
         });
         return created;
       });
-
       const filtered = await HookSystem.filter('verificationToken.read', newItem);
-
       return { success: true, data: filtered };
     } catch (error) {
       Logger.error('VerificationToken create Error', error);
@@ -90,7 +80,6 @@ export class VerificationTokenService {
       };
     }
   }
-
   public static async update(
     id: string,
     data: Prisma.VerificationTokenUpdateInput,
@@ -99,7 +88,6 @@ export class VerificationTokenService {
   ): Promise<ServiceResponse<VerificationToken>> {
     try {
       const input = await HookSystem.filter('verificationToken.beforeUpdate', data);
-
       const updatedItem = await db.$transaction(async (tx) => {
         const updated = await tx.verificationToken.update({
           where: { id },
@@ -112,9 +100,7 @@ export class VerificationTokenService {
         });
         return updated;
       });
-
       const filtered = await HookSystem.filter('verificationToken.read', updatedItem);
-
       return { success: true, data: filtered };
     } catch (error) {
       Logger.error('VerificationToken update Error', error);
@@ -124,7 +110,6 @@ export class VerificationTokenService {
       };
     }
   }
-
   public static async delete(id: string, actor?: ApiActor): Promise<ServiceResponse<void>> {
     try {
       await db.$transaction(async (tx) => {

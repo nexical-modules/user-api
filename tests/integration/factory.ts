@@ -2,7 +2,6 @@
 import crypto from 'node:crypto';
 import bcrypt from 'bcryptjs';
 import { Factory } from '@tests/integration/lib/factory';
-
 export const factories = {
   user: (index: number) => {
     return {
@@ -78,7 +77,6 @@ export const factories = {
     };
   },
 };
-
 export function hashPassword(password: string): string {
   const salt = bcrypt.genSaltSync(10);
   return bcrypt.hashSync(password, salt);

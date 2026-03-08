@@ -24,7 +24,6 @@ export class InviteUserAuthAction {
     const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
     try {
-       
       const invitation = (await db.invitation.upsert({
         where: { email },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

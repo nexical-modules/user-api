@@ -5,22 +5,16 @@ import { TestServer } from '@tests/integration/lib/server';
 import { Factory } from '@tests/integration/lib/factory';
 describe('User API - Delete', () => {
   let client: ApiClient;
-
   beforeEach(async () => {
     client = new ApiClient(TestServer.getUrl());
   });
-
   // DELETE /api/user/[id]
   describe('DELETE /api/user/[id]', () => {
     it('should delete user', async () => {
       const actor = await client.as('user', { role: 'USER_ADMIN' });
-
       const target = actor;
-
       const res = await client.delete(`/api/user/${target.id}`);
-
       expect(res.status).toBe(200);
-
       const check = await Factory.prisma.user.findUnique({ where: { id: target.id } });
       expect(check).toBeNull();
     });
@@ -28,22 +22,16 @@ describe('User API - Delete', () => {
 });
 describe('User API - Delete', () => {
   let client: ApiClient;
-
   beforeEach(async () => {
     client = new ApiClient(TestServer.getUrl());
   });
-
   // DELETE /api/user/[id]
   describe('DELETE /api/user/[id]', () => {
     it('should delete user', async () => {
       const actor = await client.as('user', { role: 'USER_ADMIN' });
-
       const target = actor;
-
       const res = await client.delete(`/api/user/${target.id}`);
-
       expect(res.status).toBe(200);
-
       const check = await Factory.prisma.user.findUnique({ where: { id: target.id } });
       expect(check).toBeNull();
     });
@@ -51,22 +39,16 @@ describe('User API - Delete', () => {
 });
 describe('User API - Delete', () => {
   let client: ApiClient;
-
   beforeEach(async () => {
     client = new ApiClient(TestServer.getUrl());
   });
-
   // DELETE /api/user/[id]
   describe('DELETE /api/user/[id]', () => {
     it('should delete user', async () => {
       const actor = await client.as('user', { role: 'USER_ADMIN' });
-
       const target = actor;
-
       const res = await client.delete(`/api/user/${target.id}`);
-
       expect(res.status).toBe(200);
-
       const check = await Factory.prisma.user.findUnique({ where: { id: target.id } });
       expect(check).toBeNull();
     });
@@ -74,22 +56,16 @@ describe('User API - Delete', () => {
 });
 describe('User API - Delete', () => {
   let client: ApiClient;
-
   beforeEach(async () => {
     client = new ApiClient(TestServer.getUrl());
   });
-
   // DELETE /api/user/[id]
   describe('DELETE /api/user/[id]', () => {
     it('should delete user', async () => {
       const actor = await client.as('user', { role: 'USER_ADMIN' });
-
       const target = actor;
-
       const res = await client.delete(`/api/user/${target.id}`);
-
       expect(res.status).toBe(200);
-
       const check = await Factory.prisma.user.findUnique({ where: { id: target.id } });
       expect(check).toBeNull();
     });
@@ -97,22 +73,16 @@ describe('User API - Delete', () => {
 });
 describe('User API - Delete', () => {
   let client: ApiClient;
-
   beforeEach(async () => {
     client = new ApiClient(TestServer.getUrl());
   });
-
   // DELETE /api/user/[id]
   describe('DELETE /api/user/[id]', () => {
     it('should delete user', async () => {
       const actor = await client.as('user', { role: 'USER_ADMIN' });
-
       const target = actor;
-
       const res = await client.delete(`/api/user/${target.id}`);
-
       expect(res.status).toBe(200);
-
       const check = await Factory.prisma.user.findUnique({ where: { id: target.id } });
       expect(check).toBeNull();
     });
@@ -120,22 +90,16 @@ describe('User API - Delete', () => {
 });
 describe('User API - Delete', () => {
   let client: ApiClient;
-
   beforeEach(async () => {
     client = new ApiClient(TestServer.getUrl());
   });
-
   // DELETE /api/user/[id]
   describe('DELETE /api/user/[id]', () => {
     it('should delete user', async () => {
       const actor = await client.as('user', { role: 'USER_ADMIN' });
-
       const target = actor;
-
       const res = await client.delete(`/api/user/${target.id}`);
-
       expect(res.status).toBe(200);
-
       const check = await Factory.prisma.user.findUnique({ where: { id: target.id } });
       expect(check).toBeNull();
     });
@@ -143,22 +107,16 @@ describe('User API - Delete', () => {
 });
 describe('User API - Delete', () => {
   let client: ApiClient;
-
   beforeEach(async () => {
     client = new ApiClient(TestServer.getUrl());
   });
-
   // DELETE /api/user/[id]
   describe('DELETE /api/user/[id]', () => {
     it('should delete user', async () => {
       const actor = await client.as('user', { role: 'USER_ADMIN' });
-
       const target = actor;
-
       const res = await client.delete(`/api/user/${target.id}`);
-
       expect(res.status).toBe(200);
-
       const check = await Factory.prisma.user.findUnique({ where: { id: target.id } });
       expect(check).toBeNull();
     });
@@ -166,22 +124,16 @@ describe('User API - Delete', () => {
 });
 describe('User API - Delete', () => {
   let client: ApiClient;
-
   beforeEach(async () => {
     client = new ApiClient(TestServer.getUrl());
   });
-
   // DELETE /api/user/[id]
   describe('DELETE /api/user/[id]', () => {
     it('should delete user', async () => {
       const actor = await client.as('user', { role: 'USER_ADMIN' });
-
       const target = actor;
-
       const res = await client.delete(`/api/user/${target.id}`);
-
       expect(res.status).toBe(200);
-
       const check = await Factory.prisma.user.findUnique({ where: { id: target.id } });
       expect(check).toBeNull();
     });
