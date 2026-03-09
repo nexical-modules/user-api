@@ -39,6 +39,7 @@ export const POST: APIRoute = defineApi(
   {
     summary: 'Login user',
     tags: ['Auth'],
+
     requestBody: {
       content: {
         'application/json': {

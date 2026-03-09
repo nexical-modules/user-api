@@ -108,6 +108,7 @@ export const PUT = defineApi(
   {
     summary: 'Update current user profile',
     tags: ['User'],
+
     requestBody: {
       content: {
         'application/json': {
@@ -191,6 +192,7 @@ export const DELETE = defineApi(
   {
     summary: 'Delete current user account',
     tags: ['User'],
+
     requestBody: {
       content: {
         'application/json': {

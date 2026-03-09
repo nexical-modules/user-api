@@ -15,6 +15,7 @@ export async function onRequest(context: APIContext, next: MiddlewareNext) {
   const authHeader = context.request.headers.get('Authorization');
   if (authHeader?.startsWith('Bearer ne_pat_')) {
     const token = authHeader.substring(7);
+
     const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
     const tokenEntity = await db.personalAccessToken.findFirst({
       where: { hashedKey: hashedToken },

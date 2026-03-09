@@ -53,7 +53,6 @@ export const GET = defineApi(
       createdAt: true,
       updatedAt: true,
     };
-
     const result = await UserService.list({ where, take, skip, orderBy, select }, actor);
 
     if (!result.success) {
@@ -610,6 +609,7 @@ export const GET = defineApi(
         description: 'Filter by updatedAt (eq)',
       },
     ],
+
     responses: {
       200: {
         description: 'OK',
@@ -671,7 +671,6 @@ export const POST = defineApi(
       role: z.nativeEnum(UserModuleTypes.SiteRole).optional(),
       status: z.nativeEnum(UserModuleTypes.UserStatus).optional(),
     });
-
     const validated = schema.parse(body);
     const select = {
       id: true,
@@ -686,7 +685,6 @@ export const POST = defineApi(
       createdAt: true,
       updatedAt: true,
     };
-
     const result = await UserService.create(validated, select, actor);
 
     if (!result.success) {

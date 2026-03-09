@@ -42,6 +42,7 @@ export const POST = defineApi(
   {
     summary: 'Validate reset token',
     tags: ['Auth'],
+
     requestBody: {
       content: {
         'application/json': {

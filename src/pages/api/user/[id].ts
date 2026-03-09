@@ -24,7 +24,6 @@ export const GET = defineApi(
       createdAt: true,
       updatedAt: true,
     };
-
     const result = await UserService.get(id, select, actor);
 
     if (!result.success) {
@@ -50,6 +49,7 @@ export const GET = defineApi(
     summary: 'Get User',
     tags: ['User'],
     parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+
     responses: {
       200: {
         description: 'OK',
@@ -87,20 +87,17 @@ export const PUT = defineApi(
     await ApiGuard.protect(context, 'USER_ADMIN', { ...context.params, ...body });
 
     // Zod Validation
-    const schema = z
-      .object({
-        id: z.string().optional(),
-        username: z.string().optional(),
-        email: z.string().optional(),
-        passwordUpdatedAt: z.string().datetime().optional(),
-        emailVerified: z.string().datetime().optional(),
-        name: z.string().optional(),
-        image: z.string().optional(),
-        role: z.nativeEnum(UserModuleTypes.SiteRole).optional(),
-        status: z.nativeEnum(UserModuleTypes.UserStatus).optional(),
-      })
-      .partial();
-
+    const schema = z.object({
+      id: z.string().optional(),
+      username: z.string().optional(),
+      email: z.string().optional(),
+      passwordUpdatedAt: z.string().datetime().optional(),
+      emailVerified: z.string().datetime().optional(),
+      name: z.string().optional(),
+      image: z.string().optional(),
+      role: z.nativeEnum(UserModuleTypes.SiteRole).optional(),
+      status: z.nativeEnum(UserModuleTypes.UserStatus).optional(),
+    });
     const validated = schema.parse(body);
     const select = {
       id: true,
@@ -115,7 +112,6 @@ export const PUT = defineApi(
       createdAt: true,
       updatedAt: true,
     };
-
     const result = await UserService.update(id, validated, select, actor);
 
     if (!result.success) {
@@ -209,6 +205,7 @@ export const DELETE = defineApi(
     summary: 'Delete User',
     tags: ['User'],
     parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+
     responses: {
       200: {
         description: 'OK',

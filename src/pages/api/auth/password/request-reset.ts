@@ -42,6 +42,7 @@ export const POST = defineApi(
   {
     summary: 'Request password reset',
     tags: ['Auth'],
+
     requestBody: {
       content: {
         'application/json': {

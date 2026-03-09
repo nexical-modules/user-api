@@ -42,6 +42,7 @@ export const POST = defineApi(
   {
     summary: 'Invite a user',
     tags: ['Auth'],
+
     requestBody: {
       content: {
         'application/json': {

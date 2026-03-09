@@ -42,6 +42,7 @@ export const POST = defineApi(
   {
     summary: 'Register a new user',
     tags: ['Auth'],
+
     requestBody: {
       content: {
         'application/json': {

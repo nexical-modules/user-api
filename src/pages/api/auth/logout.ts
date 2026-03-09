@@ -39,6 +39,7 @@ export const POST = defineApi(
   {
     summary: 'Logout user',
     tags: ['Auth'],
+
     requestBody: {
       content: {
         'application/json': {

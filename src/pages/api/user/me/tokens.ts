@@ -111,6 +111,7 @@ export const POST = defineApi(
   {
     summary: 'Create personal access token',
     tags: ['User'],
+
     requestBody: {
       content: {
         'application/json': {

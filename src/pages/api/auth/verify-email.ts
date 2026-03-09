@@ -42,6 +42,7 @@ export const POST = defineApi(
   {
     summary: 'Verify email address',
     tags: ['Auth'],
+
     requestBody: {
       content: {
         'application/json': {

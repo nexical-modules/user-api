@@ -42,6 +42,7 @@ export const DELETE = defineApi(
   {
     summary: 'Delete personal access token',
     tags: ['User'],
+
     requestBody: {
       content: {
         'application/json': {
