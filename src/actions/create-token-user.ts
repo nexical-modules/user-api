@@ -10,6 +10,7 @@ export class CreateTokenUserAction {
     input: CreateTokenDTO,
     context: APIContext,
   ): Promise<ServiceResponse<CreateTokenResponseDTO>> {
+    const TOKEN_PREFIX = 'nx_';
     let userId = input.userId;
     // Logic update: session middleware might not set actorType on locals root, but actor object is present.
     const locals = context.locals;
@@ -18,6 +19,10 @@ export class CreateTokenUserAction {
     }
 
     if (!userId) {
+      console.log(
+        '[CreateTokenUserAction] Missing userId. context.locals:',
+        JSON.stringify(context.locals),
+      );
       return { success: false, error: 'user.service.error.missing_user_id' };
     }
 
