@@ -1,8 +1,8 @@
 // GENERATED CODE - DO NOT MODIFY
-import { describe, it, expect, beforeEach } from 'vitest';
 import { ApiClient } from '@tests/integration/lib/client';
-import { TestServer } from '@tests/integration/lib/server';
 import { Factory } from '@tests/integration/lib/factory';
+import { TestServer } from '@tests/integration/lib/server';
+import { beforeEach, describe, expect, it } from 'vitest';
 describe('User API - Delete', () => {
   let client: ApiClient;
 

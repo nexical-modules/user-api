@@ -1,7 +1,7 @@
 // INITIAL GENERATED CODE - REVIEW AND MODIFY AS NEEDED FOR SERVICE INTEGRATION TESTS
-import { describe, it, expect } from 'vitest';
-import { LoginAuthAction } from '../../../src/actions/login-auth';
+import { describe, expect, it } from 'vitest';
 import { createMockContext } from '../../../../../tests/integration/helpers/context';
+import { LoginAuthAction } from '../../../src/actions/login-auth';
 import type { LoginDTO } from '../../../src/sdk';
 
 describe('LoginAuthAction - Service Integration', () => {

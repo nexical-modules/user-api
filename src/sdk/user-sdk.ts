@@ -1,11 +1,11 @@
 // GENERATED CODE - DO NOT MODIFY
 import { BaseResource } from '@nexical/sdk-core';
 import type {
-  User,
-  UpdateUserDTO,
-  PersonalAccessToken,
   CreateTokenDTO,
   CreateTokenResponseDTO,
+  PersonalAccessToken,
+  UpdateUserDTO,
+  User,
 } from './types.js';
 /** SDK client for User. */
 export class UserSDK extends BaseResource {

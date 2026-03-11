@@ -1,10 +1,10 @@
 // GENERATED CODE - DO NOT MODIFY
+import type { ApiActor } from '@/lib/api/api-docs';
 import { db } from '@/lib/core/db';
 import { Logger } from '@/lib/core/logger';
-import type { ServiceResponse } from '@/types/service';
 import { HookSystem } from '@/lib/modules/hooks';
-import type { VerificationToken, Prisma } from '@prisma/client';
-import type { ApiActor } from '@/lib/api/api-docs';
+import type { ServiceResponse } from '@/types/service';
+import type { Prisma, VerificationToken } from '@prisma/client';
 /** Service class for VerificationToken-related business logic. */
 export class VerificationTokenService {
   public static async list(

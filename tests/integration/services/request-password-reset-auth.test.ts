@@ -1,8 +1,8 @@
 // INITIAL GENERATED CODE - REVIEW AND MODIFY AS NEEDED FOR SERVICE INTEGRATION TESTS
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createMockContext } from '../../../../../tests/integration/helpers/context';
 import { RequestPasswordResetAuthAction } from '../../../src/actions/request-password-reset-auth';
 import type { RequestPasswordResetDTO } from '../../../src/sdk';
-import { createMockContext } from '../../../../../tests/integration/helpers/context';
 
 describe('RequestPasswordResetAuthAction - Service Integration', () => {
   beforeAll(async () => {

@@ -2,18 +2,18 @@
 import { BaseResource } from '@nexical/sdk-core';
 import type {
   CreateUserDTO,
-  User,
+  Invitation,
+  InviteUserDTO,
   LoginDTO,
   LogoutDTO,
-  InviteUserDTO,
-  Invitation,
-  VerifyEmailDTO,
-  VerifyEmailResponseDTO,
   RequestPasswordResetDTO,
   ResetPasswordDTO,
   ResetPasswordResponseDTO,
+  User,
   ValidateResetTokenDTO,
   ValidateResetTokenResponseDTO,
+  VerifyEmailDTO,
+  VerifyEmailResponseDTO,
 } from './types.js';
 /** SDK client for Auth. */
 export class AuthSDK extends BaseResource {

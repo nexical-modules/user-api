@@ -1,7 +1,7 @@
 // INITIAL GENERATED CODE - REVIEW AND MODIFY AS NEEDED FOR SERVICE INTEGRATION TESTS
-import { describe, it, expect } from 'vitest';
-import { InviteUserAuthAction } from '../../../src/actions/invite-user-auth';
+import { describe, expect, it } from 'vitest';
 import { createMockContext } from '../../../../../tests/integration/helpers/context';
+import { InviteUserAuthAction } from '../../../src/actions/invite-user-auth';
 import type { InviteUserDTO } from '../../../src/sdk';
 
 describe('InviteUserAuthAction - Service Integration', () => {

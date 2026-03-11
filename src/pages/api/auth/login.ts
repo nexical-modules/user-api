@@ -1,8 +1,8 @@
 // GENERATED CODE - DO NOT MODIFY
-import { HookSystem } from '@/lib/modules/hooks';
-import { ApiGuard } from '@/lib/api/api-guard';
 import type { UserModuleTypes } from '@/lib/api';
 import { defineApi } from '@/lib/api/api-docs';
+import { ApiGuard } from '@/lib/api/api-guard';
+import { HookSystem } from '@/lib/modules/hooks';
 import { LoginAuthAction } from '@modules/user-api/src/actions/login-auth';
 export const POST: APIRoute = defineApi(
   async (context, actor) => {

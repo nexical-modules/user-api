@@ -1,10 +1,10 @@
 // GENERATED CODE - DO NOT MODIFY
+import type { UserModuleTypes } from '@/lib/api';
 import { defineApi } from '@/lib/api/api-docs';
 import { ApiGuard } from '@/lib/api/api-guard';
 import { HookSystem } from '@/lib/modules/hooks';
-import { ListTokensUserAction } from '@modules/user-api/src/actions/list-tokens-user';
 import { CreateTokenUserAction } from '@modules/user-api/src/actions/create-token-user';
-import type { UserModuleTypes } from '@/lib/api';
+import { ListTokensUserAction } from '@modules/user-api/src/actions/list-tokens-user';
 export const GET = defineApi(
   async (context, actor) => {
     // 1. Body Parsing (Input)

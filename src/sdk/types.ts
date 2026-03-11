@@ -90,11 +90,11 @@ export enum UserMode {
   ADMIN = 'ADMIN',
 }
 export type {
-  User,
-  PersonalAccessToken,
   Account,
-  VerificationToken,
-  PasswordResetToken,
   Invitation,
+  PasswordResetToken,
+  PersonalAccessToken,
   Session,
+  User,
+  VerificationToken,
 } from '@prisma/client';

@@ -1,11 +1,11 @@
 // GENERATED CODE - DO NOT MODIFY
+import type { UserModuleTypes } from '@/lib/api';
 import { defineApi } from '@/lib/api/api-docs';
 import { ApiGuard } from '@/lib/api/api-guard';
 import { HookSystem } from '@/lib/modules/hooks';
+import { DeleteMeUserAction } from '@modules/user-api/src/actions/delete-me-user';
 import { GetMeUserAction } from '@modules/user-api/src/actions/get-me-user';
 import { UpdateMeUserAction } from '@modules/user-api/src/actions/update-me-user';
-import { DeleteMeUserAction } from '@modules/user-api/src/actions/delete-me-user';
-import type { UserModuleTypes } from '@/lib/api';
 export const GET = defineApi(
   async (context, actor) => {
     // 1. Body Parsing (Input)

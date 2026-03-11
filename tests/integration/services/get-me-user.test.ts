@@ -1,7 +1,7 @@
 // INITIAL GENERATED CODE - REVIEW AND MODIFY AS NEEDED FOR SERVICE INTEGRATION TESTS
-import { describe, it, expect } from 'vitest';
-import { GetMeUserAction } from '../../../src/actions/get-me-user';
+import { describe, expect, it } from 'vitest';
 import { createMockContext } from '../../../../../tests/integration/helpers/context';
+import { GetMeUserAction } from '../../../src/actions/get-me-user';
 
 describe('GetMeUserAction - Service Integration', () => {
   beforeAll(async () => {

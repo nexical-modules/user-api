@@ -1,10 +1,10 @@
 // GENERATED CODE - DO NOT MODIFY
-import { db } from '@/lib/core/db';
-import type { ServiceResponse } from '@/types/service';
-import { HookSystem } from '@/lib/modules/hooks';
-import type { Session, Prisma } from '@prisma/client';
 import type { ApiActor } from '@/lib/api/api-docs';
+import { db } from '@/lib/core/db';
 import { Logger } from '@/lib/core/logger';
+import { HookSystem } from '@/lib/modules/hooks';
+import type { ServiceResponse } from '@/types/service';
+import type { Prisma, Session } from '@prisma/client';
 /** Service class for Session-related business logic. */
 export class SessionService {
   public static async list(

@@ -1,7 +1,7 @@
 // GENERATED CODE - THE SIGNATURE IS MANAGED BY THE GENERATOR. YOU MAY MODIFY THE IMPLEMENTATION AND ADD CUSTOM IMPORTS.
 import type { ServiceResponse } from '@/types/service';
-import type { DeleteTokenDTO } from '../sdk/types';
 import type { APIContext } from 'astro';
+import type { DeleteTokenDTO } from '../sdk/types';
 import { PersonalAccessTokenService } from '../services/personal-access-token-service';
 
 export class DeleteTokenUserAction {

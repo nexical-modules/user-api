@@ -1,10 +1,10 @@
 // GENERATED CODE - DO NOT MODIFY
+import type { ApiActor } from '@/lib/api/api-docs';
 import { db } from '@/lib/core/db';
 import { Logger } from '@/lib/core/logger';
-import type { ServiceResponse } from '@/types/service';
 import { HookSystem } from '@/lib/modules/hooks';
-import type { User, Prisma } from '@prisma/client';
-import type { ApiActor } from '@/lib/api/api-docs';
+import type { ServiceResponse } from '@/types/service';
+import type { Prisma, User } from '@prisma/client';
 /** Service class for User-related business logic. */
 export class UserService {
   public static async list(

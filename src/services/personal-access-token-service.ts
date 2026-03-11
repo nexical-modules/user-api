@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY
 /* eslint-disable */
 // @ts-nocheck
+import type { ApiActor } from '@/lib/api/api-docs';
 import { db } from '@/lib/core/db';
 import { Logger } from '@/lib/core/logger';
-import type { ServiceResponse } from '@/types/service';
 import { HookSystem } from '@/lib/modules/hooks';
+import type { ServiceResponse } from '@/types/service';
 import type { PersonalAccessToken, Prisma } from '@prisma/client';
-import type { ApiActor } from '@/lib/api/api-docs';
 /** Service class for PersonalAccessToken-related business logic. */
 export class PersonalAccessTokenService {
   public static async list(

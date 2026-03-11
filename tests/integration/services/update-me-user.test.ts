@@ -1,7 +1,7 @@
 // INITIAL GENERATED CODE - REVIEW AND MODIFY AS NEEDED FOR SERVICE INTEGRATION TESTS
-import { describe, it, expect } from 'vitest';
-import { UpdateMeUserAction } from '../../../src/actions/update-me-user';
+import { describe, expect, it } from 'vitest';
 import { createMockContext } from '../../../../../tests/integration/helpers/context';
+import { UpdateMeUserAction } from '../../../src/actions/update-me-user';
 import type { UpdateUserDTO } from '../../../src/sdk';
 
 describe('UpdateMeUserAction - Service Integration', () => {

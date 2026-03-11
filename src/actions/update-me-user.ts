@@ -1,7 +1,7 @@
 // GENERATED CODE - THE SIGNATURE IS MANAGED BY THE GENERATOR. YOU MAY MODIFY THE IMPLEMENTATION AND ADD CUSTOM IMPORTS.
 import type { ServiceResponse } from '@/types/service';
-import type { UpdateUserDTO, User } from '../sdk/types';
 import type { APIContext } from 'astro';
+import type { UpdateUserDTO, User } from '../sdk/types';
 import { UserService } from '../services/user-service';
 
 export class UpdateMeUserAction {

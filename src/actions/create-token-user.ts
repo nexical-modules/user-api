@@ -1,9 +1,9 @@
 // GENERATED CODE - THE SIGNATURE IS MANAGED BY THE GENERATOR. YOU MAY MODIFY THE IMPLEMENTATION AND ADD CUSTOM IMPORTS.
 import type { ServiceResponse } from '@/types/service';
-import type { CreateTokenDTO, CreateTokenResponseDTO } from '../sdk/types';
 import type { APIContext } from 'astro';
+import { createHash, randomBytes } from 'node:crypto';
+import type { CreateTokenDTO, CreateTokenResponseDTO } from '../sdk/types';
 import { PersonalAccessTokenService } from '../services/personal-access-token-service';
-import { randomBytes, createHash } from 'node:crypto';
 
 export class CreateTokenUserAction {
   public static async run(
