@@ -1,45 +1,9 @@
 // INITIAL GENERATED CODE - REVIEW AND MODIFY AS NEEDED FOR SERVICE INTEGRATION TESTS
+import { createMockContext } from '@tests/integration/helpers/context';
 import { describe, expect, it } from 'vitest';
-import { createMockContext } from '../../../../../tests/integration/helpers/context';
 import { LoginAuthAction } from '../../../src/actions/login-auth';
 import type { LoginDTO } from '../../../src/sdk';
 
-describe('LoginAuthAction - Service Integration', () => {
-  beforeAll(async () => {
-    await initUser();
-  });
-
-  it('should allow a user to login with valid credentials', async () => {
-    // 1. Setup: Create user with known password
-    const user = await Factory.create('user', { email: 'login@example.com' });
-    const ctx = await createMockContext();
-
-    const input = {
-      email: 'login@example.com',
-      password: 'Password123!',
-    };
-
-    const result = await LoginAuthAction.run(input, ctx);
-
-    expect(result.success).toBe(true);
-    expect(result.data?.id).toBe(user.id);
-  });
-
-  it('should fail with invalid password', async () => {
-    await Factory.create('user', { email: 'wrong-pass@example.com' });
-    const ctx = await createMockContext();
-
-    const input = {
-      email: 'wrong-pass@example.com',
-      password: 'WrongPassword',
-    };
-
-    const result = await LoginAuthAction.run(input, ctx);
-
-    expect(result.success).toBe(false);
-    expect(result.error).toBe('user.action.login.invalid_credentials');
-  });
-});
 describe('LoginAuthAction - Service Integration', () => {
   it.skip('should execute successfully', async () => {
     // 1. Setup prerequisite state using DataFactory

@@ -1,7 +1,7 @@
 import { db } from '@/lib/core/db';
 import type { ServiceResponse } from '@/types/service';
 import { HookSystem } from '@/lib/modules/hooks';
-import { UserModuleTypes } from '@/lib/api';
+import * as UserModuleTypes from '../sdk';
 import { userConfig } from '../config';
 import { Logger } from '@/lib/core/logger';
 

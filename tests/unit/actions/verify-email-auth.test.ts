@@ -1,0 +1,177 @@
+// GENERATED CODE - DO NOT MODIFY
+import type { APIContext } from 'astro';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { VerifyEmailAuthAction } from '../../../src/actions/verify-email-auth';
+
+vi.mock('@/lib/core/db', () => {
+  const mockModelProps = {
+    id: '1',
+    type: 'TASK',
+    email: 'test@example.com',
+    status: 'PENDING',
+    name: 'Test Name',
+    userId: 'user-1',
+    teamId: 'team-1',
+    actorId: 'ne_pat_test',
+    actorType: 'user',
+    lockedBy: 'ne_pat_test',
+    payload: {},
+    capabilities: [],
+    progress: 0,
+    retryCount: 0,
+    maxRetries: 3,
+    originalJobId: '1',
+    reason: 'Test Reason',
+  };
+
+  const isExistenceCheck = (where: Record<string, unknown>): boolean => {
+    if (!where) return false;
+    const fields = [
+      'email',
+      'username',
+      'teamId_userId',
+      'userId_teamId',
+      'teamId_email',
+      'email_teamId',
+      'token',
+    ];
+    const whereKeys = Object.keys(where);
+    if (whereKeys.some((k) => fields.includes(k))) return true;
+    if (whereKeys.some((k) => k.includes('_'))) return true;
+    if (where.OR && Array.isArray(where.OR))
+      return (where.OR as Record<string, unknown>[]).some((c) => isExistenceCheck(c));
+    if (where.AND && Array.isArray(where.AND))
+      return (where.AND as Record<string, unknown>[]).some((c) => isExistenceCheck(c));
+    if (where.userId && where.teamId) return true;
+    return false;
+  };
+
+  const mockModel = {
+    findMany: vi.fn().mockResolvedValue([mockModelProps]),
+    findUnique: vi.fn().mockImplementation((args: { where: Record<string, unknown> }) => {
+      if (isExistenceCheck(args?.where) && !args?.where?.id) return null;
+      return {
+        ...mockModelProps,
+        ...args?.where,
+      };
+    }),
+    findFirst: vi.fn().mockImplementation((args: { where: Record<string, unknown> }) => {
+      if (isExistenceCheck(args?.where) && !args?.where?.id) return null;
+      return {
+        ...mockModelProps,
+        ...args?.where,
+      };
+    }),
+    create: vi.fn().mockResolvedValue(mockModelProps),
+    update: vi.fn().mockResolvedValue(mockModelProps),
+    delete: vi.fn().mockResolvedValue(mockModelProps),
+    count: vi.fn().mockResolvedValue(1),
+    upsert: vi.fn().mockResolvedValue(mockModelProps),
+    updateMany: vi.fn().mockResolvedValue({ count: 1 }),
+    deleteMany: vi.fn().mockResolvedValue({ count: 1 }),
+    groupBy: vi.fn().mockResolvedValue([{ _count: { id: 1 }, status: 'ACTIVE' }]),
+    aggregate: vi.fn().mockResolvedValue({ _count: { id: 1 }, _avg: { value: 0 } }),
+    ...mockModelProps,
+  };
+
+  const handler = {
+    get: (target: Record<string, unknown>, prop: string): unknown => {
+      if (prop === '$transaction') {
+        return vi.fn().mockImplementation(async (input) => {
+          if (Array.isArray(input)) return Promise.all(input);
+          return typeof input === 'function'
+            ? input(new Proxy({}, handler as ProxyHandler<object>))
+            : input;
+        });
+      }
+      if (typeof prop === 'string' && !prop.startsWith('$')) {
+        return mockModel;
+      }
+      return target[prop];
+    },
+  };
+
+  return {
+    db: new Proxy({}, handler),
+  };
+});
+
+vi.mock('@/lib/core/config', () => ({
+  config: {
+    PUBLIC_API_URL: 'http://localhost:3000',
+    NODE_ENV: 'test',
+  },
+  createConfig: vi.fn().mockImplementation((schema) => ({
+    parse: vi.fn().mockImplementation((d) => d),
+    ...schema,
+  })),
+  getProcessEnv: vi.fn().mockImplementation((k) => k),
+}));
+
+vi.mock('@/lib/core/logger', () => ({
+  Logger: {
+    error: vi.fn(),
+    info: vi.fn(),
+    warn: vi.fn(),
+    debug: vi.fn(),
+  },
+}));
+
+vi.mock('@/lib/modules/hooks', () => ({
+  HookSystem: {
+    dispatch: vi.fn().mockResolvedValue(undefined),
+    filter: vi.fn().mockImplementation((name, data) => Promise.resolve(data)),
+    on: vi.fn(),
+  },
+}));
+
+vi.mock('@/lib/email/email-registry', () => ({
+  EmailRegistry: {
+    render: vi.fn().mockResolvedValue('<html></html>'),
+  },
+}));
+
+vi.mock('@/lib/email/email-sender', () => ({
+  sendEmail: vi.fn().mockResolvedValue(undefined),
+}));
+
+vi.mock('@/lib/registries/role-registry', () => ({
+  roleRegistry: {
+    get: vi.fn().mockReturnValue({ check: vi.fn().mockResolvedValue(undefined) }),
+    check: vi.fn().mockResolvedValue(undefined),
+  },
+}));
+
+describe('VerifyEmailAuthAction', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('should be defined', () => {
+    expect(VerifyEmailAuthAction).toBeDefined();
+  });
+
+  it('should run (smoke test)', async () => {
+    const mockContext = {
+      locals: {
+        actor: { id: 'user-1', type: 'user', email: 'test@example.com' },
+      },
+      request: new Request('http://localhost'),
+      params: { id: 'test-id', role: 'member' },
+    } as unknown as Record<string, unknown>;
+
+    const result = await VerifyEmailAuthAction.run(
+      {
+        id: '1',
+        userId: 'user-1',
+        teamId: 'team-1',
+        token: 'test-token',
+        email: 'test@example.com',
+        name: 'Test',
+        role: 'TEAM_MEMBER',
+      } as Record<string, unknown>,
+      mockContext as unknown as APIContext,
+    );
+    expect(result).toBeDefined();
+  });
+});

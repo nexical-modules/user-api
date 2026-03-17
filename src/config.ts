@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { createConfig } from '@/lib/core/config';
-import { UserModuleTypes } from '@/lib/api';
+import * as UserModuleTypes from './sdk';
 
 const userSchema = z.object({
   PUBLIC_USER_MODE: z.nativeEnum(UserModuleTypes.UserMode).default(UserModuleTypes.UserMode.PUBLIC),

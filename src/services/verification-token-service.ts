@@ -5,6 +5,7 @@ import { Logger } from '@/lib/core/logger';
 import { HookSystem } from '@/lib/modules/hooks';
 import type { ServiceResponse } from '@/types/service';
 import type { Prisma, VerificationToken } from '@prisma/client';
+
 /** Service class for VerificationToken-related business logic. */
 export class VerificationTokenService {
   public static async list(
@@ -12,53 +13,65 @@ export class VerificationTokenService {
     actor?: ApiActor,
   ): Promise<ServiceResponse<VerificationToken[]>> {
     try {
-      const { where, take, skip, orderBy, select } = params || {};
+      let { where, take, skip, orderBy, select } = params || {};
+
+      // Allow hooks to modify the query parameters (e.g. for scoping)
+      // Pass actor context if available
+      const filteredParams = await HookSystem.filter('verificationToken.beforeList', {
+        where,
+        take,
+        skip,
+        orderBy,
+        select,
+        actor,
+      });
+      where = filteredParams.where;
+      take = filteredParams.take;
+      skip = filteredParams.skip;
+      orderBy = filteredParams.orderBy;
+      select = filteredParams.select;
+
       const [data, total] = await db.$transaction([
         db.verificationToken.findMany({ where, take, skip, orderBy, select }),
         db.verificationToken.count({ where }),
       ]);
+
       const filteredData = await HookSystem.filter('verificationToken.list', data);
+
       return { success: true, data: filteredData, total };
     } catch (error) {
       Logger.error('VerificationToken list Error', error);
-      return {
-        success: false,
-        error: 'verificationToken.service.error.list_failed',
-      };
+      return { success: false, error: 'verificationToken.service.error.list_failed' };
     }
   }
+
   public static async get(
     id: string,
     select?: Prisma.VerificationTokenSelect,
     actor?: ApiActor,
   ): Promise<ServiceResponse<VerificationToken | null>> {
     try {
-      const data = await db.verificationToken.findUnique({
-        where: { id },
-        select,
-      });
-      if (!data)
-        return {
-          success: false,
-          error: 'verificationToken.service.error.not_found',
-        };
-      const filtered = await HookSystem.filter('verificationToken.read', data);
+      const data = await db.verificationToken.findUnique({ where: { id }, select });
+      if (!data) return { success: false, error: 'verificationToken.service.error.not_found' };
+
+      const filtered = await HookSystem.filter('verificationToken.read', data, { actor });
+
       return { success: true, data: filtered };
     } catch (error) {
       Logger.error('VerificationToken get Error', error);
-      return {
-        success: false,
-        error: 'verificationToken.service.error.get_failed',
-      };
+      return { success: false, error: 'verificationToken.service.error.get_failed' };
     }
   }
+
   public static async create(
     data: Prisma.VerificationTokenCreateInput,
     select?: Prisma.VerificationTokenSelect,
     actor?: ApiActor,
   ): Promise<ServiceResponse<VerificationToken>> {
     try {
-      const input = await HookSystem.filter('verificationToken.beforeCreate', data);
+      // Pass actor context to hooks for security/authorship validation
+      const input = await HookSystem.filter('verificationToken.beforeCreate', data, { actor });
+
       const newItem = await db.$transaction(async (tx) => {
         const created = await tx.verificationToken.create({
           data: input as Prisma.VerificationTokenCreateInput,
@@ -66,20 +79,20 @@ export class VerificationTokenService {
         });
         await HookSystem.dispatch('verificationToken.created', {
           id: created.id,
-          actorId: 'system',
+          actorId: actor?.id || 'system',
         });
         return created;
       });
-      const filtered = await HookSystem.filter('verificationToken.read', newItem);
+
+      const filtered = await HookSystem.filter('verificationToken.read', newItem, { actor });
+
       return { success: true, data: filtered };
     } catch (error) {
       Logger.error('VerificationToken create Error', error);
-      return {
-        success: false,
-        error: 'verificationToken.service.error.create_failed',
-      };
+      return { success: false, error: 'verificationToken.service.error.create_failed' };
     }
   }
+
   public static async update(
     id: string,
     data: Prisma.VerificationTokenUpdateInput,
@@ -87,7 +100,8 @@ export class VerificationTokenService {
     actor?: ApiActor,
   ): Promise<ServiceResponse<VerificationToken>> {
     try {
-      const input = await HookSystem.filter('verificationToken.beforeUpdate', data);
+      const input = await HookSystem.filter('verificationToken.beforeUpdate', data, { actor, id });
+
       const updatedItem = await db.$transaction(async (tx) => {
         const updated = await tx.verificationToken.update({
           where: { id },
@@ -97,32 +111,30 @@ export class VerificationTokenService {
         await HookSystem.dispatch('verificationToken.updated', {
           id,
           changes: Object.keys(input),
+          actorId: actor?.id,
         });
         return updated;
       });
-      const filtered = await HookSystem.filter('verificationToken.read', updatedItem);
+
+      const filtered = await HookSystem.filter('verificationToken.read', updatedItem, { actor });
+
       return { success: true, data: filtered };
     } catch (error) {
       Logger.error('VerificationToken update Error', error);
-      return {
-        success: false,
-        error: 'verificationToken.service.error.update_failed',
-      };
+      return { success: false, error: 'verificationToken.service.error.update_failed' };
     }
   }
+
   public static async delete(id: string, actor?: ApiActor): Promise<ServiceResponse<void>> {
     try {
       await db.$transaction(async (tx) => {
         await tx.verificationToken.delete({ where: { id } });
-        await HookSystem.dispatch('verificationToken.deleted', { id });
+        await HookSystem.dispatch('verificationToken.deleted', { id, actorId: actor?.id });
       });
       return { success: true };
     } catch (error) {
       Logger.error('VerificationToken delete Error', error);
-      return {
-        success: false,
-        error: 'verificationToken.service.error.delete_failed',
-      };
+      return { success: false, error: 'verificationToken.service.error.delete_failed' };
     }
   }
 }

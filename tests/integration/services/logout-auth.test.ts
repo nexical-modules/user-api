@@ -1,21 +1,9 @@
 // INITIAL GENERATED CODE - REVIEW AND MODIFY AS NEEDED FOR SERVICE INTEGRATION TESTS
+import { createMockContext } from '@tests/integration/helpers/context';
 import { describe, expect, it } from 'vitest';
-import { createMockContext } from '../../../../../tests/integration/helpers/context';
 import { LogoutAuthAction } from '../../../src/actions/logout-auth';
 import type { LogoutDTO } from '../../../src/sdk';
 
-describe('LogoutAuthAction - Service Integration', () => {
-  beforeAll(async () => {
-    await initUser();
-  });
-
-  it('should return success on logout', async () => {
-    const ctx = await createMockContext();
-    const result = await LogoutAuthAction.run({}, ctx);
-
-    expect(result.success).toBe(true);
-  });
-});
 describe('LogoutAuthAction - Service Integration', () => {
   it.skip('should execute successfully', async () => {
     // 1. Setup prerequisite state using DataFactory

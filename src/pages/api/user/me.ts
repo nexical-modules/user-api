@@ -1,23 +1,28 @@
 // GENERATED CODE - DO NOT MODIFY
-import type { UserModuleTypes } from '@/lib/api';
+import { UserModuleTypes } from '@/lib/api';
 import { defineApi } from '@/lib/api/api-docs';
 import { ApiGuard } from '@/lib/api/api-guard';
 import { HookSystem } from '@/lib/modules/hooks';
 import { DeleteMeUserAction } from '@modules/user-api/src/actions/delete-me-user';
 import { GetMeUserAction } from '@modules/user-api/src/actions/get-me-user';
 import { UpdateMeUserAction } from '@modules/user-api/src/actions/update-me-user';
+import { z } from 'zod';
+
 export const GET = defineApi(
   async (context, actor) => {
-    // 1. Body Parsing (Input)
-    const body = {} as unknown;
-
+    // 1. Parsing Input (Body + Query + Params)
+    const rawBody = {};
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
+    const rawInput = { ...context.params, ...query, ...rawBody };
+
+    const zodSchema = null;
+    const body = (zodSchema ? zodSchema.parse(rawInput) : rawInput) as unknown;
 
     // 2. Hook: Filter Input
     const input: unknown = await HookSystem.filter('user.getMe.input', body);
 
     // 3. Security Check
-    const combinedInput = { ...context.params, ...query, ...input };
+    const combinedInput = { ...input }; // input already contains params, query and body
     await ApiGuard.protect(context, 'USER_EMPLOYEE', combinedInput);
 
     // Inject userId from context for protected routes
@@ -33,7 +38,7 @@ export const GET = defineApi(
 
     // 6. Response
     if (!filteredResult.success) {
-      return new Response(JSON.stringify({ error: filteredResult.error }), { status: 400 });
+      throw new Error(filteredResult.error || 'Internal Server Error');
     }
 
     return { success: true, data: filteredResult.data };
@@ -72,10 +77,24 @@ export const GET = defineApi(
 );
 export const PUT = defineApi(
   async (context, actor) => {
-    // 1. Body Parsing (Input)
-    const body = (await context.request.json()) as UserModuleTypes.UpdateUserDTO;
-
+    // 1. Parsing Input (Body + Query + Params)
+    const rawBody = await context.request.json();
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
+    const rawInput = { ...context.params, ...query, ...rawBody };
+
+    const zodSchema = z.object({
+      id: z.string(),
+      name: z.string().optional(),
+      username: z.string().optional(),
+      email: z.string().optional(),
+      image: z.string().optional(),
+      role: z.nativeEnum(UserModuleTypes.SiteRole).optional(),
+      status: z.nativeEnum(UserModuleTypes.UserStatus).optional(),
+      password: z.string().optional(),
+    });
+    const body = (
+      zodSchema ? zodSchema.parse(rawInput) : rawInput
+    ) as UserModuleTypes.UpdateUserDTO;
 
     // 2. Hook: Filter Input
     const input: UserModuleTypes.UpdateUserDTO = await HookSystem.filter(
@@ -84,7 +103,7 @@ export const PUT = defineApi(
     );
 
     // 3. Security Check
-    const combinedInput = { ...context.params, ...query, ...input };
+    const combinedInput = { ...input }; // input already contains params, query and body
     await ApiGuard.protect(context, 'USER_EMPLOYEE', combinedInput);
 
     // Inject userId from context for protected routes
@@ -100,7 +119,7 @@ export const PUT = defineApi(
 
     // 6. Response
     if (!filteredResult.success) {
-      return new Response(JSON.stringify({ error: filteredResult.error }), { status: 400 });
+      throw new Error(filteredResult.error || 'Internal Server Error');
     }
 
     return { success: true, data: filteredResult.data };
@@ -159,16 +178,21 @@ export const PUT = defineApi(
 );
 export const DELETE = defineApi(
   async (context, actor) => {
-    // 1. Body Parsing (Input)
-    const body = (await context.request.json()) as UserModuleTypes.DeleteMeDTO;
-
+    // 1. Parsing Input (Body + Query + Params)
+    const rawBody = await context.request.json();
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
+    const rawInput = { ...context.params, ...query, ...rawBody };
+
+    const zodSchema = z.object({
+      userId: z.string().optional(),
+    });
+    const body = (zodSchema ? zodSchema.parse(rawInput) : rawInput) as UserModuleTypes.DeleteMeDTO;
 
     // 2. Hook: Filter Input
     const input: UserModuleTypes.DeleteMeDTO = await HookSystem.filter('user.deleteMe.input', body);
 
     // 3. Security Check
-    const combinedInput = { ...context.params, ...query, ...input };
+    const combinedInput = { ...input }; // input already contains params, query and body
     await ApiGuard.protect(context, 'USER_EMPLOYEE', combinedInput);
 
     // Inject userId from context for protected routes
@@ -184,7 +208,7 @@ export const DELETE = defineApi(
 
     // 6. Response
     if (!filteredResult.success) {
-      return new Response(JSON.stringify({ error: filteredResult.error }), { status: 400 });
+      throw new Error(filteredResult.error || 'Internal Server Error');
     }
 
     return { success: true, data: filteredResult.data };

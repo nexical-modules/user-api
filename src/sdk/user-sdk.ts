@@ -7,6 +7,7 @@ import type {
   UpdateUserDTO,
   User,
 } from './types.js';
+
 /** SDK client for User. */
 export class UserSDK extends BaseResource {
   public async list(params?: {
@@ -32,34 +33,42 @@ export class UserSDK extends BaseResource {
     });
     return this._request('GET', `/user${query}`);
   }
+
   public async get(id: string): Promise<{ success: boolean; data: User; error?: string }> {
     return this._request('GET', `/user/${id}`);
   }
+
   public async create(
     data: Partial<User>,
   ): Promise<{ success: boolean; data: User; error?: string }> {
     return this._request('POST', `/user`, data);
   }
+
   public async update(
     id: string,
     data: Partial<User>,
   ): Promise<{ success: boolean; data: User; error?: string }> {
     return this._request('PUT', `/user/${id}`, data);
   }
+
   public async delete(id: string): Promise<{ success: boolean; error?: string }> {
     return this._request('DELETE', `/user/${id}`);
   }
+
   public async getMe(): Promise<{ success: boolean; data: User; error?: string }> {
     return this._request('GET', `/user/me`);
   }
+
   public async updateMe(
     data: UpdateUserDTO,
   ): Promise<{ success: boolean; data: User; error?: string }> {
     return this._request('PUT', `/user/me`, data);
   }
+
   public async deleteMe(): Promise<{ success: boolean; data: void; error?: string }> {
     return this._request('DELETE', `/user/me`);
   }
+
   public async listTokens(): Promise<{
     success: boolean;
     data: PersonalAccessToken[];
@@ -67,11 +76,13 @@ export class UserSDK extends BaseResource {
   }> {
     return this._request('GET', `/user/me/tokens`);
   }
+
   public async createToken(
     data: CreateTokenDTO,
   ): Promise<{ success: boolean; data: CreateTokenResponseDTO; error?: string }> {
     return this._request('POST', `/user/me/tokens`, data);
   }
+
   public async deleteToken(id: string): Promise<{ success: boolean; data: void; error?: string }> {
     return this._request('DELETE', `/user/me/tokens/${id}`);
   }

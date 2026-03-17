@@ -1,21 +1,29 @@
 // GENERATED CODE - DO NOT MODIFY
-import type { UserModuleTypes } from '@/lib/api';
+import { UserModuleTypes } from '@/lib/api';
 import { defineApi } from '@/lib/api/api-docs';
 import { ApiGuard } from '@/lib/api/api-guard';
 import { HookSystem } from '@/lib/modules/hooks';
 import { LoginAuthAction } from '@modules/user-api/src/actions/login-auth';
+import { z } from 'zod';
+
 export const POST: APIRoute = defineApi(
   async (context, actor) => {
-    // 1. Body Parsing (Input)
-    const body = (await context.request.json()) as UserModuleTypes.LoginDTO;
-
+    // 1. Parsing Input (Body + Query + Params)
+    const rawBody = await context.request.json();
     const query = Object.fromEntries(new URL(context.request.url).searchParams);
+    const rawInput = { ...context.params, ...query, ...rawBody };
+
+    const zodSchema = z.object({
+      email: z.string(),
+      password: z.string(),
+    });
+    const body = (zodSchema ? zodSchema.parse(rawInput) : rawInput) as UserModuleTypes.LoginDTO;
 
     // 2. Hook: Filter Input
     const input: UserModuleTypes.LoginDTO = await HookSystem.filter('auth.login.input', body);
 
     // 3. Security Check
-    const combinedInput = { ...context.params, ...query, ...input };
+    const combinedInput = { ...input }; // input already contains params, query and body
     await ApiGuard.protect(context, 'anonymous', combinedInput);
 
     // Inject userId from context for protected routes
@@ -31,7 +39,7 @@ export const POST: APIRoute = defineApi(
 
     // 6. Response
     if (!filteredResult.success) {
-      return new Response(JSON.stringify({ error: filteredResult.error }), { status: 400 });
+      throw new Error(filteredResult.error || 'Internal Server Error');
     }
 
     return { success: true, data: filteredResult.data };

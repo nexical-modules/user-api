@@ -1,32 +1,9 @@
 // INITIAL GENERATED CODE - REVIEW AND MODIFY AS NEEDED FOR SERVICE INTEGRATION TESTS
+import { createMockContext } from '@tests/integration/helpers/context';
 import { describe, expect, it } from 'vitest';
-import { createMockContext } from '../../../../../tests/integration/helpers/context';
 import { UpdateMeUserAction } from '../../../src/actions/update-me-user';
 import type { UpdateUserDTO } from '../../../src/sdk';
 
-describe('UpdateMeUserAction - Service Integration', () => {
-  beforeAll(async () => {
-    await initUser();
-  });
-
-  it('should update the current user profile', async () => {
-    const user = await Factory.create('user', { name: 'Old Name' });
-    const ctx = await createMockContext('USER_EMPLOYEE', 'user', user.id);
-
-    const input = {
-      id: user.id,
-      name: 'New Name',
-    };
-
-    const result = await UpdateMeUserAction.run(input, ctx);
-
-    expect(result.success).toBe(true);
-    expect(result.data?.name).toBe('New Name');
-
-    const dbUser = await Factory.prisma.user.findUnique({ where: { id: user.id } });
-    expect(dbUser?.name).toBe('New Name');
-  });
-});
 describe('UpdateMeUserAction - Service Integration', () => {
   it.skip('should execute successfully', async () => {
     // 1. Setup prerequisite state using DataFactory

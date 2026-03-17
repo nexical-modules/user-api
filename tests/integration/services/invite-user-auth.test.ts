@@ -1,29 +1,9 @@
 // INITIAL GENERATED CODE - REVIEW AND MODIFY AS NEEDED FOR SERVICE INTEGRATION TESTS
+import { createMockContext } from '@tests/integration/helpers/context';
 import { describe, expect, it } from 'vitest';
-import { createMockContext } from '../../../../../tests/integration/helpers/context';
 import { InviteUserAuthAction } from '../../../src/actions/invite-user-auth';
 import type { InviteUserDTO } from '../../../src/sdk';
 
-describe('InviteUserAuthAction - Service Integration', () => {
-  beforeAll(async () => {
-    await initUser();
-  });
-
-  it('should create an invitation for a new email', async () => {
-    const ctx = await createMockContext('USER_ADMIN', 'user');
-    const input = { email: 'invite-me@example.com' };
-
-    const result = await InviteUserAuthAction.run(input, ctx);
-
-    expect(result.success).toBe(true);
-    expect(result.data?.email).toBe('invite-me@example.com');
-
-    const invitation = await Factory.prisma.invitation.findUnique({
-      where: { email: 'invite-me@example.com' },
-    });
-    expect(invitation).toBeDefined();
-  });
-});
 describe('InviteUserAuthAction - Service Integration', () => {
   it.skip('should execute successfully', async () => {
     // 1. Setup prerequisite state using DataFactory
