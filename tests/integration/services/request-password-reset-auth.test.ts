@@ -1,9 +1,10 @@
+// INITIAL GENERATED CODE - REVIEW AND MODIFY AS NEEDED FOR SERVICE INTEGRATION TESTS
+import { HookSystem } from '@/lib/modules/hooks';
 import { createMockContext } from '@tests/integration/helpers/context';
 import { Factory } from '@tests/integration/lib/factory';
-import { describe, expect, it, beforeAll, vi } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 import { RequestPasswordResetAuthAction } from '../../../src/actions/request-password-reset-auth';
 import { init } from '../../../src/server-init';
-import { HookSystem } from '@/lib/modules/hooks';
 
 describe('RequestPasswordResetAuthAction - Service Integration', () => {
   beforeAll(async () => {

@@ -1,6 +1,7 @@
+// INITIAL GENERATED CODE - REVIEW AND MODIFY AS NEEDED FOR SERVICE INTEGRATION TESTS
 import { createMockContext } from '@tests/integration/helpers/context';
 import { Factory } from '@tests/integration/lib/factory';
-import { describe, expect, it, beforeAll } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 import { DeleteMeUserAction } from '../../../src/actions/delete-me-user';
 import { init } from '../../../src/server-init';
 

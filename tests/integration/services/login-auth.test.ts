@@ -1,7 +1,8 @@
+// INITIAL GENERATED CODE - REVIEW AND MODIFY AS NEEDED FOR SERVICE INTEGRATION TESTS
 import { createMockContext } from '@tests/integration/helpers/context';
 import { Factory } from '@tests/integration/lib/factory';
-import { describe, expect, it, beforeAll } from 'vitest';
 import bcrypt from 'bcryptjs';
+import { beforeAll, describe, expect, it } from 'vitest';
 import { LoginAuthAction } from '../../../src/actions/login-auth';
 import { init } from '../../../src/server-init';
 
