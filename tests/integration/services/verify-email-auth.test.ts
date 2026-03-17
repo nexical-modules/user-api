@@ -1,26 +1,62 @@
-// INITIAL GENERATED CODE - REVIEW AND MODIFY AS NEEDED FOR SERVICE INTEGRATION TESTS
 import { createMockContext } from '@tests/integration/helpers/context';
-import { describe, expect, it } from 'vitest';
+import { Factory } from '@tests/integration/lib/factory';
+import { describe, expect, it, beforeAll } from 'vitest';
 import { VerifyEmailAuthAction } from '../../../src/actions/verify-email-auth';
-import type { VerifyEmailDTO } from '../../../src/sdk';
+import { init } from '../../../src/server-init';
 
 describe('VerifyEmailAuthAction - Service Integration', () => {
-  it.skip('should execute successfully', async () => {
-    // 1. Setup prerequisite state using DataFactory
-    // const prerequisite = await Factory.create('someModel', { ... });
+  beforeAll(async () => {
+    await init();
+  });
 
-    // 2. Prepare Action Input
-    const input: VerifyEmailDTO = {} as unknown as VerifyEmailDTO; // TODO: Provide valid mock data
+  it('should verify email when a valid token is provided', async () => {
+    const user = await Factory.create('user', {
+      email: 'verify@example.com',
+      emailVerified: null,
+    });
 
-    // 3. Prepare Mock Context with Actor
-    const ctx = await createMockContext();
-    const result = await VerifyEmailAuthAction.run(input, ctx);
+    await Factory.prisma.verificationToken.create({
+      data: {
+        identifier: user.email!,
+        token: 'valid-verify-token',
+        expires: new Date(Date.now() + 3600000),
+      },
+    });
 
-    // 4. Verify Database state explicitly using Prisma
-    // const record = await Factory.prisma.someModel.findUnique({ where: { id: ... } });
-    // expect(record).toBeDefined();
+    const ctx = await createMockContext('USER_EMPLOYEE', 'user');
 
-    // 5. Verify the Action's direct output
+    const result = await VerifyEmailAuthAction.run(
+      {
+        token: 'valid-verify-token',
+      },
+      ctx,
+    );
+
+    if (!result.success) {
+      console.error('[DEBUG] VerifyEmailAuthAction error:', result.error);
+    }
+
     expect(result.success).toBe(true);
+
+    const updatedUser = await Factory.prisma.user.findUnique({ where: { id: user.id } });
+    expect(updatedUser?.emailVerified).not.toBeNull();
+
+    const deletedToken = await Factory.prisma.verificationToken.findFirst({
+      where: { token: 'valid-verify-token' },
+    });
+    expect(deletedToken).toBeNull();
+  });
+
+  it('should fail when an invalid token is provided', async () => {
+    const ctx = await createMockContext('USER_EMPLOYEE', 'user');
+    const result = await VerifyEmailAuthAction.run(
+      {
+        token: 'invalid-token',
+      },
+      ctx,
+    );
+
+    expect(result.success).toBe(false);
+    expect(result.error).toBe('user.service.error.invalid_token');
   });
 });

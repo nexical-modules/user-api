@@ -1,26 +1,41 @@
-// INITIAL GENERATED CODE - REVIEW AND MODIFY AS NEEDED FOR SERVICE INTEGRATION TESTS
 import { createMockContext } from '@tests/integration/helpers/context';
-import { describe, expect, it } from 'vitest';
+import { Factory } from '@tests/integration/lib/factory';
+import { describe, expect, it, beforeAll } from 'vitest';
 import { RegisterAuthAction } from '../../../src/actions/register-auth';
-import type { CreateUserDTO } from '../../../src/sdk';
+import { init } from '../../../src/server-init';
 
 describe('RegisterAuthAction - Service Integration', () => {
-  it.skip('should execute successfully', async () => {
-    // 1. Setup prerequisite state using DataFactory
-    // const prerequisite = await Factory.create('someModel', { ... });
+  beforeAll(async () => {
+    await init();
+  });
 
-    // 2. Prepare Action Input
-    const input: CreateUserDTO = {} as unknown as CreateUserDTO; // TODO: Provide valid mock data
+  it('should allow a new user to register', async () => {
+    const ctx = await createMockContext('USER_EMPLOYEE', 'user');
 
-    // 3. Prepare Mock Context with Actor
-    const ctx = await createMockContext();
+    const input = {
+      email: 'newuser@example.com',
+      password: 'password123',
+      confirmPassword: 'password123',
+      username: 'newuser',
+      name: 'New User',
+    };
+
     const result = await RegisterAuthAction.run(input, ctx);
 
-    // 4. Verify Database state explicitly using Prisma
-    // const record = await Factory.prisma.someModel.findUnique({ where: { id: ... } });
-    // expect(record).toBeDefined();
+    if (!result.success) {
+      console.error('[DEBUG] RegisterAuthAction error:', result.error);
+    }
 
-    // 5. Verify the Action's direct output
     expect(result.success).toBe(true);
+    expect(result.data?.email).toBe('newuser@example.com');
+    expect(result.data?.username).toBe('newuser');
+
+    const user = await Factory.prisma.user.findUnique({
+      where: { email: 'newuser@example.com' },
+    });
+
+    expect(user).toBeDefined();
+    expect(user?.password).toBeDefined();
+    expect(user?.password).not.toBe('password123'); // Should be hashed
   });
 });

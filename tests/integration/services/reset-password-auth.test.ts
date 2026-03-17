@@ -1,26 +1,67 @@
-// INITIAL GENERATED CODE - REVIEW AND MODIFY AS NEEDED FOR SERVICE INTEGRATION TESTS
 import { createMockContext } from '@tests/integration/helpers/context';
-import { describe, expect, it } from 'vitest';
+import { Factory } from '@tests/integration/lib/factory';
+import { describe, expect, it, beforeAll } from 'vitest';
+import bcrypt from 'bcryptjs';
 import { ResetPasswordAuthAction } from '../../../src/actions/reset-password-auth';
-import type { ResetPasswordDTO } from '../../../src/sdk';
+import { init } from '../../../src/server-init';
 
 describe('ResetPasswordAuthAction - Service Integration', () => {
-  it.skip('should execute successfully', async () => {
-    // 1. Setup prerequisite state using DataFactory
-    // const prerequisite = await Factory.create('someModel', { ... });
+  beforeAll(async () => {
+    await init();
+  });
 
-    // 2. Prepare Action Input
-    const input: ResetPasswordDTO = {} as unknown as ResetPasswordDTO; // TODO: Provide valid mock data
+  it('should reset password when a valid token is provided', async () => {
+    const user = await Factory.create('user', {
+      email: 'resetme@example.com',
+      password: await bcrypt.hash('oldpassword', 10),
+    });
 
-    // 3. Prepare Mock Context with Actor
-    const ctx = await createMockContext();
-    const result = await ResetPasswordAuthAction.run(input, ctx);
+    const resetToken = await Factory.prisma.passwordResetToken.create({
+      data: {
+        email: user.email!,
+        token: 'valid-token',
+        expires: new Date(Date.now() + 3600000),
+      },
+    });
 
-    // 4. Verify Database state explicitly using Prisma
-    // const record = await Factory.prisma.someModel.findUnique({ where: { id: ... } });
-    // expect(record).toBeDefined();
+    const ctx = await createMockContext('USER_EMPLOYEE', 'user');
 
-    // 5. Verify the Action's direct output
+    const result = await ResetPasswordAuthAction.run(
+      {
+        token: resetToken.token,
+        password: 'newpassword123',
+        confirmPassword: 'newpassword123',
+      },
+      ctx,
+    );
+
+    if (!result.success) {
+      console.error('[DEBUG] ResetPasswordAuthAction error:', result.error);
+    }
+
     expect(result.success).toBe(true);
+
+    const updatedUser = await Factory.prisma.user.findUnique({ where: { id: user.id } });
+    expect(await bcrypt.compare('newpassword123', updatedUser!.password!)).toBe(true);
+
+    const deletedToken = await Factory.prisma.passwordResetToken.findUnique({
+      where: { id: resetToken.id },
+    });
+    expect(deletedToken).toBeNull();
+  });
+
+  it('should fail when an invalid token is provided', async () => {
+    const ctx = await createMockContext('USER_EMPLOYEE', 'user');
+    const result = await ResetPasswordAuthAction.run(
+      {
+        token: 'invalid-token',
+        password: 'newpassword123',
+        confirmPassword: 'newpassword123',
+      },
+      ctx,
+    );
+
+    expect(result.success).toBe(false);
+    expect(result.error).toBe('user.service.error.invalid_token');
   });
 });

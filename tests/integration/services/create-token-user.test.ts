@@ -1,26 +1,39 @@
-// INITIAL GENERATED CODE - REVIEW AND MODIFY AS NEEDED FOR SERVICE INTEGRATION TESTS
 import { createMockContext } from '@tests/integration/helpers/context';
-import { describe, expect, it } from 'vitest';
+import { Factory } from '@tests/integration/lib/factory';
+import { describe, expect, it, beforeAll } from 'vitest';
 import { CreateTokenUserAction } from '../../../src/actions/create-token-user';
-import type { CreateTokenDTO } from '../../../src/sdk';
+import { init } from '../../../src/server-init';
 
 describe('CreateTokenUserAction - Service Integration', () => {
-  it.skip('should execute successfully', async () => {
-    // 1. Setup prerequisite state using DataFactory
-    // const prerequisite = await Factory.create('someModel', { ... });
+  beforeAll(async () => {
+    await init();
+  });
 
-    // 2. Prepare Action Input
-    const input: CreateTokenDTO = {} as unknown as CreateTokenDTO; // TODO: Provide valid mock data
+  it('should allow a user to create a personal access token', async () => {
+    const ctx = await createMockContext('USER_EMPLOYEE', 'user');
+    const user = ctx.locals.actor as { id: string };
 
-    // 3. Prepare Mock Context with Actor
-    const ctx = await createMockContext();
+    const input = {
+      name: 'Test Token',
+      userId: user.id,
+    };
+
     const result = await CreateTokenUserAction.run(input, ctx);
 
-    // 4. Verify Database state explicitly using Prisma
-    // const record = await Factory.prisma.someModel.findUnique({ where: { id: ... } });
-    // expect(record).toBeDefined();
+    if (!result.success) {
+      console.error('[DEBUG] CreateTokenUserAction error:', result.error);
+    }
 
-    // 5. Verify the Action's direct output
     expect(result.success).toBe(true);
+    expect(result.data?.token.name).toBe('Test Token');
+    expect(result.data?.rawKey).toBeDefined();
+    expect(result.data?.rawKey.startsWith('nx_')).toBe(true);
+
+    const token = await Factory.prisma.personalAccessToken.findUnique({
+      where: { id: result.data?.token.id },
+    });
+
+    expect(token).toBeDefined();
+    expect(token?.userId).toBe(user.id);
   });
 });

@@ -1,26 +1,35 @@
-// INITIAL GENERATED CODE - REVIEW AND MODIFY AS NEEDED FOR SERVICE INTEGRATION TESTS
 import { createMockContext } from '@tests/integration/helpers/context';
-import { describe, expect, it } from 'vitest';
+import { Factory } from '@tests/integration/lib/factory';
+import { describe, expect, it, beforeAll } from 'vitest';
 import { DeleteTokenUserAction } from '../../../src/actions/delete-token-user';
-import type { DeleteTokenDTO } from '../../../src/sdk';
+import { init } from '../../../src/server-init';
 
 describe('DeleteTokenUserAction - Service Integration', () => {
-  it.skip('should execute successfully', async () => {
-    // 1. Setup prerequisite state using DataFactory
-    // const prerequisite = await Factory.create('someModel', { ... });
+  beforeAll(async () => {
+    await init();
+  });
 
-    // 2. Prepare Action Input
-    const input: DeleteTokenDTO = {} as unknown as DeleteTokenDTO; // TODO: Provide valid mock data
+  it('should allow a user to delete their personal access token', async () => {
+    const ctx = await createMockContext('USER_EMPLOYEE', 'user');
+    const user = ctx.locals.actor as { id: string };
 
-    // 3. Prepare Mock Context with Actor
-    const ctx = await createMockContext();
-    const result = await DeleteTokenUserAction.run(input, ctx);
+    const token = await Factory.create('personalAccessToken', {
+      userId: user.id,
+      name: 'Token to Delete',
+      user: undefined,
+    });
 
-    // 4. Verify Database state explicitly using Prisma
-    // const record = await Factory.prisma.someModel.findUnique({ where: { id: ... } });
-    // expect(record).toBeDefined();
+    const result = await DeleteTokenUserAction.run({ id: token.id, userId: user.id }, ctx);
 
-    // 5. Verify the Action's direct output
+    if (!result.success) {
+      console.error('[DEBUG] DeleteTokenUserAction error:', result.error);
+    }
+
     expect(result.success).toBe(true);
+
+    const deletedToken = await Factory.prisma.personalAccessToken.findUnique({
+      where: { id: token.id },
+    });
+    expect(deletedToken).toBeNull();
   });
 });
