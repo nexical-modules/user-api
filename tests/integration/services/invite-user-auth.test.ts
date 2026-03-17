@@ -1,7 +1,9 @@
 // INITIAL GENERATED CODE - REVIEW AND MODIFY AS NEEDED FOR SERVICE INTEGRATION TESTS
+import { HookSystem } from '@/lib/modules/hooks';
+import { SiteRole } from '@modules/user-api/src/sdk';
 import { createMockContext } from '@tests/integration/helpers/context';
 import { Factory } from '@tests/integration/lib/factory';
-import { beforeAll, describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it, vi } from 'vitest';
 import { InviteUserAuthAction } from '../../../src/actions/invite-user-auth';
 import { init } from '../../../src/server-init';
 
@@ -11,6 +13,7 @@ describe('InviteUserAuthAction - Service Integration', () => {
   });
 
   it('should allow inviting a new user', async () => {
+    vi.spyOn(HookSystem, 'dispatch').mockResolvedValue(undefined);
     const ctx = await createMockContext('USER_ADMIN', 'user');
 
     const result = await InviteUserAuthAction.run(
