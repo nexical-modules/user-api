@@ -1,5 +1,6 @@
 import type { APIContext } from 'astro';
 import type { ApiActor } from '@/lib/api/api-docs';
+
 import { roleRegistry } from '@/lib/registries/role-registry';
 
 export abstract class BaseRole implements RolePolicy {
@@ -24,8 +25,8 @@ export abstract class BaseRole implements RolePolicy {
     // or be added to compatibleRoles in the generated role class.
     if (normalizeRole(actorRole) === 'USER_ADMIN') return;
 
-    const normalizedActorRole = normalizeRole(actorRole);
     const normalizedRequiredRole = normalizeRole(this.name);
+    const normalizedActorRole = normalizeRole(actorRole);
 
     if (normalizedActorRole === normalizedRequiredRole) return;
     if (this.compatibleRoles?.includes(normalizedActorRole)) return;
