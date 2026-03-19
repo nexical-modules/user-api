@@ -16,7 +16,7 @@ describe('User API - DELETE ../../../../../../../src/pages/api/user/me/tokens/[i
 
   it('should call DeleteTokenUserAction and return success', async () => {
     const query = ['GET', 'DELETE'].includes('DELETE'.toUpperCase())
-      ? '?id=test-id&email=test@example.com&username=testuser&name=Test&token=test-token&hostname=localhost&agentId=agent-1&teamId=team-1&userId=user-1&type=TASK&status=ACTIVE&reason=Test%20Reason&amount=100&count=10&limit=10&offset=0&search='
+      ? `?id=${encodeURIComponent(String('test-id'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&passwordUpdatedAt=${encodeURIComponent(String(new Date().toISOString()))}&emailVerified=${encodeURIComponent(String(new Date().toISOString()))}&name=${encodeURIComponent(String('test'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('test-enum'))}&status=${encodeURIComponent(String('test-enum'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -30,27 +30,15 @@ describe('User API - DELETE ../../../../../../../src/pages/api/user/me/tokens/[i
       method: 'DELETE',
       body: JSON.stringify({
         id: 'test-id',
+        username: 'test',
         email: 'test@example.com',
-        username: 'testuser',
-        name: 'Test',
-        password: 'password',
-        confirmPassword: 'password',
-        token: 'test-token',
-        progress: 50,
-        hostname: 'localhost',
-        agentId: 'agent-1',
-        teamId: 'team-1',
-        userId: 'user-1',
-        type: 'TASK',
-        status: 'ACTIVE',
-        capabilities: [],
-        payload: { test: true },
-        reason: 'Test Reason',
-        amount: 100,
-        count: 10,
-        limit: 10,
-        offset: 0,
-        search: '',
+        password: 'test',
+        passwordUpdatedAt: new Date().toISOString(),
+        emailVerified: new Date().toISOString(),
+        name: 'test',
+        image: 'test',
+        role: 'test-enum',
+        status: 'test-enum',
       }),
     });
 
@@ -72,7 +60,7 @@ describe('User API - DELETE ../../../../../../../src/pages/api/user/me/tokens/[i
 
   it('should return 400 when invalid input is provided (scaffold)', async () => {
     const query = ['GET', 'DELETE'].includes('DELETE'.toUpperCase())
-      ? '?id=test-id&email=test@example.com&username=testuser&name=Test&token=test-token&hostname=localhost&agentId=agent-1&teamId=team-1&userId=user-1&type=TASK&status=ACTIVE&reason=Test%20Reason&amount=100&count=10&limit=10&offset=0&search='
+      ? `?id=${encodeURIComponent(String('test-id'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&passwordUpdatedAt=${encodeURIComponent(String(new Date().toISOString()))}&emailVerified=${encodeURIComponent(String(new Date().toISOString()))}&name=${encodeURIComponent(String('test'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('test-enum'))}&status=${encodeURIComponent(String('test-enum'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -99,7 +87,7 @@ describe('User API - DELETE ../../../../../../../src/pages/api/user/me/tokens/[i
 
   it('should return 500 when action fails', async () => {
     const query = ['GET', 'DELETE'].includes('DELETE'.toUpperCase())
-      ? '?id=test-id&email=test@example.com&username=testuser&name=Test&token=test-token&hostname=localhost&agentId=agent-1&teamId=team-1&userId=user-1&type=TASK&status=ACTIVE&reason=Test%20Reason&amount=100&count=10&limit=10&offset=0&search='
+      ? `?id=${encodeURIComponent(String('test-id'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&passwordUpdatedAt=${encodeURIComponent(String(new Date().toISOString()))}&emailVerified=${encodeURIComponent(String(new Date().toISOString()))}&name=${encodeURIComponent(String('test'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('test-enum'))}&status=${encodeURIComponent(String('test-enum'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -113,27 +101,15 @@ describe('User API - DELETE ../../../../../../../src/pages/api/user/me/tokens/[i
       method: 'DELETE',
       body: JSON.stringify({
         id: 'test-id',
+        username: 'test',
         email: 'test@example.com',
-        username: 'testuser',
-        name: 'Test',
-        password: 'password',
-        confirmPassword: 'password',
-        token: 'test-token',
-        progress: 50,
-        hostname: 'localhost',
-        agentId: 'agent-1',
-        teamId: 'team-1',
-        userId: 'user-1',
-        type: 'TASK',
-        status: 'ACTIVE',
-        capabilities: [],
-        payload: { test: true },
-        reason: 'Test Reason',
-        amount: 100,
-        count: 10,
-        limit: 10,
-        offset: 0,
-        search: '',
+        password: 'test',
+        passwordUpdatedAt: new Date().toISOString(),
+        emailVerified: new Date().toISOString(),
+        name: 'test',
+        image: 'test',
+        role: 'test-enum',
+        status: 'test-enum',
       }),
     });
 

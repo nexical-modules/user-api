@@ -19,19 +19,10 @@ vi.mock('@/lib/core/config', () => ({
 
 vi.mock('@/lib/core/db', () => {
   const mockModelProps = {
-    id: '1',
-    email: 'test@example.com',
-    name: 'test',
-    status: 'PENDING',
-    role: 'TEAM_MEMBER',
-    token: 'test-token',
-    expires: new Date(),
-    actorId: 'ne_pat_test',
-    lockedBy: 'ne_pat_test',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    sessionToken: 'test',
+    id: 'session_test',
+    sessionToken: 'test-token',
     userId: 'test',
+    expires: new Date(),
   };
 
   const isExistenceCheck = (where: Record<string, unknown>): boolean => {
@@ -177,7 +168,15 @@ describe('SessionService', () => {
         mockData as unknown as Record<string, unknown>[],
       );
 
-      const result = await SessionService.list();
+      const result = await SessionService.list(
+        {
+          id: 'session_test',
+          sessionToken: 'test-token',
+          userId: 'test',
+          expires: new Date(),
+        } as Record<string, unknown>,
+        'session_test' as unknown,
+      );
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);
@@ -187,7 +186,15 @@ describe('SessionService', () => {
     it('should handle errors when listing', async () => {
       vi.mocked(db.session.findMany).mockRejectedValue(new Error('DB Error'));
 
-      const result = await SessionService.list();
+      const result = await SessionService.list(
+        {
+          id: 'session_test',
+          sessionToken: 'test-token',
+          userId: 'test',
+          expires: new Date(),
+        } as Record<string, unknown>,
+        'session_test' as unknown,
+      );
 
       expect(result.success).toBe(false);
       expect(result.error).toBe('session.service.error.list_failed');
@@ -202,7 +209,11 @@ describe('SessionService', () => {
         mockData as unknown as Record<string, unknown>,
       );
 
-      const result = await SessionService.get('1');
+      const result = await SessionService.get(
+        '1',
+        'session_test' as unknown,
+        'session_test' as unknown,
+      );
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);
@@ -239,7 +250,12 @@ describe('SessionService', () => {
         mockData as unknown as Record<string, unknown>,
       );
 
-      const result = await SessionService.create({ name: 'test' } as Record<string, unknown>);
+      const result = await SessionService.create({
+        id: 'session_test',
+        sessionToken: 'test-token',
+        userId: 'test',
+        expires: new Date(),
+      } as Record<string, unknown>);
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);
@@ -263,10 +279,12 @@ describe('SessionService', () => {
         mockData as unknown as Record<string, unknown>,
       );
 
-      const result = await SessionService.update('1', { name: 'updated' } as Record<
-        string,
-        unknown
-      >);
+      const result = await SessionService.update('1', {
+        id: 'session_test',
+        sessionToken: 'test-token',
+        userId: 'test',
+        expires: new Date(),
+      } as Record<string, unknown>);
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);

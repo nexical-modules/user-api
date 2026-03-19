@@ -19,27 +19,17 @@ vi.mock('@/lib/core/config', () => ({
 
 vi.mock('@/lib/core/db', () => {
   const mockModelProps = {
-    id: '1',
-    email: 'test@example.com',
-    name: 'test',
-    status: 'PENDING',
-    role: 'TEAM_MEMBER',
-    token: 'test-token',
-    expires: new Date(Date.now() + 86400000),
-    actorId: 'ne_pat_test',
-    lockedBy: 'ne_pat_test',
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    id: 'account_test',
     userId: 'test',
     type: 'test',
     provider: 'test',
     providerAccountId: 'test',
-    refresh_token: 'test',
-    access_token: 'test',
+    refresh_token: 'test-token',
+    access_token: 'test-token',
     expires_at: 1,
-    token_type: 'test',
+    token_type: 'test-token',
     scope: 'test',
-    id_token: 'test',
+    id_token: 'test-token',
     session_state: 'test',
   };
 
@@ -186,7 +176,23 @@ describe('AccountService', () => {
         mockData as unknown as Record<string, unknown>[],
       );
 
-      const result = await AccountService.list();
+      const result = await AccountService.list(
+        {
+          id: 'account_test',
+          userId: 'test',
+          type: 'test',
+          provider: 'test',
+          providerAccountId: 'test',
+          refresh_token: 'test-token',
+          access_token: 'test-token',
+          expires_at: 1,
+          token_type: 'test-token',
+          scope: 'test',
+          id_token: 'test-token',
+          session_state: 'test',
+        } as Record<string, unknown>,
+        'account_test' as unknown,
+      );
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);
@@ -196,7 +202,23 @@ describe('AccountService', () => {
     it('should handle errors when listing', async () => {
       vi.mocked(db.account.findMany).mockRejectedValue(new Error('DB Error'));
 
-      const result = await AccountService.list();
+      const result = await AccountService.list(
+        {
+          id: 'account_test',
+          userId: 'test',
+          type: 'test',
+          provider: 'test',
+          providerAccountId: 'test',
+          refresh_token: 'test-token',
+          access_token: 'test-token',
+          expires_at: 1,
+          token_type: 'test-token',
+          scope: 'test',
+          id_token: 'test-token',
+          session_state: 'test',
+        } as Record<string, unknown>,
+        'account_test' as unknown,
+      );
 
       expect(result.success).toBe(false);
       expect(result.error).toBe('account.service.error.list_failed');
@@ -211,7 +233,11 @@ describe('AccountService', () => {
         mockData as unknown as Record<string, unknown>,
       );
 
-      const result = await AccountService.get('1');
+      const result = await AccountService.get(
+        '1',
+        'account_test' as unknown,
+        'account_test' as unknown,
+      );
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);
@@ -248,7 +274,20 @@ describe('AccountService', () => {
         mockData as unknown as Record<string, unknown>,
       );
 
-      const result = await AccountService.create({ name: 'test' } as Record<string, unknown>);
+      const result = await AccountService.create({
+        id: 'account_test',
+        userId: 'test',
+        type: 'test',
+        provider: 'test',
+        providerAccountId: 'test',
+        refresh_token: 'test-token',
+        access_token: 'test-token',
+        expires_at: 1,
+        token_type: 'test-token',
+        scope: 'test',
+        id_token: 'test-token',
+        session_state: 'test',
+      } as Record<string, unknown>);
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);
@@ -272,10 +311,20 @@ describe('AccountService', () => {
         mockData as unknown as Record<string, unknown>,
       );
 
-      const result = await AccountService.update('1', { name: 'updated' } as Record<
-        string,
-        unknown
-      >);
+      const result = await AccountService.update('1', {
+        id: 'account_test',
+        userId: 'test',
+        type: 'test',
+        provider: 'test',
+        providerAccountId: 'test',
+        refresh_token: 'test-token',
+        access_token: 'test-token',
+        expires_at: 1,
+        token_type: 'test-token',
+        scope: 'test',
+        id_token: 'test-token',
+        session_state: 'test',
+      } as Record<string, unknown>);
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);

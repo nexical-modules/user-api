@@ -19,22 +19,16 @@ vi.mock('@/lib/core/config', () => ({
 
 vi.mock('@/lib/core/db', () => {
   const mockModelProps = {
-    id: '1',
-    email: 'test',
-    name: 'test',
-    status: 'test-enum',
-    role: 'test-enum',
-    token: 'test-token',
-    expires: new Date(Date.now() + 86400000),
-    actorId: 'ne_pat_test',
-    lockedBy: 'ne_pat_test',
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    id: 'user_test',
     username: 'test',
+    email: 'test@example.com',
     password: 'test',
     passwordUpdatedAt: new Date(),
     emailVerified: new Date(),
+    name: 'test',
     image: 'test',
+    role: 'test-enum',
+    status: 'test-enum',
   };
 
   const isExistenceCheck = (where: Record<string, unknown>): boolean => {
@@ -180,7 +174,21 @@ describe('UserService', () => {
         mockData as unknown as Record<string, unknown>[],
       );
 
-      const result = await UserService.list();
+      const result = await UserService.list(
+        {
+          id: 'user_test',
+          username: 'test',
+          email: 'test@example.com',
+          password: 'test',
+          passwordUpdatedAt: new Date(),
+          emailVerified: new Date(),
+          name: 'test',
+          image: 'test',
+          role: 'test-enum',
+          status: 'test-enum',
+        } as Record<string, unknown>,
+        'user_test' as unknown,
+      );
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);
@@ -190,7 +198,21 @@ describe('UserService', () => {
     it('should handle errors when listing', async () => {
       vi.mocked(db.user.findMany).mockRejectedValue(new Error('DB Error'));
 
-      const result = await UserService.list();
+      const result = await UserService.list(
+        {
+          id: 'user_test',
+          username: 'test',
+          email: 'test@example.com',
+          password: 'test',
+          passwordUpdatedAt: new Date(),
+          emailVerified: new Date(),
+          name: 'test',
+          image: 'test',
+          role: 'test-enum',
+          status: 'test-enum',
+        } as Record<string, unknown>,
+        'user_test' as unknown,
+      );
 
       expect(result.success).toBe(false);
       expect(result.error).toBe('user.service.error.list_failed');
@@ -205,7 +227,7 @@ describe('UserService', () => {
         mockData as unknown as Record<string, unknown>,
       );
 
-      const result = await UserService.get('1');
+      const result = await UserService.get('1', 'user_test' as unknown, 'user_test' as unknown);
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);
@@ -240,7 +262,18 @@ describe('UserService', () => {
       const mockData = { id: '1', name: 'test' };
       vi.mocked(db.user.create).mockResolvedValue(mockData as unknown as Record<string, unknown>);
 
-      const result = await UserService.create({ name: 'test' } as Record<string, unknown>);
+      const result = await UserService.create({
+        id: 'user_test',
+        username: 'test',
+        email: 'test@example.com',
+        password: 'test',
+        passwordUpdatedAt: new Date(),
+        emailVerified: new Date(),
+        name: 'test',
+        image: 'test',
+        role: 'test-enum',
+        status: 'test-enum',
+      } as Record<string, unknown>);
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);
@@ -262,7 +295,18 @@ describe('UserService', () => {
       const mockData = { id: '1', name: 'updated' };
       vi.mocked(db.user.update).mockResolvedValue(mockData as unknown as Record<string, unknown>);
 
-      const result = await UserService.update('1', { name: 'updated' } as Record<string, unknown>);
+      const result = await UserService.update('1', {
+        id: 'user_test',
+        username: 'test',
+        email: 'test@example.com',
+        password: 'test',
+        passwordUpdatedAt: new Date(),
+        emailVerified: new Date(),
+        name: 'test',
+        image: 'test',
+        role: 'test-enum',
+        status: 'test-enum',
+      } as Record<string, unknown>);
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);

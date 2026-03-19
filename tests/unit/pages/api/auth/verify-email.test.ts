@@ -16,7 +16,7 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/verify-email', () =>
 
   it('should call VerifyEmailAuthAction and return success', async () => {
     const query = ['GET', 'DELETE'].includes('POST'.toUpperCase())
-      ? '?id=test-id&email=test@example.com&username=testuser&name=Test&token=test-token&hostname=localhost&agentId=agent-1&teamId=team-1&userId=user-1&type=TASK&status=ACTIVE&reason=Test%20Reason&amount=100&count=10&limit=10&offset=0&search='
+      ? `?id=${encodeURIComponent(String('test-id'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -28,30 +28,7 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/verify-email', () =>
 
     mockContext.request = new Request(fullUrl, {
       method: 'POST',
-      body: JSON.stringify({
-        id: 'test-id',
-        email: 'test@example.com',
-        username: 'testuser',
-        name: 'Test',
-        password: 'password',
-        confirmPassword: 'password',
-        token: 'test-token',
-        progress: 50,
-        hostname: 'localhost',
-        agentId: 'agent-1',
-        teamId: 'team-1',
-        userId: 'user-1',
-        type: 'TASK',
-        status: 'ACTIVE',
-        capabilities: [],
-        payload: { test: true },
-        reason: 'Test Reason',
-        amount: 100,
-        count: 10,
-        limit: 10,
-        offset: 0,
-        search: '',
-      }),
+      body: JSON.stringify({ id: 'test-id' }),
     });
 
     vi.mocked(VerifyEmailAuthAction.run).mockResolvedValue({
@@ -72,7 +49,7 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/verify-email', () =>
 
   it('should return 400 when invalid input is provided (scaffold)', async () => {
     const query = ['GET', 'DELETE'].includes('POST'.toUpperCase())
-      ? '?id=test-id&email=test@example.com&username=testuser&name=Test&token=test-token&hostname=localhost&agentId=agent-1&teamId=team-1&userId=user-1&type=TASK&status=ACTIVE&reason=Test%20Reason&amount=100&count=10&limit=10&offset=0&search='
+      ? `?id=${encodeURIComponent(String('test-id'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -99,7 +76,7 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/verify-email', () =>
 
   it('should return 500 when action fails', async () => {
     const query = ['GET', 'DELETE'].includes('POST'.toUpperCase())
-      ? '?id=test-id&email=test@example.com&username=testuser&name=Test&token=test-token&hostname=localhost&agentId=agent-1&teamId=team-1&userId=user-1&type=TASK&status=ACTIVE&reason=Test%20Reason&amount=100&count=10&limit=10&offset=0&search='
+      ? `?id=${encodeURIComponent(String('test-id'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -111,30 +88,7 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/verify-email', () =>
 
     mockContext.request = new Request(fullUrl, {
       method: 'POST',
-      body: JSON.stringify({
-        id: 'test-id',
-        email: 'test@example.com',
-        username: 'testuser',
-        name: 'Test',
-        password: 'password',
-        confirmPassword: 'password',
-        token: 'test-token',
-        progress: 50,
-        hostname: 'localhost',
-        agentId: 'agent-1',
-        teamId: 'team-1',
-        userId: 'user-1',
-        type: 'TASK',
-        status: 'ACTIVE',
-        capabilities: [],
-        payload: { test: true },
-        reason: 'Test Reason',
-        amount: 100,
-        count: 10,
-        limit: 10,
-        offset: 0,
-        search: '',
-      }),
+      body: JSON.stringify({ id: 'test-id' }),
     });
 
     vi.mocked(VerifyEmailAuthAction.run).mockResolvedValue({

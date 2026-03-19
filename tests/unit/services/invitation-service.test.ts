@@ -19,17 +19,11 @@ vi.mock('@/lib/core/config', () => ({
 
 vi.mock('@/lib/core/db', () => {
   const mockModelProps = {
-    id: '1',
-    email: 'test',
-    name: 'test',
-    status: 'PENDING',
+    id: 'invitation_test',
+    email: 'test@example.com',
+    token: 'test-token',
     role: 'test-enum',
-    token: 'test',
     expires: new Date(),
-    actorId: 'ne_pat_test',
-    lockedBy: 'ne_pat_test',
-    createdAt: new Date(),
-    updatedAt: new Date(),
   };
 
   const isExistenceCheck = (where: Record<string, unknown>): boolean => {
@@ -175,7 +169,16 @@ describe('InvitationService', () => {
         mockData as unknown as Record<string, unknown>[],
       );
 
-      const result = await InvitationService.list();
+      const result = await InvitationService.list(
+        {
+          id: 'invitation_test',
+          email: 'test@example.com',
+          token: 'test-token',
+          role: 'test-enum',
+          expires: new Date(),
+        } as Record<string, unknown>,
+        'invitation_test' as unknown,
+      );
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);
@@ -185,7 +188,16 @@ describe('InvitationService', () => {
     it('should handle errors when listing', async () => {
       vi.mocked(db.invitation.findMany).mockRejectedValue(new Error('DB Error'));
 
-      const result = await InvitationService.list();
+      const result = await InvitationService.list(
+        {
+          id: 'invitation_test',
+          email: 'test@example.com',
+          token: 'test-token',
+          role: 'test-enum',
+          expires: new Date(),
+        } as Record<string, unknown>,
+        'invitation_test' as unknown,
+      );
 
       expect(result.success).toBe(false);
       expect(result.error).toBe('invitation.service.error.list_failed');
@@ -200,7 +212,11 @@ describe('InvitationService', () => {
         mockData as unknown as Record<string, unknown>,
       );
 
-      const result = await InvitationService.get('1');
+      const result = await InvitationService.get(
+        '1',
+        'invitation_test' as unknown,
+        'invitation_test' as unknown,
+      );
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);
@@ -237,7 +253,13 @@ describe('InvitationService', () => {
         mockData as unknown as Record<string, unknown>,
       );
 
-      const result = await InvitationService.create({ name: 'test' } as Record<string, unknown>);
+      const result = await InvitationService.create({
+        id: 'invitation_test',
+        email: 'test@example.com',
+        token: 'test-token',
+        role: 'test-enum',
+        expires: new Date(),
+      } as Record<string, unknown>);
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);
@@ -261,10 +283,13 @@ describe('InvitationService', () => {
         mockData as unknown as Record<string, unknown>,
       );
 
-      const result = await InvitationService.update('1', { name: 'updated' } as Record<
-        string,
-        unknown
-      >);
+      const result = await InvitationService.update('1', {
+        id: 'invitation_test',
+        email: 'test@example.com',
+        token: 'test-token',
+        role: 'test-enum',
+        expires: new Date(),
+      } as Record<string, unknown>);
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);

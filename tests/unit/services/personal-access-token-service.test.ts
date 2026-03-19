@@ -19,17 +19,8 @@ vi.mock('@/lib/core/config', () => ({
 
 vi.mock('@/lib/core/db', () => {
   const mockModelProps = {
-    id: '1',
-    email: 'test@example.com',
+    id: 'personalAccessToken_test',
     name: 'test',
-    status: 'PENDING',
-    role: 'TEAM_MEMBER',
-    token: 'test-token',
-    expires: new Date(Date.now() + 86400000),
-    actorId: 'ne_pat_test',
-    lockedBy: 'ne_pat_test',
-    createdAt: new Date(),
-    updatedAt: new Date(),
     hashedKey: 'test',
     prefix: 'test',
     lastUsedAt: new Date(),
@@ -180,7 +171,18 @@ describe('PersonalAccessTokenService', () => {
         mockData as unknown as Record<string, unknown>[],
       );
 
-      const result = await PersonalAccessTokenService.list();
+      const result = await PersonalAccessTokenService.list(
+        {
+          id: 'personalAccessToken_test',
+          name: 'test',
+          hashedKey: 'test',
+          prefix: 'test',
+          lastUsedAt: new Date(),
+          expiresAt: new Date(),
+          userId: 'test',
+        } as Record<string, unknown>,
+        'personalAccessToken_test' as unknown,
+      );
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);
@@ -190,7 +192,18 @@ describe('PersonalAccessTokenService', () => {
     it('should handle errors when listing', async () => {
       vi.mocked(db.personalAccessToken.findMany).mockRejectedValue(new Error('DB Error'));
 
-      const result = await PersonalAccessTokenService.list();
+      const result = await PersonalAccessTokenService.list(
+        {
+          id: 'personalAccessToken_test',
+          name: 'test',
+          hashedKey: 'test',
+          prefix: 'test',
+          lastUsedAt: new Date(),
+          expiresAt: new Date(),
+          userId: 'test',
+        } as Record<string, unknown>,
+        'personalAccessToken_test' as unknown,
+      );
 
       expect(result.success).toBe(false);
       expect(result.error).toBe('personalAccessToken.service.error.list_failed');
@@ -205,7 +218,11 @@ describe('PersonalAccessTokenService', () => {
         mockData as unknown as Record<string, unknown>,
       );
 
-      const result = await PersonalAccessTokenService.get('1');
+      const result = await PersonalAccessTokenService.get(
+        '1',
+        'personalAccessToken_test' as unknown,
+        'personalAccessToken_test' as unknown,
+      );
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);
@@ -242,10 +259,15 @@ describe('PersonalAccessTokenService', () => {
         mockData as unknown as Record<string, unknown>,
       );
 
-      const result = await PersonalAccessTokenService.create({ name: 'test' } as Record<
-        string,
-        unknown
-      >);
+      const result = await PersonalAccessTokenService.create({
+        id: 'personalAccessToken_test',
+        name: 'test',
+        hashedKey: 'test',
+        prefix: 'test',
+        lastUsedAt: new Date(),
+        expiresAt: new Date(),
+        userId: 'test',
+      } as Record<string, unknown>);
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);
@@ -269,10 +291,15 @@ describe('PersonalAccessTokenService', () => {
         mockData as unknown as Record<string, unknown>,
       );
 
-      const result = await PersonalAccessTokenService.update('1', { name: 'updated' } as Record<
-        string,
-        unknown
-      >);
+      const result = await PersonalAccessTokenService.update('1', {
+        id: 'personalAccessToken_test',
+        name: 'test',
+        hashedKey: 'test',
+        prefix: 'test',
+        lastUsedAt: new Date(),
+        expiresAt: new Date(),
+        userId: 'test',
+      } as Record<string, unknown>);
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);

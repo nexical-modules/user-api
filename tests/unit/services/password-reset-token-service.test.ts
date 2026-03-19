@@ -19,17 +19,10 @@ vi.mock('@/lib/core/config', () => ({
 
 vi.mock('@/lib/core/db', () => {
   const mockModelProps = {
-    id: '1',
-    email: 'test',
-    name: 'test',
-    status: 'PENDING',
-    role: 'TEAM_MEMBER',
-    token: 'test',
+    id: 'passwordResetToken_test',
+    email: 'test@example.com',
+    token: 'test-token',
     expires: new Date(),
-    actorId: 'ne_pat_test',
-    lockedBy: 'ne_pat_test',
-    createdAt: new Date(),
-    updatedAt: new Date(),
   };
 
   const isExistenceCheck = (where: Record<string, unknown>): boolean => {
@@ -175,7 +168,15 @@ describe('PasswordResetTokenService', () => {
         mockData as unknown as Record<string, unknown>[],
       );
 
-      const result = await PasswordResetTokenService.list();
+      const result = await PasswordResetTokenService.list(
+        {
+          id: 'passwordResetToken_test',
+          email: 'test@example.com',
+          token: 'test-token',
+          expires: new Date(),
+        } as Record<string, unknown>,
+        'passwordResetToken_test' as unknown,
+      );
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);
@@ -185,7 +186,15 @@ describe('PasswordResetTokenService', () => {
     it('should handle errors when listing', async () => {
       vi.mocked(db.passwordResetToken.findMany).mockRejectedValue(new Error('DB Error'));
 
-      const result = await PasswordResetTokenService.list();
+      const result = await PasswordResetTokenService.list(
+        {
+          id: 'passwordResetToken_test',
+          email: 'test@example.com',
+          token: 'test-token',
+          expires: new Date(),
+        } as Record<string, unknown>,
+        'passwordResetToken_test' as unknown,
+      );
 
       expect(result.success).toBe(false);
       expect(result.error).toBe('passwordResetToken.service.error.list_failed');
@@ -200,7 +209,11 @@ describe('PasswordResetTokenService', () => {
         mockData as unknown as Record<string, unknown>,
       );
 
-      const result = await PasswordResetTokenService.get('1');
+      const result = await PasswordResetTokenService.get(
+        '1',
+        'passwordResetToken_test' as unknown,
+        'passwordResetToken_test' as unknown,
+      );
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);
@@ -237,10 +250,12 @@ describe('PasswordResetTokenService', () => {
         mockData as unknown as Record<string, unknown>,
       );
 
-      const result = await PasswordResetTokenService.create({ name: 'test' } as Record<
-        string,
-        unknown
-      >);
+      const result = await PasswordResetTokenService.create({
+        id: 'passwordResetToken_test',
+        email: 'test@example.com',
+        token: 'test-token',
+        expires: new Date(),
+      } as Record<string, unknown>);
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);
@@ -264,10 +279,12 @@ describe('PasswordResetTokenService', () => {
         mockData as unknown as Record<string, unknown>,
       );
 
-      const result = await PasswordResetTokenService.update('1', { name: 'updated' } as Record<
-        string,
-        unknown
-      >);
+      const result = await PasswordResetTokenService.update('1', {
+        id: 'passwordResetToken_test',
+        email: 'test@example.com',
+        token: 'test-token',
+        expires: new Date(),
+      } as Record<string, unknown>);
 
       expect(result.success).toBe(true);
       expect(result.data).toEqual(mockData);

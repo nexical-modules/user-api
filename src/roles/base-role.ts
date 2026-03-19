@@ -20,10 +20,8 @@ export abstract class BaseRole implements RolePolicy {
     const { role: actorRole } = actor as { role: string };
     const normalizeRole = (r: unknown) => String(r).toUpperCase().replace(/-/g, '_');
 
-    // Global System Bypass: USER_ADMIN is the root superuser.
-    // Module-specific admins (e.g., AGENT_ADMIN) should inherit from their respective base roles
-    // or be added to compatibleRoles in the generated role class.
-    if (normalizeRole(actorRole) === 'USER_ADMIN') return;
+    // Global System Bypass
+    if (['USER_ADMIN'].includes(normalizeRole(actorRole))) return;
 
     const normalizedRequiredRole = normalizeRole(this.name);
     const normalizedActorRole = normalizeRole(actorRole);
