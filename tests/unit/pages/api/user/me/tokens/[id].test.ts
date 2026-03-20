@@ -16,7 +16,7 @@ describe('User API - DELETE ../../../../../../../src/pages/api/user/me/tokens/[i
 
   it('should call DeleteTokenUserAction and return success', async () => {
     const query = ['GET', 'DELETE'].includes('DELETE'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&passwordUpdatedAt=${encodeURIComponent(String(new Date().toISOString()))}&emailVerified=${encodeURIComponent(String(new Date().toISOString()))}&name=${encodeURIComponent(String('test'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('test-enum'))}&status=${encodeURIComponent(String('test-enum'))}`
+      ? `?userId=${encodeURIComponent(String('test'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -28,18 +28,7 @@ describe('User API - DELETE ../../../../../../../src/pages/api/user/me/tokens/[i
 
     mockContext.request = new Request(fullUrl, {
       method: 'DELETE',
-      body: JSON.stringify({
-        id: 'test-id',
-        username: 'test',
-        email: 'test@example.com',
-        password: 'test',
-        passwordUpdatedAt: new Date().toISOString(),
-        emailVerified: new Date().toISOString(),
-        name: 'test',
-        image: 'test',
-        role: 'test-enum',
-        status: 'test-enum',
-      }),
+      body: JSON.stringify({ userId: 'test' }),
     });
 
     vi.mocked(DeleteTokenUserAction.run).mockResolvedValue({
@@ -60,7 +49,7 @@ describe('User API - DELETE ../../../../../../../src/pages/api/user/me/tokens/[i
 
   it('should return 400 when invalid input is provided (scaffold)', async () => {
     const query = ['GET', 'DELETE'].includes('DELETE'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&passwordUpdatedAt=${encodeURIComponent(String(new Date().toISOString()))}&emailVerified=${encodeURIComponent(String(new Date().toISOString()))}&name=${encodeURIComponent(String('test'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('test-enum'))}&status=${encodeURIComponent(String('test-enum'))}`
+      ? `?userId=${encodeURIComponent(String('test'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -87,7 +76,7 @@ describe('User API - DELETE ../../../../../../../src/pages/api/user/me/tokens/[i
 
   it('should return 500 when action fails', async () => {
     const query = ['GET', 'DELETE'].includes('DELETE'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&passwordUpdatedAt=${encodeURIComponent(String(new Date().toISOString()))}&emailVerified=${encodeURIComponent(String(new Date().toISOString()))}&name=${encodeURIComponent(String('test'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('test-enum'))}&status=${encodeURIComponent(String('test-enum'))}`
+      ? `?userId=${encodeURIComponent(String('test'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -99,18 +88,7 @@ describe('User API - DELETE ../../../../../../../src/pages/api/user/me/tokens/[i
 
     mockContext.request = new Request(fullUrl, {
       method: 'DELETE',
-      body: JSON.stringify({
-        id: 'test-id',
-        username: 'test',
-        email: 'test@example.com',
-        password: 'test',
-        passwordUpdatedAt: new Date().toISOString(),
-        emailVerified: new Date().toISOString(),
-        name: 'test',
-        image: 'test',
-        role: 'test-enum',
-        status: 'test-enum',
-      }),
+      body: JSON.stringify({ userId: 'test' }),
     });
 
     vi.mocked(DeleteTokenUserAction.run).mockResolvedValue({

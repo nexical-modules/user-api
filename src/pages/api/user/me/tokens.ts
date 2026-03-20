@@ -16,8 +16,8 @@ export const GET = defineApi(
 
     const zodSchema = z.object({
       userId: z.string().optional(),
-      skip: z.number().int().optional(),
-      take: z.number().int().optional(),
+      skip: z.coerce.number().int().optional(),
+      take: z.coerce.number().int().optional(),
     });
     const body = (
       zodSchema ? zodSchema.parse(rawInput) : rawInput

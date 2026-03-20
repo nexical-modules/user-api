@@ -16,7 +16,7 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/invite', () => {
 
   it('should call InviteUserAuthAction and return success', async () => {
     const query = ['GET', 'DELETE'].includes('POST'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}`
+      ? `?email=${encodeURIComponent(String('test@example.com'))}&role=${encodeURIComponent(String('USER_ADMIN'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -28,7 +28,7 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/invite', () => {
 
     mockContext.request = new Request(fullUrl, {
       method: 'POST',
-      body: JSON.stringify({ id: 'test-id' }),
+      body: JSON.stringify({ email: 'test@example.com', role: 'USER_ADMIN' }),
     });
 
     vi.mocked(InviteUserAuthAction.run).mockResolvedValue({
@@ -49,7 +49,7 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/invite', () => {
 
   it('should return 400 when invalid input is provided (scaffold)', async () => {
     const query = ['GET', 'DELETE'].includes('POST'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}`
+      ? `?email=${encodeURIComponent(String('test@example.com'))}&role=${encodeURIComponent(String('USER_ADMIN'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -76,7 +76,7 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/invite', () => {
 
   it('should return 500 when action fails', async () => {
     const query = ['GET', 'DELETE'].includes('POST'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}`
+      ? `?email=${encodeURIComponent(String('test@example.com'))}&role=${encodeURIComponent(String('USER_ADMIN'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -88,7 +88,7 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/invite', () => {
 
     mockContext.request = new Request(fullUrl, {
       method: 'POST',
-      body: JSON.stringify({ id: 'test-id' }),
+      body: JSON.stringify({ email: 'test@example.com', role: 'USER_ADMIN' }),
     });
 
     vi.mocked(InviteUserAuthAction.run).mockResolvedValue({

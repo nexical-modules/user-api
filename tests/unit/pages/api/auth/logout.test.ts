@@ -15,9 +15,7 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/logout', () => {
   });
 
   it('should call LogoutAuthAction and return success', async () => {
-    const query = ['GET', 'DELETE'].includes('POST'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}`
-      : '';
+    const query = ['GET', 'DELETE'].includes('POST'.toUpperCase()) ? `?` : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
     const mockContext = createMockAstroContext({
@@ -28,7 +26,7 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/logout', () => {
 
     mockContext.request = new Request(fullUrl, {
       method: 'POST',
-      body: JSON.stringify({ id: 'test-id' }),
+      body: JSON.stringify({}),
     });
 
     vi.mocked(LogoutAuthAction.run).mockResolvedValue({
@@ -48,9 +46,7 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/logout', () => {
   });
 
   it('should return 400 when invalid input is provided (scaffold)', async () => {
-    const query = ['GET', 'DELETE'].includes('POST'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}`
-      : '';
+    const query = ['GET', 'DELETE'].includes('POST'.toUpperCase()) ? `?` : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
     const mockContext = createMockAstroContext({
@@ -75,9 +71,7 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/logout', () => {
   });
 
   it('should return 500 when action fails', async () => {
-    const query = ['GET', 'DELETE'].includes('POST'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}`
-      : '';
+    const query = ['GET', 'DELETE'].includes('POST'.toUpperCase()) ? `?` : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
     const mockContext = createMockAstroContext({
@@ -88,7 +82,7 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/logout', () => {
 
     mockContext.request = new Request(fullUrl, {
       method: 'POST',
-      body: JSON.stringify({ id: 'test-id' }),
+      body: JSON.stringify({}),
     });
 
     vi.mocked(LogoutAuthAction.run).mockResolvedValue({

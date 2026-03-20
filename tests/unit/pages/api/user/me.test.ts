@@ -19,9 +19,7 @@ describe('User API - GET ../../../../../src/pages/api/user/me', () => {
   });
 
   it('should call GetMeUserAction and return success', async () => {
-    const query = ['GET', 'DELETE'].includes('GET'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&passwordUpdatedAt=${encodeURIComponent(String(new Date().toISOString()))}&emailVerified=${encodeURIComponent(String(new Date().toISOString()))}&name=${encodeURIComponent(String('test'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('test-enum'))}&status=${encodeURIComponent(String('test-enum'))}`
-      : '';
+    const query = ['GET', 'DELETE'].includes('GET'.toUpperCase()) ? `?` : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
     const mockContext = createMockAstroContext({
@@ -51,9 +49,7 @@ describe('User API - GET ../../../../../src/pages/api/user/me', () => {
   });
 
   it('should return 400 when invalid input is provided (scaffold)', async () => {
-    const query = ['GET', 'DELETE'].includes('GET'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&passwordUpdatedAt=${encodeURIComponent(String(new Date().toISOString()))}&emailVerified=${encodeURIComponent(String(new Date().toISOString()))}&name=${encodeURIComponent(String('test'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('test-enum'))}&status=${encodeURIComponent(String('test-enum'))}`
-      : '';
+    const query = ['GET', 'DELETE'].includes('GET'.toUpperCase()) ? `?` : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
     const mockContext = createMockAstroContext({
@@ -77,9 +73,7 @@ describe('User API - GET ../../../../../src/pages/api/user/me', () => {
   });
 
   it('should return 500 when action fails', async () => {
-    const query = ['GET', 'DELETE'].includes('GET'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&passwordUpdatedAt=${encodeURIComponent(String(new Date().toISOString()))}&emailVerified=${encodeURIComponent(String(new Date().toISOString()))}&name=${encodeURIComponent(String('test'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('test-enum'))}&status=${encodeURIComponent(String('test-enum'))}`
-      : '';
+    const query = ['GET', 'DELETE'].includes('GET'.toUpperCase()) ? `?` : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
     const mockContext = createMockAstroContext({
@@ -106,127 +100,6 @@ describe('User API - GET ../../../../../src/pages/api/user/me', () => {
     }
   });
 });
-
-describe('User API - PUT ../../../../../src/pages/api/user/me', () => {
-  beforeEach(() => {
-    vi.resetAllMocks();
-    vi.mocked(ApiGuard.protect).mockResolvedValue(undefined);
-  });
-
-  it('should call UpdateMeUserAction and return success', async () => {
-    const query = ['GET', 'DELETE'].includes('PUT'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&passwordUpdatedAt=${encodeURIComponent(String(new Date().toISOString()))}&emailVerified=${encodeURIComponent(String(new Date().toISOString()))}&name=${encodeURIComponent(String('test'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('test-enum'))}&status=${encodeURIComponent(String('test-enum'))}`
-      : '';
-    const fullUrl = 'http://localhost/api/test' + query;
-
-    const mockContext = createMockAstroContext({
-      url: fullUrl,
-      params: { id: 'test-id' },
-      locals: { actor: { id: 'user-1', type: 'user', email: 'test@example.com' } },
-    }) as unknown as APIContext;
-
-    mockContext.request = new Request(fullUrl, {
-      method: 'PUT',
-      body: JSON.stringify({
-        id: 'test-id',
-        username: 'test',
-        email: 'test@example.com',
-        password: 'test',
-        passwordUpdatedAt: new Date().toISOString(),
-        emailVerified: new Date().toISOString(),
-        name: 'test',
-        image: 'test',
-        role: 'test-enum',
-        status: 'test-enum',
-      }),
-    });
-
-    vi.mocked(UpdateMeUserAction.run).mockResolvedValue({
-      success: true,
-      data: { id: 'test-id' },
-    } as Record<string, unknown>);
-
-    const response = await PUT(mockContext);
-
-    if (response instanceof Response) {
-      const body = await response.json();
-      expect(response.status).toBe(200);
-      expect(body.success).toBe(true);
-    } else {
-      expect((response as unknown as Record<string, boolean>).success).toBe(true);
-    }
-  });
-
-  it('should return 400 when invalid input is provided (scaffold)', async () => {
-    const query = ['GET', 'DELETE'].includes('PUT'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&passwordUpdatedAt=${encodeURIComponent(String(new Date().toISOString()))}&emailVerified=${encodeURIComponent(String(new Date().toISOString()))}&name=${encodeURIComponent(String('test'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('test-enum'))}&status=${encodeURIComponent(String('test-enum'))}`
-      : '';
-    const fullUrl = 'http://localhost/api/test' + query;
-
-    const mockContext = createMockAstroContext({
-      url: fullUrl,
-      params: { id: 'test-id' },
-      locals: { actor: { id: 'user-1', type: 'user', email: 'test@example.com' } },
-    }) as unknown as APIContext;
-
-    mockContext.request = new Request(fullUrl, {
-      method: 'PUT',
-      body: 'invalid-json',
-    });
-
-    try {
-      const response = await PUT(mockContext);
-      if (response instanceof Response) {
-        expect([400, 500]).toContain(response.status);
-      }
-    } catch {
-      // Expected if it throws on invalid json
-    }
-  });
-
-  it('should return 500 when action fails', async () => {
-    const query = ['GET', 'DELETE'].includes('PUT'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&passwordUpdatedAt=${encodeURIComponent(String(new Date().toISOString()))}&emailVerified=${encodeURIComponent(String(new Date().toISOString()))}&name=${encodeURIComponent(String('test'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('test-enum'))}&status=${encodeURIComponent(String('test-enum'))}`
-      : '';
-    const fullUrl = 'http://localhost/api/test' + query;
-
-    const mockContext = createMockAstroContext({
-      url: fullUrl,
-      params: { id: 'test-id' },
-      locals: { actor: { id: 'user-1', type: 'user', email: 'test@example.com' } },
-    }) as unknown as APIContext;
-
-    mockContext.request = new Request(fullUrl, {
-      method: 'PUT',
-      body: JSON.stringify({
-        id: 'test-id',
-        username: 'test',
-        email: 'test@example.com',
-        password: 'test',
-        passwordUpdatedAt: new Date().toISOString(),
-        emailVerified: new Date().toISOString(),
-        name: 'test',
-        image: 'test',
-        role: 'test-enum',
-        status: 'test-enum',
-      }),
-    });
-
-    vi.mocked(UpdateMeUserAction.run).mockResolvedValue({
-      success: false,
-      error: 'Something went wrong',
-    } as Record<string, unknown>);
-
-    const response = await PUT(mockContext);
-
-    if (response instanceof Response) {
-      expect(response.status).toBe(500);
-      const body = await response.json();
-      expect(body.error).toBe('Something went wrong');
-    }
-  });
-});
-
 describe('User API - DELETE ../../../../../src/pages/api/user/me', () => {
   beforeEach(() => {
     vi.resetAllMocks();
@@ -235,7 +108,7 @@ describe('User API - DELETE ../../../../../src/pages/api/user/me', () => {
 
   it('should call DeleteMeUserAction and return success', async () => {
     const query = ['GET', 'DELETE'].includes('DELETE'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&passwordUpdatedAt=${encodeURIComponent(String(new Date().toISOString()))}&emailVerified=${encodeURIComponent(String(new Date().toISOString()))}&name=${encodeURIComponent(String('test'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('test-enum'))}&status=${encodeURIComponent(String('test-enum'))}`
+      ? `?userId=${encodeURIComponent(String('test'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -247,18 +120,7 @@ describe('User API - DELETE ../../../../../src/pages/api/user/me', () => {
 
     mockContext.request = new Request(fullUrl, {
       method: 'DELETE',
-      body: JSON.stringify({
-        id: 'test-id',
-        username: 'test',
-        email: 'test@example.com',
-        password: 'test',
-        passwordUpdatedAt: new Date().toISOString(),
-        emailVerified: new Date().toISOString(),
-        name: 'test',
-        image: 'test',
-        role: 'test-enum',
-        status: 'test-enum',
-      }),
+      body: JSON.stringify({ userId: 'test' }),
     });
 
     vi.mocked(DeleteMeUserAction.run).mockResolvedValue({
@@ -279,7 +141,7 @@ describe('User API - DELETE ../../../../../src/pages/api/user/me', () => {
 
   it('should return 400 when invalid input is provided (scaffold)', async () => {
     const query = ['GET', 'DELETE'].includes('DELETE'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&passwordUpdatedAt=${encodeURIComponent(String(new Date().toISOString()))}&emailVerified=${encodeURIComponent(String(new Date().toISOString()))}&name=${encodeURIComponent(String('test'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('test-enum'))}&status=${encodeURIComponent(String('test-enum'))}`
+      ? `?userId=${encodeURIComponent(String('test'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -306,7 +168,7 @@ describe('User API - DELETE ../../../../../src/pages/api/user/me', () => {
 
   it('should return 500 when action fails', async () => {
     const query = ['GET', 'DELETE'].includes('DELETE'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&passwordUpdatedAt=${encodeURIComponent(String(new Date().toISOString()))}&emailVerified=${encodeURIComponent(String(new Date().toISOString()))}&name=${encodeURIComponent(String('test'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('test-enum'))}&status=${encodeURIComponent(String('test-enum'))}`
+      ? `?userId=${encodeURIComponent(String('test'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -318,18 +180,7 @@ describe('User API - DELETE ../../../../../src/pages/api/user/me', () => {
 
     mockContext.request = new Request(fullUrl, {
       method: 'DELETE',
-      body: JSON.stringify({
-        id: 'test-id',
-        username: 'test',
-        email: 'test@example.com',
-        password: 'test',
-        passwordUpdatedAt: new Date().toISOString(),
-        emailVerified: new Date().toISOString(),
-        name: 'test',
-        image: 'test',
-        role: 'test-enum',
-        status: 'test-enum',
-      }),
+      body: JSON.stringify({ userId: 'test' }),
     });
 
     vi.mocked(DeleteMeUserAction.run).mockResolvedValue({
@@ -338,6 +189,120 @@ describe('User API - DELETE ../../../../../src/pages/api/user/me', () => {
     } as Record<string, unknown>);
 
     const response = await DELETE(mockContext);
+
+    if (response instanceof Response) {
+      expect(response.status).toBe(500);
+      const body = await response.json();
+      expect(body.error).toBe('Something went wrong');
+    }
+  });
+});
+
+describe('User API - PUT ../../../../../src/pages/api/user/me', () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+    vi.mocked(ApiGuard.protect).mockResolvedValue(undefined);
+  });
+
+  it('should call UpdateMeUserAction and return success', async () => {
+    const query = ['GET', 'DELETE'].includes('PUT'.toUpperCase())
+      ? `?name=${encodeURIComponent(String('test'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('USER_ADMIN'))}&status=${encodeURIComponent(String('ACTIVE'))}&password=${encodeURIComponent(String('test'))}`
+      : '';
+    const fullUrl = 'http://localhost/api/test' + query;
+
+    const mockContext = createMockAstroContext({
+      url: fullUrl,
+      params: { id: 'test-id' },
+      locals: { actor: { id: 'user-1', type: 'user', email: 'test@example.com' } },
+    }) as unknown as APIContext;
+
+    mockContext.request = new Request(fullUrl, {
+      method: 'PUT',
+      body: JSON.stringify({
+        name: 'test',
+        username: 'test',
+        email: 'test@example.com',
+        image: 'test',
+        role: 'USER_ADMIN',
+        status: 'ACTIVE',
+        password: 'test',
+      }),
+    });
+
+    vi.mocked(UpdateMeUserAction.run).mockResolvedValue({
+      success: true,
+      data: { id: 'test-id' },
+    } as Record<string, unknown>);
+
+    const response = await PUT(mockContext);
+
+    if (response instanceof Response) {
+      const body = await response.json();
+      expect(response.status).toBe(200);
+      expect(body.success).toBe(true);
+    } else {
+      expect((response as unknown as Record<string, boolean>).success).toBe(true);
+    }
+  });
+
+  it('should return 400 when invalid input is provided (scaffold)', async () => {
+    const query = ['GET', 'DELETE'].includes('PUT'.toUpperCase())
+      ? `?name=${encodeURIComponent(String('test'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('USER_ADMIN'))}&status=${encodeURIComponent(String('ACTIVE'))}&password=${encodeURIComponent(String('test'))}`
+      : '';
+    const fullUrl = 'http://localhost/api/test' + query;
+
+    const mockContext = createMockAstroContext({
+      url: fullUrl,
+      params: { id: 'test-id' },
+      locals: { actor: { id: 'user-1', type: 'user', email: 'test@example.com' } },
+    }) as unknown as APIContext;
+
+    mockContext.request = new Request(fullUrl, {
+      method: 'PUT',
+      body: 'invalid-json',
+    });
+
+    try {
+      const response = await PUT(mockContext);
+      if (response instanceof Response) {
+        expect([400, 500]).toContain(response.status);
+      }
+    } catch {
+      // Expected if it throws on invalid json
+    }
+  });
+
+  it('should return 500 when action fails', async () => {
+    const query = ['GET', 'DELETE'].includes('PUT'.toUpperCase())
+      ? `?name=${encodeURIComponent(String('test'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('USER_ADMIN'))}&status=${encodeURIComponent(String('ACTIVE'))}&password=${encodeURIComponent(String('test'))}`
+      : '';
+    const fullUrl = 'http://localhost/api/test' + query;
+
+    const mockContext = createMockAstroContext({
+      url: fullUrl,
+      params: { id: 'test-id' },
+      locals: { actor: { id: 'user-1', type: 'user', email: 'test@example.com' } },
+    }) as unknown as APIContext;
+
+    mockContext.request = new Request(fullUrl, {
+      method: 'PUT',
+      body: JSON.stringify({
+        name: 'test',
+        username: 'test',
+        email: 'test@example.com',
+        image: 'test',
+        role: 'USER_ADMIN',
+        status: 'ACTIVE',
+        password: 'test',
+      }),
+    });
+
+    vi.mocked(UpdateMeUserAction.run).mockResolvedValue({
+      success: false,
+      error: 'Something went wrong',
+    } as Record<string, unknown>);
+
+    const response = await PUT(mockContext);
 
     if (response instanceof Response) {
       expect(response.status).toBe(500);

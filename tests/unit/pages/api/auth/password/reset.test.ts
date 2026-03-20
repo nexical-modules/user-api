@@ -16,7 +16,7 @@ describe('Auth API - POST ../../../../../../src/pages/api/auth/password/reset', 
 
   it('should call ResetPasswordAuthAction and return success', async () => {
     const query = ['GET', 'DELETE'].includes('POST'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}`
+      ? `?token=${encodeURIComponent(String('test-token'))}&password=${encodeURIComponent(String('test'))}&confirmPassword=${encodeURIComponent(String('test'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -28,7 +28,7 @@ describe('Auth API - POST ../../../../../../src/pages/api/auth/password/reset', 
 
     mockContext.request = new Request(fullUrl, {
       method: 'POST',
-      body: JSON.stringify({ id: 'test-id' }),
+      body: JSON.stringify({ token: 'test-token', password: 'test', confirmPassword: 'test' }),
     });
 
     vi.mocked(ResetPasswordAuthAction.run).mockResolvedValue({
@@ -49,7 +49,7 @@ describe('Auth API - POST ../../../../../../src/pages/api/auth/password/reset', 
 
   it('should return 400 when invalid input is provided (scaffold)', async () => {
     const query = ['GET', 'DELETE'].includes('POST'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}`
+      ? `?token=${encodeURIComponent(String('test-token'))}&password=${encodeURIComponent(String('test'))}&confirmPassword=${encodeURIComponent(String('test'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -76,7 +76,7 @@ describe('Auth API - POST ../../../../../../src/pages/api/auth/password/reset', 
 
   it('should return 500 when action fails', async () => {
     const query = ['GET', 'DELETE'].includes('POST'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}`
+      ? `?token=${encodeURIComponent(String('test-token'))}&password=${encodeURIComponent(String('test'))}&confirmPassword=${encodeURIComponent(String('test'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -88,7 +88,7 @@ describe('Auth API - POST ../../../../../../src/pages/api/auth/password/reset', 
 
     mockContext.request = new Request(fullUrl, {
       method: 'POST',
-      body: JSON.stringify({ id: 'test-id' }),
+      body: JSON.stringify({ token: 'test-token', password: 'test', confirmPassword: 'test' }),
     });
 
     vi.mocked(ResetPasswordAuthAction.run).mockResolvedValue({

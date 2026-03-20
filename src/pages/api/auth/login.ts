@@ -6,7 +6,7 @@ import { HookSystem } from '@/lib/modules/hooks';
 import { LoginAuthAction } from '@modules/user-api/src/actions/login-auth';
 import { z } from 'zod';
 
-export const POST: APIRoute = defineApi(
+export const POST = defineApi(
   async (context, actor) => {
     // 1. Parsing Input (Body + Query + Params)
     const rawBody = await context.request.json();

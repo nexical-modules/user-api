@@ -16,7 +16,7 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/login', () => {
 
   it('should call LoginAuthAction and return success', async () => {
     const query = ['GET', 'DELETE'].includes('POST'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}`
+      ? `?email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -28,7 +28,7 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/login', () => {
 
     mockContext.request = new Request(fullUrl, {
       method: 'POST',
-      body: JSON.stringify({ id: 'test-id' }),
+      body: JSON.stringify({ email: 'test@example.com', password: 'test' }),
     });
 
     vi.mocked(LoginAuthAction.run).mockResolvedValue({
@@ -49,7 +49,7 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/login', () => {
 
   it('should return 400 when invalid input is provided (scaffold)', async () => {
     const query = ['GET', 'DELETE'].includes('POST'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}`
+      ? `?email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -76,7 +76,7 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/login', () => {
 
   it('should return 500 when action fails', async () => {
     const query = ['GET', 'DELETE'].includes('POST'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}`
+      ? `?email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -88,7 +88,7 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/login', () => {
 
     mockContext.request = new Request(fullUrl, {
       method: 'POST',
-      body: JSON.stringify({ id: 'test-id' }),
+      body: JSON.stringify({ email: 'test@example.com', password: 'test' }),
     });
 
     vi.mocked(LoginAuthAction.run).mockResolvedValue({

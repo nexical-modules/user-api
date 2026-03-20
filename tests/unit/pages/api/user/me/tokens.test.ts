@@ -18,7 +18,7 @@ describe('User API - GET ../../../../../../src/pages/api/user/me/tokens', () => 
 
   it('should call ListTokensUserAction and return success', async () => {
     const query = ['GET', 'DELETE'].includes('GET'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&passwordUpdatedAt=${encodeURIComponent(String(new Date().toISOString()))}&emailVerified=${encodeURIComponent(String(new Date().toISOString()))}&name=${encodeURIComponent(String('test'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('test-enum'))}&status=${encodeURIComponent(String('test-enum'))}`
+      ? `?userId=${encodeURIComponent(String('test'))}&skip=${encodeURIComponent(String(100))}&take=${encodeURIComponent(String(100))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -50,7 +50,7 @@ describe('User API - GET ../../../../../../src/pages/api/user/me/tokens', () => 
 
   it('should return 400 when invalid input is provided (scaffold)', async () => {
     const query = ['GET', 'DELETE'].includes('GET'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&passwordUpdatedAt=${encodeURIComponent(String(new Date().toISOString()))}&emailVerified=${encodeURIComponent(String(new Date().toISOString()))}&name=${encodeURIComponent(String('test'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('test-enum'))}&status=${encodeURIComponent(String('test-enum'))}`
+      ? `?userId=${encodeURIComponent(String('test'))}&skip=${encodeURIComponent(String(100))}&take=${encodeURIComponent(String(100))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -76,7 +76,7 @@ describe('User API - GET ../../../../../../src/pages/api/user/me/tokens', () => 
 
   it('should return 500 when action fails', async () => {
     const query = ['GET', 'DELETE'].includes('GET'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&passwordUpdatedAt=${encodeURIComponent(String(new Date().toISOString()))}&emailVerified=${encodeURIComponent(String(new Date().toISOString()))}&name=${encodeURIComponent(String('test'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('test-enum'))}&status=${encodeURIComponent(String('test-enum'))}`
+      ? `?userId=${encodeURIComponent(String('test'))}&skip=${encodeURIComponent(String(100))}&take=${encodeURIComponent(String(100))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -113,7 +113,7 @@ describe('User API - POST ../../../../../../src/pages/api/user/me/tokens', () =>
 
   it('should call CreateTokenUserAction and return success', async () => {
     const query = ['GET', 'DELETE'].includes('POST'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&passwordUpdatedAt=${encodeURIComponent(String(new Date().toISOString()))}&emailVerified=${encodeURIComponent(String(new Date().toISOString()))}&name=${encodeURIComponent(String('test'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('test-enum'))}&status=${encodeURIComponent(String('test-enum'))}`
+      ? `?userId=${encodeURIComponent(String('test'))}&name=${encodeURIComponent(String('test'))}&expiresAt=${encodeURIComponent(String(new Date().toISOString()))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -125,18 +125,7 @@ describe('User API - POST ../../../../../../src/pages/api/user/me/tokens', () =>
 
     mockContext.request = new Request(fullUrl, {
       method: 'POST',
-      body: JSON.stringify({
-        id: 'test-id',
-        username: 'test',
-        email: 'test@example.com',
-        password: 'test',
-        passwordUpdatedAt: new Date().toISOString(),
-        emailVerified: new Date().toISOString(),
-        name: 'test',
-        image: 'test',
-        role: 'test-enum',
-        status: 'test-enum',
-      }),
+      body: JSON.stringify({ userId: 'test', name: 'test', expiresAt: new Date().toISOString() }),
     });
 
     vi.mocked(CreateTokenUserAction.run).mockResolvedValue({
@@ -157,7 +146,7 @@ describe('User API - POST ../../../../../../src/pages/api/user/me/tokens', () =>
 
   it('should return 400 when invalid input is provided (scaffold)', async () => {
     const query = ['GET', 'DELETE'].includes('POST'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&passwordUpdatedAt=${encodeURIComponent(String(new Date().toISOString()))}&emailVerified=${encodeURIComponent(String(new Date().toISOString()))}&name=${encodeURIComponent(String('test'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('test-enum'))}&status=${encodeURIComponent(String('test-enum'))}`
+      ? `?userId=${encodeURIComponent(String('test'))}&name=${encodeURIComponent(String('test'))}&expiresAt=${encodeURIComponent(String(new Date().toISOString()))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -184,7 +173,7 @@ describe('User API - POST ../../../../../../src/pages/api/user/me/tokens', () =>
 
   it('should return 500 when action fails', async () => {
     const query = ['GET', 'DELETE'].includes('POST'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}&username=${encodeURIComponent(String('test'))}&email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&passwordUpdatedAt=${encodeURIComponent(String(new Date().toISOString()))}&emailVerified=${encodeURIComponent(String(new Date().toISOString()))}&name=${encodeURIComponent(String('test'))}&image=${encodeURIComponent(String('test'))}&role=${encodeURIComponent(String('test-enum'))}&status=${encodeURIComponent(String('test-enum'))}`
+      ? `?userId=${encodeURIComponent(String('test'))}&name=${encodeURIComponent(String('test'))}&expiresAt=${encodeURIComponent(String(new Date().toISOString()))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -196,18 +185,7 @@ describe('User API - POST ../../../../../../src/pages/api/user/me/tokens', () =>
 
     mockContext.request = new Request(fullUrl, {
       method: 'POST',
-      body: JSON.stringify({
-        id: 'test-id',
-        username: 'test',
-        email: 'test@example.com',
-        password: 'test',
-        passwordUpdatedAt: new Date().toISOString(),
-        emailVerified: new Date().toISOString(),
-        name: 'test',
-        image: 'test',
-        role: 'test-enum',
-        status: 'test-enum',
-      }),
+      body: JSON.stringify({ userId: 'test', name: 'test', expiresAt: new Date().toISOString() }),
     });
 
     vi.mocked(CreateTokenUserAction.run).mockResolvedValue({

@@ -16,7 +16,7 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/register', () => {
 
   it('should call RegisterAuthAction and return success', async () => {
     const query = ['GET', 'DELETE'].includes('POST'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}`
+      ? `?email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&confirmPassword=${encodeURIComponent(String('test'))}&name=${encodeURIComponent(String('test'))}&username=${encodeURIComponent(String('test'))}&token=${encodeURIComponent(String('test-token'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -28,7 +28,14 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/register', () => {
 
     mockContext.request = new Request(fullUrl, {
       method: 'POST',
-      body: JSON.stringify({ id: 'test-id' }),
+      body: JSON.stringify({
+        email: 'test@example.com',
+        password: 'test',
+        confirmPassword: 'test',
+        name: 'test',
+        username: 'test',
+        token: 'test-token',
+      }),
     });
 
     vi.mocked(RegisterAuthAction.run).mockResolvedValue({
@@ -49,7 +56,7 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/register', () => {
 
   it('should return 400 when invalid input is provided (scaffold)', async () => {
     const query = ['GET', 'DELETE'].includes('POST'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}`
+      ? `?email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&confirmPassword=${encodeURIComponent(String('test'))}&name=${encodeURIComponent(String('test'))}&username=${encodeURIComponent(String('test'))}&token=${encodeURIComponent(String('test-token'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -76,7 +83,7 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/register', () => {
 
   it('should return 500 when action fails', async () => {
     const query = ['GET', 'DELETE'].includes('POST'.toUpperCase())
-      ? `?id=${encodeURIComponent(String('test-id'))}`
+      ? `?email=${encodeURIComponent(String('test@example.com'))}&password=${encodeURIComponent(String('test'))}&confirmPassword=${encodeURIComponent(String('test'))}&name=${encodeURIComponent(String('test'))}&username=${encodeURIComponent(String('test'))}&token=${encodeURIComponent(String('test-token'))}`
       : '';
     const fullUrl = 'http://localhost/api/test' + query;
 
@@ -88,7 +95,14 @@ describe('Auth API - POST ../../../../../src/pages/api/auth/register', () => {
 
     mockContext.request = new Request(fullUrl, {
       method: 'POST',
-      body: JSON.stringify({ id: 'test-id' }),
+      body: JSON.stringify({
+        email: 'test@example.com',
+        password: 'test',
+        confirmPassword: 'test',
+        name: 'test',
+        username: 'test',
+        token: 'test-token',
+      }),
     });
 
     vi.mocked(RegisterAuthAction.run).mockResolvedValue({
