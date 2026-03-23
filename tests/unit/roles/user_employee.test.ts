@@ -1,4 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY
+import { db } from '@/lib/core/db';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { UserEmployeeRole } from '../../../src/roles/user_employee';
 
@@ -8,12 +9,16 @@ vi.mock('@/lib/core/db', () => ({
     user: { findUnique: vi.fn() },
     agent: { findUnique: vi.fn() },
     team: { findUnique: vi.fn() },
+    teamMember: { findUnique: vi.fn() },
   },
 }));
 
 describe('UserEmployeeRole', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    if (db.teamMember) {
+      vi.mocked(db.teamMember.findUnique).mockResolvedValue({ id: 'test-membership' } as any);
+    }
   });
   it('should be correctly defined', () => {
     const role = new UserEmployeeRole();
@@ -32,7 +37,9 @@ describe('UserEmployeeRole', () => {
       url: new URL('http://localhost/api/test?foo=bar'),
     } as Record<string, unknown>;
 
-    await expect(role.check(mockContext, {}, {})).resolves.not.toThrow();
+    await expect(
+      role.check(mockContext, mockContext.params as Record<string, unknown>, {}),
+    ).resolves.not.toThrow();
   });
 
   it('should pass check for USER_ADMIN', async () => {
@@ -45,7 +52,9 @@ describe('UserEmployeeRole', () => {
       url: new URL('http://localhost/api/test'),
     } as Record<string, unknown>;
 
-    await expect(role.check(mockContext, {}, {})).resolves.not.toThrow();
+    await expect(
+      role.check(mockContext, mockContext.params as Record<string, unknown>, {}),
+    ).resolves.not.toThrow();
   });
 
   it('should throw error for unauthorized role', async () => {
@@ -58,7 +67,9 @@ describe('UserEmployeeRole', () => {
       url: new URL('http://localhost/api/test'),
     } as Record<string, unknown>;
 
-    await expect(role.check(mockContext, {}, {})).rejects.toThrow('Forbidden');
+    await expect(
+      role.check(mockContext, mockContext.params as Record<string, unknown>, {}),
+    ).rejects.toThrow('Forbidden');
   });
 
   it('should throw error if no actor found', async () => {
