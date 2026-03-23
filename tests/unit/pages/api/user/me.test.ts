@@ -197,7 +197,6 @@ describe('User API - DELETE ../../../../../src/pages/api/user/me', () => {
     }
   });
 });
-
 describe('User API - PUT ../../../../../src/pages/api/user/me', () => {
   beforeEach(() => {
     vi.resetAllMocks();

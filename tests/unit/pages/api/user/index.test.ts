@@ -7,7 +7,6 @@ import { GET } from '../../../../../src/pages/api/user/index';
 import { UserService } from '../../../../../src/services/user-service';
 vi.mock('../../../../../src/services/user-service');
 vi.mock('@/lib/api/api-guard');
-
 describe('User API - GET ../../../../../src/pages/api/user/index', () => {
   beforeEach(() => {
     vi.resetAllMocks();

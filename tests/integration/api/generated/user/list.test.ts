@@ -17,8 +17,13 @@ describe('User API - List', () => {
     it('should allow USER_ADMIN to list users', async () => {
       const actor = await client.as('user', { role: 'USER_ADMIN' });
 
-      // Cleanup first to ensure clean state
-      await Factory.prisma.user.deleteMany({ where: { id: { not: actor.id } } });
+      // Cleanup first to ensure clean state - only delete test-generated users
+      await Factory.prisma.user.deleteMany({
+        where: {
+          id: { not: actor.id },
+          email: { contains: '_list_' },
+        },
+      });
 
       // Seed data
       const _listSuffix = Date.now();
@@ -139,8 +144,8 @@ describe('User API - List', () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const actor = await client.as('user', { role: 'USER_ADMIN' });
 
-      const val1 = new Date(Date.now() - 100000).toISOString();
-      const val2 = new Date(Date.now() + 100000).toISOString();
+      const val1 = new Date(Date.now() - 100000);
+      const val2 = new Date(Date.now() + 100000);
 
       const data1 = {
         ...baseData,
@@ -158,10 +163,10 @@ describe('User API - List', () => {
       await Factory.create('user', { ...data1 });
       await Factory.create('user', { ...data2 });
 
-      const res = await client.get('/api/user?passwordUpdatedAt=' + val1);
+      const res = await client.get('/api/user?passwordUpdatedAt=' + val1.toISOString());
       expect(res.status).toBe(200);
       expect(res.body.data).toHaveLength(1);
-      expect(res.body.data[0].passwordUpdatedAt).toBe(val1);
+      expect(res.body.data[0].passwordUpdatedAt).toBe(val1.toISOString());
     });
 
     it('should filter by emailVerified', async () => {
@@ -171,8 +176,8 @@ describe('User API - List', () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const actor = await client.as('user', { role: 'USER_ADMIN' });
 
-      const val1 = new Date(Date.now() - 100000).toISOString();
-      const val2 = new Date(Date.now() + 100000).toISOString();
+      const val1 = new Date(Date.now() - 100000);
+      const val2 = new Date(Date.now() + 100000);
 
       const data1 = {
         ...baseData,
@@ -190,10 +195,10 @@ describe('User API - List', () => {
       await Factory.create('user', { ...data1 });
       await Factory.create('user', { ...data2 });
 
-      const res = await client.get('/api/user?emailVerified=' + val1);
+      const res = await client.get('/api/user?emailVerified=' + val1.toISOString());
       expect(res.status).toBe(200);
       expect(res.body.data).toHaveLength(1);
-      expect(res.body.data[0].emailVerified).toBe(val1);
+      expect(res.body.data[0].emailVerified).toBe(val1.toISOString());
     });
 
     it('should filter by name', async () => {

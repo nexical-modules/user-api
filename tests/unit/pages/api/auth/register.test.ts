@@ -7,7 +7,6 @@ import { RegisterAuthAction } from '../../../../../src/actions/register-auth';
 import { POST } from '../../../../../src/pages/api/auth/register';
 vi.mock('../../../../../src/actions/register-auth');
 vi.mock('@/lib/api/api-guard');
-
 describe('Auth API - POST ../../../../../src/pages/api/auth/register', () => {
   beforeEach(() => {
     vi.resetAllMocks();
