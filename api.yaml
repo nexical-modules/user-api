@@ -5,7 +5,7 @@ Auth:
     summary: Register a new user
     input: CreateUserDTO
     output: User
-    role: anonymous
+    role: ANONYMOUS
 
   - path: /login
     verb: POST
@@ -13,7 +13,7 @@ Auth:
     summary: Login user
     input: LoginDTO
     output: User
-    role: anonymous
+    role: ANONYMOUS
 
   - path: /logout
     verb: POST
@@ -37,7 +37,7 @@ Auth:
     summary: Verify email address
     input: VerifyEmailDTO
     output: VerifyEmailResponseDTO
-    role: anonymous
+    role: ANONYMOUS
 
   - path: /password/request-reset
     verb: POST
@@ -45,7 +45,7 @@ Auth:
     summary: Request password reset
     input: RequestPasswordResetDTO
     output: none
-    role: anonymous
+    role: ANONYMOUS
 
   - path: /password/reset
     verb: POST
@@ -53,7 +53,7 @@ Auth:
     summary: Reset password
     input: ResetPasswordDTO
     output: ResetPasswordResponseDTO
-    role: anonymous
+    role: ANONYMOUS
 
   - path: /password/validate-token
     verb: POST
@@ -61,7 +61,7 @@ Auth:
     summary: Validate reset token
     input: ValidateResetTokenDTO
     output: ValidateResetTokenResponseDTO
-    role: anonymous
+    role: ANONYMOUS
 
 User:
   - path: /me

@@ -4,12 +4,12 @@ import type { APIContext, MiddlewareNext } from 'astro';
 import crypto from 'node:crypto';
 export async function onRequest(context: APIContext, next: MiddlewareNext) {
   const publicRoutes: string[] = [
-    '/register',
-    '/login',
-    '/verify-email',
-    '/password/request-reset',
-    '/password/reset',
-    '/password/validate-token',
+    '/api/auth/register',
+    '/api/auth/login',
+    '/api/auth/verify-email',
+    '/api/auth/password/request-reset',
+    '/api/auth/password/reset',
+    '/api/auth/password/validate-token',
   ];
   if (publicRoutes.some((route) => context.url.pathname.startsWith(route))) return next();
   const authHeader = context.request.headers.get('Authorization');
