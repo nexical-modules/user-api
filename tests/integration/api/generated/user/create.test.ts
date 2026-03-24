@@ -13,8 +13,7 @@ describe('User API - Create', () => {
   // POST /api/user
   describe('POST /api/user', () => {
     it('should allow USER_ADMIN to create user', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const actor = await client.as('user', { role: 'USER_ADMIN' });
+      const _actor = await client.as('user', { role: 'USER_ADMIN' });
 
       const payload = {
         passwordUpdatedAt: new Date().toISOString(),
@@ -35,8 +34,7 @@ describe('User API - Create', () => {
 
     it('should forbid non-admin/unauthorized users', async () => {
       client.useToken('invalid-token');
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const actor = undefined as unknown;
+      const _actor = undefined as unknown;
 
       const payload = {
         passwordUpdatedAt: new Date().toISOString(),

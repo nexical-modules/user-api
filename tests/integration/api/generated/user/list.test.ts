@@ -55,7 +55,9 @@ describe('User API - List', () => {
 
       const _listSuffix = Date.now();
       let currentCount = 0;
-      currentCount = await Factory.prisma.user.count({ where: { id: actor.id } });
+      currentCount = await Factory.prisma.user.count({
+        where: { id: actor ? (actor as unknown as { id: string }).id : undefined },
+      });
       const toCreate = totalTarget - currentCount;
 
       for (let i = 0; i < toCreate; i++) {
@@ -84,8 +86,7 @@ describe('User API - List', () => {
       // Wait to avoid collisions
       await new Promise((r) => setTimeout(r, 10));
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const actor = await client.as('user', { role: 'USER_ADMIN' });
+      const _actor = await client.as('user', { role: 'USER_ADMIN' });
 
       const val1 = 'username_' + Date.now() + '_A';
       const val2 = 'username_' + Date.now() + '_B';
@@ -114,8 +115,7 @@ describe('User API - List', () => {
       // Wait to avoid collisions
       await new Promise((r) => setTimeout(r, 10));
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const actor = await client.as('user', { role: 'USER_ADMIN' });
+      const _actor = await client.as('user', { role: 'USER_ADMIN' });
 
       const val1 = 'email_' + Date.now() + '_A@example.com';
       const val2 = 'email_' + Date.now() + '_B@example.com';
@@ -136,8 +136,7 @@ describe('User API - List', () => {
       // Wait to avoid collisions
       await new Promise((r) => setTimeout(r, 10));
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const actor = await client.as('user', { role: 'USER_ADMIN' });
+      const _actor = await client.as('user', { role: 'USER_ADMIN' });
 
       const val1 = new Date(Date.now() - 100000).toISOString();
       const val2 = new Date(Date.now() + 100000).toISOString();
@@ -168,8 +167,7 @@ describe('User API - List', () => {
       // Wait to avoid collisions
       await new Promise((r) => setTimeout(r, 10));
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const actor = await client.as('user', { role: 'USER_ADMIN' });
+      const _actor = await client.as('user', { role: 'USER_ADMIN' });
 
       const val1 = new Date(Date.now() - 100000).toISOString();
       const val2 = new Date(Date.now() + 100000).toISOString();
@@ -200,8 +198,7 @@ describe('User API - List', () => {
       // Wait to avoid collisions
       await new Promise((r) => setTimeout(r, 10));
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const actor = await client.as('user', { role: 'USER_ADMIN' });
+      const _actor = await client.as('user', { role: 'USER_ADMIN' });
 
       const val1 = 'name_' + Date.now() + '_A';
       const val2 = 'name_' + Date.now() + '_B';
@@ -232,8 +229,7 @@ describe('User API - List', () => {
       // Wait to avoid collisions
       await new Promise((r) => setTimeout(r, 10));
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const actor = await client.as('user', { role: 'USER_ADMIN' });
+      const _actor = await client.as('user', { role: 'USER_ADMIN' });
 
       const val1 = 'image_' + Date.now() + '_A';
       const val2 = 'image_' + Date.now() + '_B';

@@ -23,8 +23,7 @@ describe('User API - Get', () => {
     });
 
     it('should return 404 for missing id', async () => {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const actor = await client.as('user', { role: 'USER_ADMIN' });
+      const _actor = await client.as('user', { role: 'USER_ADMIN' });
       const res = await client.get('/api/user/missing-id-123');
       expect(res.status).toBe(404);
     });
