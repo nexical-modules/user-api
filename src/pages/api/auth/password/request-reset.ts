@@ -75,5 +75,6 @@ export const POST = defineApi(
         },
       },
     },
+    protected: false,
   },
 );
